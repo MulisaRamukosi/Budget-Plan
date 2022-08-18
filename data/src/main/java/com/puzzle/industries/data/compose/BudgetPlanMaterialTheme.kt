@@ -1,9 +1,10 @@
 package com.puzzle.industries.data.compose
 
-import androidx.compose.material.Colors
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Shapes
-import androidx.compose.material.Typography
+import android.os.Build
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -15,27 +16,27 @@ import com.puzzle.industries.data.compose.spacing.updateSpacing
 
 @Composable
 fun BudgetPlanMaterialTheme(
-    colors: Colors,
+    colorScheme: ColorScheme,
     typography: Typography,
-    shapes: Shapes,
     spacing: Spacing,
     content: @Composable () -> Unit
 ){
-    val systemUiController = rememberSystemUiController()
-
     val rememberSpacing = remember {
         spacing.copy()
     }.apply { updateSpacing(spacing) }
 
 
-
-    systemUiController.setStatusBarColor(color = colors.primaryVariant)
+    when{
+        Build.VERSION.SDK_INT < Build.VERSION_CODES.S -> {
+            val systemUiController = rememberSystemUiController()
+            systemUiController.setStatusBarColor(color = colorScheme.primary)
+        }
+    }
 
     CompositionLocalProvider(LocalSpacing provides rememberSpacing){
         MaterialTheme(
-            colors = colors,
+            colorScheme = colorScheme,
             typography = typography,
-            shapes = shapes,
             content = content
         )
     }

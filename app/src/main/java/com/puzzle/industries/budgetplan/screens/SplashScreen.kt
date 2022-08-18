@@ -5,8 +5,8 @@ import androidx.compose.animation.core.AnimationVector
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -39,7 +39,7 @@ private fun Content(onAnimationComplete: () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = MaterialTheme.colors.primary),
+            .background(color = MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
         TextAnimation(onAnimationComplete = onAnimationComplete)
@@ -81,14 +81,12 @@ private fun TextAnimation(onAnimationComplete: () -> Unit = {}) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         SplashText(text = "B")
         SplashText(
-            text = "udget", modifier = Modifier
-                .width(currentMiddleTextWidth.dp)
-                .height(45.dp)
+            text = "udget",
+            modifier = Modifier.width(currentMiddleTextWidth.dp)
         )
 
         SplashText(
             modifier = Modifier
-                .height(45.dp)
                 .rotate(currentDashRotation)
                 .scale(scaleX = currentDashXScale, scaleY = 1f),
             text = "-"
@@ -117,9 +115,10 @@ private fun SplashText(modifier: Modifier = Modifier, text: String) {
     Text(
         modifier = modifier,
         text = text,
-        style = MaterialTheme.typography.h4,
-        color = MaterialTheme.colors.onPrimary,
-        fontWeight = FontWeight.Bold
+        style = MaterialTheme.typography.headlineLarge,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+        fontWeight = FontWeight.Bold,
+        maxLines = 1
     )
 }
 
@@ -137,8 +136,7 @@ private fun PreviewAnimation() {
 @Preview(showBackground = true)
 @ExperimentalMaterial3WindowSizeClassApi
 private fun ScreenPreview() {
-    BudgetPlanTheme {
+    BudgetPlanTheme(dynamicColor = false) {
         Content()
     }
-
 }
