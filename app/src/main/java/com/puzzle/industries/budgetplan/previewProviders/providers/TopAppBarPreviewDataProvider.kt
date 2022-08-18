@@ -3,12 +3,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.puzzle.industries.budgetplan.components.ActionButton
-import com.puzzle.industries.budgetplan.previewProviders.models.TopHeaderModel
+import com.puzzle.industries.budgetplan.components.appBar.ActionButton
+import com.puzzle.industries.budgetplan.previewProviders.models.TopAppBar
 
-class TopHeaderPreviewDataProvider : PreviewParameterProvider<TopHeaderModel>{
-    override val values: Sequence<TopHeaderModel> = sequenceOf(
-        TopHeaderModel(
+class TopAppBarPreviewDataProvider : PreviewParameterProvider<TopAppBar>{
+    override val values: Sequence<TopAppBar> = sequenceOf(
+        TopAppBar(
             Title = "Test",
             SubTitle = "Test",
             IsHomeEnabled = false,
@@ -19,12 +19,12 @@ class TopHeaderPreviewDataProvider : PreviewParameterProvider<TopHeaderModel>{
                 )
             )
         ),
-        TopHeaderModel(
+        TopAppBar(
             Title = "Test2",
             SubTitle = "",
             IsHomeEnabled = true
         ),
-        TopHeaderModel(
+        TopAppBar(
             Title = "Test3",
             SubTitle = "some subtitle",
             IsHomeEnabled = true,
