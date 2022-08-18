@@ -7,10 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.puzzle.industries.budgetplan.components.appBar.ActionButton
-import com.puzzle.industries.budgetplan.components.appBar.topAppBar.topAppBar
-import com.puzzle.industries.budgetplan.previewProviders.models.TopAppBar
 import com.puzzle.industries.budgetplan.previewProviders.providers.BottomAppBarPreviewDataProvider
-import com.puzzle.industries.budgetplan.previewProviders.providers.TopAppBarPreviewDataProvider
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 
 @Composable

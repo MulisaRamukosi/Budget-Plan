@@ -1,4 +1,3 @@
 package com.puzzle.industries.domain
 
-class MyClass {
-}
+class MyClass
