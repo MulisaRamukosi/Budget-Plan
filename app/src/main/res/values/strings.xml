@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Budget Plan</string>
-    <string name="nav_home_icon_desc">Home navigation icon</string>
+    <string name="desc_nav_home">Home navigation icon</string>
+    <string name="home">Home</string>
+    <string name="desc_home">Home page button</string>
+    <string name="budget">Budget</string>
+    <string name="desc_budget">Budget page button</string>
+    <string name="search">Search</string>
+    <string name="desc_search">Search page button</string>
 </resources>
