@@ -3,7 +3,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.puzzle.industries.budgetplan.components.appBar.ActionButton
+import com.puzzle.industries.budgetplan.components.appBar.TopAppBarActionButton
 import com.puzzle.industries.budgetplan.previewProviders.models.TopAppBar
 
 class TopAppBarPreviewDataProvider : PreviewParameterProvider<TopAppBar>{
@@ -13,7 +13,7 @@ class TopAppBarPreviewDataProvider : PreviewParameterProvider<TopAppBar>{
             SubTitle = "Test",
             IsHomeEnabled = false,
             actions = listOf(
-                ActionButton(
+                TopAppBarActionButton(
                     imageVector = Icons.Rounded.Add,
                     description = "add note"
                 )
@@ -29,11 +29,11 @@ class TopAppBarPreviewDataProvider : PreviewParameterProvider<TopAppBar>{
             SubTitle = "some subtitle",
             IsHomeEnabled = true,
             actions = listOf(
-                ActionButton(
+                TopAppBarActionButton(
                     imageVector = Icons.Rounded.Add,
                     description = "add note"
                 ),
-                ActionButton(
+                TopAppBarActionButton(
                     imageVector = Icons.Rounded.Delete,
                     description = "delete note"
                 )

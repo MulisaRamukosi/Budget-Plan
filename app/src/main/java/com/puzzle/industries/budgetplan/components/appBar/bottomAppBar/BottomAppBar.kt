@@ -6,14 +6,13 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
-import com.puzzle.industries.budgetplan.components.appBar.ActionButton
 import com.puzzle.industries.budgetplan.previewProviders.providers.BottomAppBarPreviewDataProvider
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 
 @Composable
 @ExperimentalMaterial3Api
 fun bottomAppBar(
-    actions: List<ActionButton> = emptyList()
+    actions: List<BottomAppBarActionButton> = emptyList()
 ): @Composable () -> Unit {
     return {
         var selectedItem by remember { mutableStateOf(0) }
@@ -45,7 +44,7 @@ fun bottomAppBar(
 @ExperimentalMaterial3WindowSizeClassApi
 @ExperimentalMaterial3Api
 fun PreviewBottomAppBar(
-    @PreviewParameter(BottomAppBarPreviewDataProvider::class) bottomAppBarData : List<ActionButton>
+    @PreviewParameter(BottomAppBarPreviewDataProvider::class) bottomAppBarData : List<BottomAppBarActionButton>
 ){
     BudgetPlanTheme {
         bottomAppBar(actions = bottomAppBarData)()

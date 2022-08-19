@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.appBar.ActionButton
+import com.puzzle.industries.budgetplan.components.appBar.TopAppBarActionButton
 import com.puzzle.industries.budgetplan.previewProviders.models.TopAppBar
 import com.puzzle.industries.budgetplan.previewProviders.providers.TopAppBarPreviewDataProvider
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
@@ -23,7 +23,7 @@ fun topAppBar(
     title: String = stringResource(id = R.string.app_name),
     subTitle: String = "",
     isHomeEnabled : Boolean = false,
-    actions: List<ActionButton> = emptyList(),
+    actions: List<TopAppBarActionButton> = emptyList(),
     onHomeClick: () -> Unit = {}
 ) : @Composable () -> Unit{
     return {
