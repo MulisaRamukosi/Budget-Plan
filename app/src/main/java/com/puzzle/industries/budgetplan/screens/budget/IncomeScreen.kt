@@ -1,9 +1,9 @@
-package com.puzzle.industries.budgetplan.screens
+package com.puzzle.industries.budgetplan.screens.budget
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun Search(){
+fun IncomeScreen(){
 
 }
 
