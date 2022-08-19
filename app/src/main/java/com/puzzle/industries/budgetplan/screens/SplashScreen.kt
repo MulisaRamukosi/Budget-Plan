@@ -22,29 +22,18 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
-    Content {
-        navController.navigate(route = Routes.Main.path) {
-            navController.graph.startDestinationRoute?.let {
-                popUpTo(route = it) {
-                    inclusive = true
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun Content(onAnimationComplete: () -> Unit = {}) {
+fun SplashScreen(onNavigate : () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
-        TextAnimation(onAnimationComplete = onAnimationComplete)
+        TextAnimation(onAnimationComplete = onNavigate)
     }
 }
+
+
 
 @Composable
 private fun TextAnimation(onAnimationComplete: () -> Unit = {}) {
@@ -137,6 +126,8 @@ private fun PreviewAnimation() {
 @ExperimentalMaterial3WindowSizeClassApi
 private fun ScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        Content()
+        SplashScreen {
+
+        }
     }
 }
