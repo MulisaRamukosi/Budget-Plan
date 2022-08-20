@@ -109,16 +109,6 @@ private fun SplashText(modifier: Modifier = Modifier, text: String) {
     )
 }
 
-
-@Composable
-@Preview(showBackground = true)
-@ExperimentalMaterial3WindowSizeClassApi
-private fun PreviewAnimation() {
-    BudgetPlanTheme {
-        TextAnimation()
-    }
-}
-
 @Composable
 @Preview(showBackground = true)
 @ExperimentalMaterial3WindowSizeClassApi
