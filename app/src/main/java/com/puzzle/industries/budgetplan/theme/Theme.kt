@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import com.puzzle.industries.budgetplan.theme.factory.ColorSchemeFactory
 import com.puzzle.industries.budgetplan.theme.factory.SpacingFactory
 import com.puzzle.industries.budgetplan.theme.factory.TypographyFactory
@@ -50,8 +50,9 @@ fun BudgetPlanTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
-            ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars = darkTheme
+            val window = (view.context as Activity).window
+            window.statusBarColor = colorScheme.primary.toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
 
