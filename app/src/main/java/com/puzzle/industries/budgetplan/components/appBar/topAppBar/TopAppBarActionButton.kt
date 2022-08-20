@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.components.appBar
+package com.puzzle.industries.budgetplan.components.appBar.topAppBar
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
