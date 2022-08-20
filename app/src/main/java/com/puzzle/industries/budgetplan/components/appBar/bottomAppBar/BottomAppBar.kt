@@ -3,7 +3,7 @@ package com.puzzle.industries.budgetplan.components.appBar.bottomAppBar
 import android.content.res.Configuration
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.puzzle.industries.budgetplan.previewProviders.providers.BottomAppBarPreviewDataProvider
@@ -12,13 +12,12 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 @Composable
 @ExperimentalMaterial3Api
 fun bottomAppBar(
+    selectedRoute: String = "",
     actions: List<BottomAppBarActionButton> = emptyList()
 ): @Composable () -> Unit {
     return {
-        var selectedItem by remember { mutableStateOf(0) }
-
         NavigationBar {
-            actions.forEachIndexed { index, item ->
+            actions.forEachIndexed { _, item ->
                 NavigationBarItem(
                     icon = {
                         Icon(
@@ -27,10 +26,11 @@ fun bottomAppBar(
                         )
                     },
                     label = { Text(text = item.label) },
-                    selected = selectedItem == index,
+                    selected = selectedRoute == item.destinationRoute,
                     onClick = {
-                        selectedItem = index
-                        item.onActionClick()
+                        if (selectedRoute != item.destinationRoute) {
+                            item.onActionClick(item.destinationRoute)
+                        }
                     }
                 )
             }
@@ -44,8 +44,8 @@ fun bottomAppBar(
 @ExperimentalMaterial3WindowSizeClassApi
 @ExperimentalMaterial3Api
 fun PreviewBottomAppBar(
-    @PreviewParameter(BottomAppBarPreviewDataProvider::class) bottomAppBarData : List<BottomAppBarActionButton>
-){
+    @PreviewParameter(BottomAppBarPreviewDataProvider::class) bottomAppBarData: List<BottomAppBarActionButton>
+) {
     BudgetPlanTheme {
         bottomAppBar(actions = bottomAppBarData)()
     }

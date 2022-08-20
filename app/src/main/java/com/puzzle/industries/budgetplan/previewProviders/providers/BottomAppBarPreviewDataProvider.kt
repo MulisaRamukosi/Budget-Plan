@@ -5,7 +5,6 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.puzzle.industries.budgetplan.components.appBar.bottomAppBar.BottomAppBarActionButton
-import com.puzzle.industries.budgetplan.navigation.constants.Routes
 
 class BottomAppBarPreviewDataProvider : PreviewParameterProvider<List<BottomAppBarActionButton>> {
     override val values: Sequence<List<BottomAppBarActionButton>>
@@ -14,14 +13,14 @@ class BottomAppBarPreviewDataProvider : PreviewParameterProvider<List<BottomAppB
                 BottomAppBarActionButton(
                     imageVector = Icons.Rounded.Add,
                     label = "Add",
-                    destinationRoute = Routes.Home,
-                    description = "add note"
+                    description = "add note",
+                    destinationRoute = ""
                 ),
                 BottomAppBarActionButton(
                     imageVector = Icons.Rounded.Delete,
                     label = "Delete",
-                    destinationRoute = Routes.Home,
-                    description = "delete note"
+                    description = "delete note",
+                    destinationRoute = "delete"
                 )
             )
         )

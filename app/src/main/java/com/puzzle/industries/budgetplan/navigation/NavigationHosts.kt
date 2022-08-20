@@ -22,13 +22,10 @@ fun AppScreensNavHost(modifier: Modifier = Modifier) {
 
 @Composable
 @ExperimentalMaterial3Api
-fun mainScreenNestedNavHost(modifier: Modifier = Modifier) : NavHostController{
-    val navController = rememberNavController()
+fun MainScreenNestedNavHost(navController: NavHostController, modifier: Modifier = Modifier){
     NavHost(
         modifier = modifier,
         navController = navController,
         graph = mainScreenGraph(navController = navController)
     )
-
-    return navController
 }
