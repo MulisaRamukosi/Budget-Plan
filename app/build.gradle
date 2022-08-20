@@ -102,6 +102,9 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
+    //viewpager
+    implementation "com.google.accompanist:accompanist-pager:0.26.1-alpha"
+
     //navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
@@ -112,6 +115,8 @@ dependencies {
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
+    //system ui
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$system_ui_version"
 
     testImplementation 'junit:junit:4.13.2'
 

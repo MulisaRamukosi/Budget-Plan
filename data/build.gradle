@@ -60,9 +60,6 @@ dependencies {
     //material
     implementation "androidx.compose.material3:material3:$material3_version"
 
-    //system ui
-    implementation "com.google.accompanist:accompanist-systemuicontroller:$system_ui_version"
-
     testImplementation 'junit:junit:4.13.2'
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

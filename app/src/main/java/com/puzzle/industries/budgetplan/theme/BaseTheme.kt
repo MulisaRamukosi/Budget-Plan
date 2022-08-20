@@ -1,24 +1,23 @@
-package com.puzzle.industries.data.compose
+package com.puzzle.industries.budgetplan.theme
 
 import android.os.Build
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.remember
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.puzzle.industries.data.compose.spacing.LocalSpacing
-import com.puzzle.industries.data.compose.spacing.Spacing
-import com.puzzle.industries.data.compose.spacing.updateSpacing
+import com.puzzle.industries.budgetplan.theme.spacing.BaseSpacing
+import com.puzzle.industries.budgetplan.theme.spacing.LocalSpacing
+import com.puzzle.industries.budgetplan.theme.spacing.updateSpacing
 
 @Composable
-fun BudgetPlanMaterialTheme(
+fun BaseTheme(
     colorScheme: ColorScheme,
     typography: Typography,
-    spacing: Spacing,
+    spacing: BaseSpacing,
     content: @Composable () -> Unit
 ){
     val rememberSpacing = remember {
@@ -42,7 +41,7 @@ fun BudgetPlanMaterialTheme(
     }
 }
 
-val MaterialTheme.spacing: Spacing
+val MaterialTheme.composeSpacing: BaseSpacing
     @Composable
     @ReadOnlyComposable
     get() = LocalSpacing.current

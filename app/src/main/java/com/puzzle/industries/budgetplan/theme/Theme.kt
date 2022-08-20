@@ -7,7 +7,8 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
@@ -19,18 +20,23 @@ import com.puzzle.industries.budgetplan.theme.factory.SpacingFactory
 import com.puzzle.industries.budgetplan.theme.factory.TypographyFactory
 import com.puzzle.industries.budgetplan.theme.util.ColorPaletteType
 import com.puzzle.industries.budgetplan.theme.util.FontType
-import com.puzzle.industries.data.compose.BudgetPlanMaterialTheme
 
 @Composable
 @ExperimentalMaterial3WindowSizeClassApi
 fun BudgetPlanTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
-    windowSizeClass: WindowSizeClass = WindowSizeClass.calculateFromSize(DpSize(width = 500.dp, height = 800.dp)),
+    windowSizeClass: WindowSizeClass = WindowSizeClass.calculateFromSize(
+        DpSize(
+            width = 500.dp,
+            height = 800.dp
+        )
+    ),
     content: @Composable () -> Unit
 ) {
 
-    val colorPaletteType: ColorPaletteType = if (darkTheme) ColorPaletteType.DARK else ColorPaletteType.LIGHT
+    val colorPaletteType: ColorPaletteType =
+        if (darkTheme) ColorPaletteType.DARK else ColorPaletteType.LIGHT
     val typography = TypographyFactory.getTypography(FontType.SOURCE_SANS_PRO)
     val spacing = SpacingFactory.getSpacing(windowSizeClass.widthSizeClass)
 
@@ -49,7 +55,7 @@ fun BudgetPlanTheme(
         }
     }
 
-    BudgetPlanMaterialTheme(
+    BaseTheme(
         colorScheme = colorScheme,
         typography = typography,
         spacing = spacing,

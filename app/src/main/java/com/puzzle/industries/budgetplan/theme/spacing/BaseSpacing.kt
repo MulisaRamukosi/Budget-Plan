@@ -1,11 +1,11 @@
-package com.puzzle.industries.data.compose.spacing
+package com.puzzle.industries.budgetplan.theme.spacing
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Stable
-class Spacing(
+class BaseSpacing(
     default: Dp,
     extraSmall: Dp,
     small: Dp,
@@ -30,7 +30,7 @@ class Spacing(
         small: Dp = this.small,
         medium: Dp = this.medium,
         large: Dp = this.large
-    ): Spacing = Spacing(
+    ): BaseSpacing = BaseSpacing(
         default = default,
         extraSmall = extraSmall,
         small = small,
@@ -49,7 +49,7 @@ class Spacing(
     }
 }
 
-internal fun Spacing.updateSpacing(other: Spacing) {
+internal fun BaseSpacing.updateSpacing(other: BaseSpacing) {
     default = other.default
     extraSmall = other.extraSmall
     small = other.small
@@ -63,7 +63,7 @@ internal fun defaultSpacing(
     small: Dp = 4.dp,
     medium: Dp = 8.dp,
     large: Dp = 16.dp
-): Spacing = Spacing(
+): BaseSpacing = BaseSpacing(
     default = default,
     extraSmall = extraSmall,
     small = small,
