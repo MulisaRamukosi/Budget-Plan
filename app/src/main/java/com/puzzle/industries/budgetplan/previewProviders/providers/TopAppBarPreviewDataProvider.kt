@@ -3,7 +3,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.puzzle.industries.budgetplan.components.appBar.TopAppBarActionButton
+import com.puzzle.industries.budgetplan.components.appBar.topAppBar.TopAppBarActionButton
 import com.puzzle.industries.budgetplan.previewProviders.models.TopAppBar
 
 class TopAppBarPreviewDataProvider : PreviewParameterProvider<TopAppBar>{
