@@ -1,6 +1,6 @@
 package com.puzzle.industries.budgetplan.previewProviders.models
 
-import com.puzzle.industries.budgetplan.components.appBar.TopAppBarActionButton
+import com.puzzle.industries.budgetplan.components.appBar.topAppBar.TopAppBarActionButton
 
 data class TopAppBar(
     val Title: String,
