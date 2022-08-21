@@ -17,6 +17,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.appBar.bottomAppBar.BottomAppBarActionButton
 import com.puzzle.industries.budgetplan.components.appBar.bottomAppBar.bottomAppBar
@@ -26,6 +27,7 @@ import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 
 @Composable
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 fun MainScreen() {
     val nestedNavController = rememberNavController()
@@ -35,8 +37,9 @@ fun MainScreen() {
     )
 }
 
-@ExperimentalMaterial3Api
 @Composable
+@ExperimentalPagerApi
+@ExperimentalMaterial3Api
 private fun Content(
     navController: NavHostController
 ) {
@@ -96,6 +99,7 @@ private fun Content(
 @Composable
 @Preview(showBackground = true)
 @ExperimentalMaterial3Api
+@ExperimentalPagerApi
 @ExperimentalMaterial3WindowSizeClassApi
 private fun ScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {

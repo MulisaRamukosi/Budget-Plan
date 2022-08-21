@@ -6,10 +6,12 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.puzzle.industries.budgetplan.navigation.graphs.appScreensGraph
 import com.puzzle.industries.budgetplan.navigation.graphs.mainScreenGraph
 
 @Composable
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 fun AppScreensNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -21,6 +23,7 @@ fun AppScreensNavHost(modifier: Modifier = Modifier) {
 }
 
 @Composable
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 fun MainScreenNestedNavHost(navController: NavHostController, modifier: Modifier = Modifier){
     NavHost(

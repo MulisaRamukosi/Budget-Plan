@@ -6,12 +6,14 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.puzzle.industries.budgetplan.navigation.constants.MainScreens
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.screens.MainScreen
 import com.puzzle.industries.budgetplan.screens.SplashScreen
 
 @Composable
+@ExperimentalPagerApi
 @ExperimentalMaterial3Api
 fun appScreensGraph(navController: NavHostController) : NavGraph {
     return navController.createGraph(startDestination = MainScreens.Splash.name){
