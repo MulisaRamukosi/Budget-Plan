@@ -21,7 +21,7 @@ class DarkColorPalette : ColorPalette(
     onErrorContainer = Color(0xFFFFDAD6),
     background = Color(0xFF1B1C18),
     onBackground = Color(0xFFE3E3DC),
-    surface = Color(0xFF1B1C18),
+    surface = Color(0xFF404A34),
     onSurface = Color(0xFFE3E3DC),
     surfaceVariant = Color(0xFF44483D),
     onSurfaceVariant = Color(0xFFC4C8BA),

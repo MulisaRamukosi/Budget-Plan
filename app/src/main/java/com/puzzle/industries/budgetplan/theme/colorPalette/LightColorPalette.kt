@@ -22,7 +22,7 @@ class LightColorPalette : ColorPalette(
     onErrorContainer = Color(0xFF410002),
     background = Color(0xFFFDFCF5),
     onBackground = Color(0xFF1B1C18),
-    surface = Color(0xFFFDFCF5),
+    surface = Color(0xFFDBE7C8),
     onSurface = Color(0xFF1B1C18),
     surfaceVariant = Color(0xFFE1E4D5),
     onSurfaceVariant = Color(0xFF44483D),
