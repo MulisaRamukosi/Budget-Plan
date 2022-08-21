@@ -7,4 +7,7 @@
     <string name="desc_budget">Budget page button</string>
     <string name="search">Search</string>
     <string name="desc_search">Search page button</string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="reminder">Reminders</string>
 </resources>
