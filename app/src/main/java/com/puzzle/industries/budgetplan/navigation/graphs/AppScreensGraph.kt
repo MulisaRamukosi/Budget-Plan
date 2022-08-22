@@ -9,14 +9,14 @@ import androidx.navigation.createGraph
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.puzzle.industries.budgetplan.navigation.constants.MainScreens
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.screens.MainScreen
+import com.puzzle.industries.budgetplan.screens.main.MainScreen
 import com.puzzle.industries.budgetplan.screens.SplashScreen
 
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
 fun appScreensGraph(navController: NavHostController) : NavGraph {
-    return navController.createGraph(startDestination = MainScreens.Splash.name){
+    return navController.createGraph(startDestination = MainScreens.SPLASH.name){
         composable(route = Routes.Splash.path){
             SplashScreen{
                 navController.navigate(route = Routes.Main.path) {
