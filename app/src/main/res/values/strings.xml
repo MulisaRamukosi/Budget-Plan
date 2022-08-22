@@ -10,4 +10,10 @@
     <string name="income">Income</string>
     <string name="expenses">Expenses</string>
     <string name="reminder">Reminders</string>
+    <string name="add_income">Add Income</string>
+    <string name="income_amount">R %.2f</string>
+    <string name="desc_add_income">Add income</string>
+    <string name="desc_income">income amount</string>
+    <string name="desc_income_frequency">Income frequency</string>
+
 </resources>
