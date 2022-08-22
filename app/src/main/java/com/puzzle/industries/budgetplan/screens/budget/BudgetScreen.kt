@@ -79,7 +79,7 @@ fun BudgetScreen() {
 @ExperimentalMaterial3Api
 @ExperimentalPagerApi
 @ExperimentalMaterial3WindowSizeClassApi
-private fun ScreenPreview() {
+private fun BudgetScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
         BudgetScreen()
     }

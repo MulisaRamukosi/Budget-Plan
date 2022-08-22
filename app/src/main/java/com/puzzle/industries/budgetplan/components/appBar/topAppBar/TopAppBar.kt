@@ -75,7 +75,7 @@ fun topAppBar(
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @ExperimentalMaterial3WindowSizeClassApi
 @ExperimentalMaterial3Api
-fun PreviewHeader(
+fun TopAppBarPreview(
     @PreviewParameter(TopAppBarPreviewDataProvider::class) topHeaderData : TopAppBar
 ){
     BudgetPlanTheme {

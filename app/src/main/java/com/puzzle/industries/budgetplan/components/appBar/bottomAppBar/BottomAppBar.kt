@@ -43,7 +43,7 @@ fun bottomAppBar(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @ExperimentalMaterial3WindowSizeClassApi
 @ExperimentalMaterial3Api
-fun PreviewBottomAppBar(
+fun BottomAppBarPreview(
     @PreviewParameter(BottomAppBarPreviewDataProvider::class) bottomAppBarData: List<BottomAppBarActionButton>
 ) {
     BudgetPlanTheme {

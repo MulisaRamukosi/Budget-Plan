@@ -101,7 +101,7 @@ private fun Content(
 @ExperimentalMaterial3Api
 @ExperimentalPagerApi
 @ExperimentalMaterial3WindowSizeClassApi
-private fun ScreenPreview() {
+private fun MainScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
         MainScreen()
     }
