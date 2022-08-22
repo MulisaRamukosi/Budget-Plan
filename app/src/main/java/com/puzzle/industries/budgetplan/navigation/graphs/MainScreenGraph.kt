@@ -8,8 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.screens.HomeScreen
-import com.puzzle.industries.budgetplan.screens.SearchScreen
+import com.puzzle.industries.budgetplan.screens.main.HomeScreen
+import com.puzzle.industries.budgetplan.screens.main.SearchScreen
 import com.puzzle.industries.budgetplan.screens.budget.BudgetScreen
 
 @Composable
