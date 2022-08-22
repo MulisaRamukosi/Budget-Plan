@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.screens
+package com.puzzle.industries.budgetplan.screens.main
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -63,7 +63,6 @@ private fun Content(
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = topAppBar(),
         bottomBar = bottomAppBar(
             selectedRoute = currentDestination ?: Routes.Home.path,
             actions = listOf(
