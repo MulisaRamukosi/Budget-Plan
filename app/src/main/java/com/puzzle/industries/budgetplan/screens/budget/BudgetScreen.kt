@@ -22,13 +22,15 @@ import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import kotlinx.coroutines.launch
 
+
 @Composable
 @ExperimentalPagerApi
+@ExperimentalMaterial3Api
 fun BudgetScreen() {
     val tabs = listOf(
-        stringResource(id = R.string.income) to Icons.Rounded.Paid,
-        stringResource(id = R.string.expenses) to Icons.Rounded.Payments,
-        stringResource(id = R.string.reminder) to Icons.Rounded.Notifications
+        stringResource(id = R.string.income),
+        stringResource(id = R.string.expenses),
+        stringResource(id = R.string.reminder)
     )
 
     val pagerState = rememberPagerState(
@@ -39,7 +41,7 @@ fun BudgetScreen() {
 
     Column {
         TabRow(selectedTabIndex = pagerState.currentPage) {
-            tabs.forEachIndexed { index, tab ->
+            tabs.forEachIndexed { index, title ->
                 Tab(
                     selected = pagerState.currentPage == index,
                     onClick = {
@@ -47,11 +49,10 @@ fun BudgetScreen() {
                             pagerState.animateScrollToPage(page = index)
                         }
                     },
-                    icon = { Icon(imageVector = tab.second, contentDescription = tab.first) },
                     unselectedContentColor = MaterialTheme.colorScheme.secondary,
                     text = {
                         Text(
-                            text = tab.first,
+                            text = title,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
