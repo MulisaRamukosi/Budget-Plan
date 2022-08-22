@@ -52,7 +52,7 @@ private fun TextAnimation(onAnimationComplete: () -> Unit = {}) {
             currentDashXScale = it
         }
 
-        middleTextWidthAnimation.applyAnimation(targetValue = 88.dp.value, durationMillis = 600) {
+        middleTextWidthAnimation.applyAnimation(targetValue = 105.dp.value, durationMillis = 600) {
             currentMiddleTextWidth = it
         }
 
@@ -112,7 +112,7 @@ private fun SplashText(modifier: Modifier = Modifier, text: String) {
 @Composable
 @Preview(showBackground = true)
 @ExperimentalMaterial3WindowSizeClassApi
-private fun ScreenPreview() {
+private fun SplashScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
         SplashScreen {
 
