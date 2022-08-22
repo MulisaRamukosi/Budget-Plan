@@ -41,7 +41,7 @@ fun BaseTheme(
     }
 }
 
-val MaterialTheme.composeSpacing: BaseSpacing
+val MaterialTheme.spacing: BaseSpacing
     @Composable
     @ReadOnlyComposable
     get() = LocalSpacing.current
