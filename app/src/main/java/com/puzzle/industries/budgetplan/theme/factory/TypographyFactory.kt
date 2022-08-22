@@ -3,17 +3,17 @@ package com.puzzle.industries.budgetplan.theme.factory
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import com.puzzle.industries.budgetplan.theme.typography.SourceSansPro
 import com.puzzle.industries.budgetplan.theme.util.FontType
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
+import com.puzzle.industries.budgetplan.theme.typography.Montserrat
 
 object TypographyFactory {
 
     fun getTypography(fontType: FontType) : Typography {
         val baseFont =  when(fontType) {
-            FontType.SOURCE_SANS_PRO -> SourceSansPro()
+            FontType.MONTSERRAT -> Montserrat()
         }
 
         val fontFamily = FontFamily(

@@ -25,7 +25,7 @@ import com.puzzle.industries.budgetplan.theme.util.FontType
 @ExperimentalMaterial3WindowSizeClassApi
 fun BudgetPlanTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     windowSizeClass: WindowSizeClass = WindowSizeClass.calculateFromSize(
         DpSize(
             width = 500.dp,
@@ -37,7 +37,7 @@ fun BudgetPlanTheme(
 
     val colorPaletteType: ColorPaletteType =
         if (darkTheme) ColorPaletteType.DARK else ColorPaletteType.LIGHT
-    val typography = TypographyFactory.getTypography(FontType.SOURCE_SANS_PRO)
+    val typography = TypographyFactory.getTypography(FontType.MONTSERRAT)
     val spacing = SpacingFactory.getSpacing(windowSizeClass.widthSizeClass)
 
     val colorScheme = when {
