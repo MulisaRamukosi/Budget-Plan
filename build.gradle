@@ -17,6 +17,15 @@ plugins {
     id 'com.google.dagger.hilt.android' version '2.42' apply false
 }
 
+project.ext{
+    minSdk = 21
+    targetSdk = 32
+    versionCode = 10
+    compileSdk = 33
+    versionName = "1.0"
+    applicationId = "com.puzzle.industries.budgetplan"
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
