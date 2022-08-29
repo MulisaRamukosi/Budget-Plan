@@ -18,14 +18,14 @@ android {
         }
     }
 
-    compileSdk 33
+    compileSdk project.compileSdk
 
     defaultConfig {
-        applicationId "com.puzzle.industries.budgetplan"
-        minSdk 21
-        targetSdk 32
-        versionCode 10
-        versionName "1.0"
+        applicationId project.applicationId
+        minSdk project.minSdk
+        targetSdk project.targetSdk
+        versionCode project.versionCode
+        versionName project.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -113,7 +113,7 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     //system ui
     implementation "com.google.accompanist:accompanist-systemuicontroller:$system_ui_version"
