@@ -5,5 +5,5 @@ import androidx.room.Delete
 
 interface Delete<T> {
     @Delete
-    suspend fun delete(entity: T): Int
+    suspend fun delete(entity: List<T>): Int
 }
