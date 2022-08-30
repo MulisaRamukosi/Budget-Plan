@@ -10,7 +10,7 @@ import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupWithE
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ExpenseGroupDao : Insert<ExpenseGroupEntity>, Update<ExpenseGroupEntity>,
+internal interface ExpenseGroupDao : Insert<ExpenseGroupEntity>, Update<ExpenseGroupEntity>,
     Delete<ExpenseGroupEntity>, Read<ExpenseGroupWithExpensesEntity> {
 
     @Transaction

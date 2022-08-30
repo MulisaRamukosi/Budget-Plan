@@ -10,7 +10,7 @@ import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupHisto
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ExpenseGroupHistoryDao : Insert<ExpenseGroupHistoryEntity>,
+internal interface ExpenseGroupHistoryDao : Insert<ExpenseGroupHistoryEntity>,
     Delete<ExpenseGroupHistoryEntity>, Read<ExpenseGroupHistoryEntity> {
 
     @Query("select * from ${Entities.EXPENSE_GROUP_HISTORY}")

@@ -38,7 +38,7 @@ import com.puzzle.industries.data.database.typeConverters.FrequencyConverter
         FrequencyConverter::class
     ]
 )
-abstract class AppDatabase : RoomDatabase() {
+internal abstract class AppDatabase : RoomDatabase() {
 
     abstract fun incomeDao(): IncomeDao
     abstract fun incomeHistoryDao(): IncomeHistoryDao

@@ -10,7 +10,7 @@ import com.puzzle.industries.data.database.entity.income.IncomeHistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface IncomeHistoryDao : Insert<IncomeHistoryEntity>, Delete<IncomeHistoryEntity>,
+internal interface IncomeHistoryDao : Insert<IncomeHistoryEntity>, Delete<IncomeHistoryEntity>,
     Read<IncomeHistoryEntity> {
 
     @Query("select * from ${Entities.INCOME_HISTORY}")

@@ -8,7 +8,7 @@ import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface ExpenseDao : Insert<ExpenseEntity>, Update<ExpenseEntity>, Delete<ExpenseEntity>,
+internal interface ExpenseDao : Insert<ExpenseEntity>, Update<ExpenseEntity>, Delete<ExpenseEntity>,
     Read<ExpenseEntity> {
 
     @Query("select * from ${Entities.EXPENSE}")

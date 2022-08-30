@@ -11,7 +11,7 @@ import com.puzzle.industries.data.database.entity.income.IncomeEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface IncomeDao : Insert<IncomeEntity>, Update<IncomeEntity>, Delete<IncomeEntity>,
+internal interface IncomeDao : Insert<IncomeEntity>, Update<IncomeEntity>, Delete<IncomeEntity>,
     Read<IncomeEntity> {
 
     @Query("select * from ${Entities.INCOME}")
