@@ -6,5 +6,5 @@ import androidx.room.OnConflictStrategy
 
 interface Insert<T> {
     @Insert
-    suspend fun insert(entity: T): Long
+    suspend fun insert(entity: List<T>): List<Long>
 }
