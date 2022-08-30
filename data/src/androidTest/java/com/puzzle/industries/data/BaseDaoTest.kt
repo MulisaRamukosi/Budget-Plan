@@ -13,7 +13,7 @@ import java.io.IOException
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-abstract class BaseDaoTest<Dao: Any> {
+internal abstract class BaseDaoTest<Dao: Any> {
 
     protected lateinit var db: AppDatabase
     protected lateinit var dao: Dao

@@ -7,11 +7,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.Exception
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-abstract class BaseInsertTest<Dao : Insert<E>, E>(val testEntities: List<E>) : BaseDaoTest<Dao>() {
+internal abstract class BaseInsertTest<Dao : Insert<E>, E>(val testEntities: List<E>) :
+    BaseDaoTest<Dao>() {
 
     @Test
     fun insertEntity_dbHasNoEntity_InsertSuccess() = runTest {

@@ -37,32 +37,32 @@ private val testEntities = listOf(
         ExpenseDaoReadTest::class
     ]
 )
-class ExpenseDaoTest
+internal class ExpenseDaoTest
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseDaoInsertTest :
+internal class ExpenseDaoInsertTest :
     BaseInsertTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseDaoUpdateTest :
+internal class ExpenseDaoUpdateTest :
     BaseUpdateTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseDaoDeleteTest :
+internal class ExpenseDaoDeleteTest :
     BaseDeleteTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseDaoReadTest :
+internal class ExpenseDaoReadTest :
     BaseReadTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }

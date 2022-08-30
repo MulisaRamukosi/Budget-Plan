@@ -34,25 +34,25 @@ private val testEntities = listOf(
         ExpenseGroupHistoryDaoUpdateTest::class
     ]
 )
-class ExpenseGroupHistoryDaoTest
+internal class ExpenseGroupHistoryDaoTest
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupHistoryDaoInsertTest :
+internal class ExpenseGroupHistoryDaoInsertTest :
     BaseInsertTest<ExpenseGroupHistoryDao, ExpenseGroupHistoryEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupHistoryDao = db.expenseGroupHistoryDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupHistoryDaoDeleteTest :
+internal class ExpenseGroupHistoryDaoDeleteTest :
     BaseDeleteTest<ExpenseGroupHistoryDao, ExpenseGroupHistoryEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupHistoryDao = db.expenseGroupHistoryDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupHistoryDaoUpdateTest :
+internal class ExpenseGroupHistoryDaoUpdateTest :
     BaseReadTest<ExpenseGroupHistoryDao, ExpenseGroupHistoryEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupHistoryDao = db.expenseGroupHistoryDao()
 }

@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-abstract class BaseReadTest<Dao, E>(val testEntities: List<E>) :
+internal abstract class BaseReadTest<Dao, E>(val testEntities: List<E>) :
     BaseDaoTest<Dao>() where Dao : Read<E>, Dao : Insert<E> {
 
     @Test

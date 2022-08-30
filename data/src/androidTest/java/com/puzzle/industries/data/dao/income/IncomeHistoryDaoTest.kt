@@ -42,11 +42,11 @@ private val testEntities = listOf(
         IncomeHistoryDaoReadTest::class
     ]
 )
-class IncomeHistoryDaoTest
+internal class IncomeHistoryDaoTest
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeHistoryDaoInsertTest : BaseInsertTest<IncomeHistoryDao, IncomeHistoryEntity>(
+internal class IncomeHistoryDaoInsertTest : BaseInsertTest<IncomeHistoryDao, IncomeHistoryEntity>(
     testEntities = testEntities
 ) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
@@ -54,7 +54,7 @@ class IncomeHistoryDaoInsertTest : BaseInsertTest<IncomeHistoryDao, IncomeHistor
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeHistoryDaoDeleteTest : BaseDeleteTest<IncomeHistoryDao, IncomeHistoryEntity>(
+internal class IncomeHistoryDaoDeleteTest : BaseDeleteTest<IncomeHistoryDao, IncomeHistoryEntity>(
     testEntities = testEntities
 ) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
@@ -62,7 +62,7 @@ class IncomeHistoryDaoDeleteTest : BaseDeleteTest<IncomeHistoryDao, IncomeHistor
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeHistoryDaoReadTest : BaseReadTest<IncomeHistoryDao, IncomeHistoryEntity>(
+internal class IncomeHistoryDaoReadTest : BaseReadTest<IncomeHistoryDao, IncomeHistoryEntity>(
     testEntities = testEntities
 ) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()

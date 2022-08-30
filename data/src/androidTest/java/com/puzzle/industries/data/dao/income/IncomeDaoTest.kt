@@ -37,28 +37,32 @@ private val testEntities = listOf(
         IncomeDaoReadTest::class
     ]
 )
-class IncomeDaoTest
+internal class IncomeDaoTest
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeDaoInsertTest : BaseInsertTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
+internal class IncomeDaoInsertTest :
+    BaseInsertTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
     override fun initDao(): IncomeDao = db.incomeDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeDaoUpdateTest : BaseUpdateTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
+internal class IncomeDaoUpdateTest :
+    BaseUpdateTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
     override fun initDao(): IncomeDao = db.incomeDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeDaoDeleteTest : BaseDeleteTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
+internal class IncomeDaoDeleteTest :
+    BaseDeleteTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
     override fun initDao(): IncomeDao = db.incomeDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeDaoReadTest : BaseReadTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
+internal class IncomeDaoReadTest :
+    BaseReadTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
     override fun initDao(): IncomeDao = db.incomeDao()
 }

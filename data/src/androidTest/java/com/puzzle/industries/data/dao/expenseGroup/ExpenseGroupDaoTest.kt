@@ -32,32 +32,32 @@ private val testEntities = listOf(
         ExpenseGroupDaoReadTest::class
     ]
 )
-class ExpenseGroupDaoTest
+internal class ExpenseGroupDaoTest
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupDaoInsertTest :
+internal class ExpenseGroupDaoInsertTest :
     BaseInsertTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupDaoDeleteTest :
+internal class ExpenseGroupDaoDeleteTest :
     BaseDeleteTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupDaoUpdateTest :
+internal class ExpenseGroupDaoUpdateTest :
     BaseUpdateTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupDaoReadTest : BaseDaoTest<ExpenseGroupDao>() {
+internal class ExpenseGroupDaoReadTest : BaseDaoTest<ExpenseGroupDao>() {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 
     @Test
@@ -87,12 +87,12 @@ class ExpenseGroupDaoReadTest : BaseDaoTest<ExpenseGroupDao>() {
                 dao.insert(listOf(it))
                 db.expenseDao().insert(
                     listOf(
-                    ExpenseEntity(
-                        expenseGroupId = it.id,
-                        name = "test",
-                        amount = 12.0,
-                        frequency = "monthly"
-                    )
+                        ExpenseEntity(
+                            expenseGroupId = it.id,
+                            name = "test",
+                            amount = 12.0,
+                            frequency = "monthly"
+                        )
                     )
                 )
             }

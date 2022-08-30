@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-abstract class BaseDeleteTest<Dao, E>(val testEntities: List<E>) :
+internal abstract class BaseDeleteTest<Dao, E>(val testEntities: List<E>) :
     BaseDaoTest<Dao>() where Dao : Delete<E>, Dao : Insert<E> {
 
     @Test
