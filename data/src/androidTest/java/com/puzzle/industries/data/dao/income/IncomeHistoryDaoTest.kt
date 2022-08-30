@@ -3,13 +3,12 @@ package com.puzzle.industries.data.dao.income
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.puzzle.industries.data.BaseDeleteTest
 import com.puzzle.industries.data.BaseInsertTest
-import com.puzzle.industries.data.BaseReadAllTest
+import com.puzzle.industries.data.BaseReadTest
 import com.puzzle.industries.data.database.dao.income.IncomeHistoryDao
 import com.puzzle.industries.data.database.entity.income.IncomeHistoryEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
-import java.util.*
 
 private val testEntities = listOf(
     IncomeHistoryEntity(
@@ -36,30 +35,35 @@ private val testEntities = listOf(
 
 @RunWith(Suite::class)
 @ExperimentalCoroutinesApi
-@Suite.SuiteClasses(value = [
-    IncomeHistoryDaoInsertTest::class,
-    IncomeHistoryDaoDeleteTest::class,
-    IncomeHistoryDaoReadAllTest::class
-])
+@Suite.SuiteClasses(
+    value = [
+        IncomeHistoryDaoInsertTest::class,
+        IncomeHistoryDaoDeleteTest::class,
+        IncomeHistoryDaoReadTest::class
+    ]
+)
 class IncomeHistoryDaoTest
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class IncomeHistoryDaoInsertTest : BaseInsertTest<IncomeHistoryDao, IncomeHistoryEntity>(
-    testEntities = testEntities){
+    testEntities = testEntities
+) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class IncomeHistoryDaoDeleteTest : BaseDeleteTest<IncomeHistoryDao, IncomeHistoryEntity>(
-    testEntities = testEntities){
+    testEntities = testEntities
+) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeHistoryDaoReadAllTest : BaseReadAllTest<IncomeHistoryDao, IncomeHistoryEntity>(
-    testEntities = testEntities){
+class IncomeHistoryDaoReadTest : BaseReadTest<IncomeHistoryDao, IncomeHistoryEntity>(
+    testEntities = testEntities
+) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
 }

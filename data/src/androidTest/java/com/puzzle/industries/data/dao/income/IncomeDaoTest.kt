@@ -3,7 +3,7 @@ package com.puzzle.industries.data.dao.income
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.puzzle.industries.data.BaseDeleteTest
 import com.puzzle.industries.data.BaseInsertTest
-import com.puzzle.industries.data.BaseReadAllTest
+import com.puzzle.industries.data.BaseReadTest
 import com.puzzle.industries.data.BaseUpdateTest
 import com.puzzle.industries.data.database.dao.income.IncomeDao
 import com.puzzle.industries.data.database.entity.income.IncomeEntity
@@ -34,7 +34,7 @@ private val testEntities = listOf(
         IncomeDaoInsertTest::class,
         IncomeDaoUpdateTest::class,
         IncomeDaoDeleteTest::class,
-        IncomeDaoReadAllTest::class
+        IncomeDaoReadTest::class
     ]
 )
 class IncomeDaoTest
@@ -59,6 +59,6 @@ class IncomeDaoDeleteTest : BaseDeleteTest<IncomeDao, IncomeEntity>(testEntities
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class IncomeDaoReadAllTest : BaseReadAllTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
+class IncomeDaoReadTest : BaseReadTest<IncomeDao, IncomeEntity>(testEntities = testEntities) {
     override fun initDao(): IncomeDao = db.incomeDao()
 }
