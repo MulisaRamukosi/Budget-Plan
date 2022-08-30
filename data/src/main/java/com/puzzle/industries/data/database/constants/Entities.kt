@@ -1,6 +1,6 @@
 package com.puzzle.industries.data.database.constants
 
-object Entities {
+internal object Entities {
     const val EXPENSE: String = "expense"
     const val EXPENSE_HISTORY: String = "expense_history"
     const val EXPENSE_GROUP: String = "expense_group"
