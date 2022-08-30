@@ -4,8 +4,8 @@ import com.puzzle.industries.domain.common.*
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupHistory
 
 interface CreateExpenseGroupHistoryUseCase : Create<ExpenseGroupHistory>
-interface DeleteExpenseGroupHistoryUseCase : Delete<ExpenseGroupHistory>, MultiDelete<ExpenseGroupHistory>
-interface ReadExpenseGroupHistoryUseCase : ReadAll<ExpenseGroupHistory>
+interface DeleteExpenseGroupHistoryUseCase : Delete<ExpenseGroupHistory>
+interface ReadExpenseGroupHistoryUseCase : Read<ExpenseGroupHistory>
 
 interface ExpenseGroupHistoryUseCase {
     val create: CreateExpenseGroupHistoryUseCase

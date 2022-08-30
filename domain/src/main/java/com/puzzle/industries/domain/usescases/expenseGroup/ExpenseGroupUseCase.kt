@@ -5,8 +5,8 @@ import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 
 interface CreateExpenseGroupUseCase : Create<ExpenseGroup>
 interface UpdateExpenseGroupUseCase : Update<ExpenseGroup>
-interface DeleteExpenseGroupUseCase : Delete<ExpenseGroup>, MultiDelete<ExpenseGroup>
-interface ReadExpenseGroupUseCase : ReadAll<ExpenseGroup>
+interface DeleteExpenseGroupUseCase : Delete<ExpenseGroup>
+interface ReadExpenseGroupUseCase : Read<ExpenseGroup>
 
 interface ExpenseGroupUseCase {
     val create: CreateExpenseGroupUseCase
