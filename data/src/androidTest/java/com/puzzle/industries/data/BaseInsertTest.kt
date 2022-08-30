@@ -7,6 +7,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Exception
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -14,9 +15,15 @@ abstract class BaseInsertTest<Dao : Insert<E>, E>(val testEntities: List<E>) : B
 
     @Test
     fun insertEntity_dbHasNoEntity_InsertSuccess() = runTest {
-        val entity = dao.insert(testEntities[0])
+        val entity = dao.insert(listOf(testEntities[0]))
 
-        assertEquals(1, entity)
+        assertEquals(1, entity.size)
     }
 
+    @Test
+    fun insertEntities_dbHasNoEntities_InsertSuccess() = runTest {
+        val entities = dao.insert(testEntities)
+
+        assertEquals(2, entities.size)
+    }
 }

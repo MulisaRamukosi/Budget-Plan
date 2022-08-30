@@ -16,16 +16,41 @@ abstract class BaseDeleteTest<Dao, E>(val testEntities: List<E>) :
 
     @Test
     fun deleteEntity_EntityDoesNotExistInDb_ReturnsZero() = runTest {
-        val result = dao.delete(testEntities[0])
+        val result = dao.delete(listOf(testEntities[0]))
 
         assertEquals(0, result)
     }
 
     @Test
     fun deleteEntity_EntityExistsInDb_ReturnsOne() = runTest {
-        dao.insert(testEntities[0])
+        dao.insert(listOf(testEntities[0]))
 
-        val result = dao.delete(testEntities[0])
+        val result = dao.delete(listOf(testEntities[0]))
+
+        assertEquals(1, result)
+    }
+
+    @Test
+    fun deleteEntities_EntitiesDoNotExistInDb_ReturnsZero() = runTest {
+        val result = dao.delete(testEntities)
+
+        assertEquals(0, result)
+    }
+
+    @Test
+    fun deleteEntities_EntitiesExistInDb_ReturnsNumOfAffectedRows() = runTest {
+        dao.insert(testEntities)
+
+        val result = dao.delete(testEntities)
+
+        assertEquals(2, result)
+    }
+
+    @Test
+    fun deleteEntities_SomeEntitiesExistInDb_ReturnsNumOfAffectedRows() = runTest {
+        dao.insert(listOf(testEntities[0]))
+
+        val result = dao.delete(testEntities)
 
         assertEquals(1, result)
     }
