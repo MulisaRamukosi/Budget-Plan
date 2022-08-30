@@ -3,7 +3,7 @@ package com.puzzle.industries.data.dao.expense
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.puzzle.industries.data.BaseDeleteTest
 import com.puzzle.industries.data.BaseInsertTest
-import com.puzzle.industries.data.BaseReadAllTest
+import com.puzzle.industries.data.BaseReadTest
 import com.puzzle.industries.data.BaseUpdateTest
 import com.puzzle.industries.data.database.dao.expense.ExpenseDao
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
@@ -31,7 +31,10 @@ private val testEntities = listOf(
 @ExperimentalCoroutinesApi
 @Suite.SuiteClasses(
     value = [
-
+        ExpenseDaoInsertTest::class,
+        ExpenseDaoUpdateTest::class,
+        ExpenseDaoDeleteTest::class,
+        ExpenseDaoReadTest::class
     ]
 )
 class ExpenseDaoTest
@@ -59,7 +62,7 @@ class ExpenseDaoDeleteTest :
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseDaoReadAllTest :
-    BaseReadAllTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
+class ExpenseDaoReadTest :
+    BaseReadTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }
