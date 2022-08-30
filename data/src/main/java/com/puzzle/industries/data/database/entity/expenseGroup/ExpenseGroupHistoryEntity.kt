@@ -9,10 +9,10 @@ import java.util.*
 @Entity(tableName = Entities.EXPENSE_GROUP_HISTORY)
 data class ExpenseGroupHistoryEntity(
     @PrimaryKey
-    override val id: UUID,
+    override val id: UUID = UUID.randomUUID(),
     val oldName: String,
     val newName: String,
     override val action: String,
     override val reason: String,
-    override val entryDate: Date
+    override val entryDate: Date = Date()
 ) : BaseHistory()

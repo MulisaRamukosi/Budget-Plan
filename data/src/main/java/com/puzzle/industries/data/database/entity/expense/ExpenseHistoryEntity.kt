@@ -9,7 +9,7 @@ import java.util.*
 @Entity(tableName = Entities.EXPENSE_HISTORY)
 data class ExpenseHistoryEntity (
     @PrimaryKey
-    override val id: UUID,
+    override val id: UUID = UUID.randomUUID(),
     val expenseGroupId: UUID,
     val oldName: String,
     val newName: String,
@@ -19,5 +19,5 @@ data class ExpenseHistoryEntity (
     val newFrequency: String,
     override val action: String,
     override val reason: String,
-    override val entryDate: Date
+    override val entryDate: Date = Date()
 ) : BaseHistory()
