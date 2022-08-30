@@ -18,26 +18,26 @@ internal class MapperModule {
 
     @Singleton
     @Provides
-    fun providesIncomeMapper(): IncomeMapper = IncomeMapper()
+    fun provideIncomeMapper(): IncomeMapper = IncomeMapper()
 
     @Singleton
     @Provides
-    fun providesIncomeHistoryMapper(): IncomeHistoryMapper = IncomeHistoryMapper()
+    fun provideIncomeHistoryMapper(): IncomeHistoryMapper = IncomeHistoryMapper()
 
     @Singleton
     @Provides
-    fun providesExpenseMapper(): ExpenseMapper = ExpenseMapper()
+    fun provideExpenseMapper(): ExpenseMapper = ExpenseMapper()
 
     @Singleton
     @Provides
-    fun providesExpenseHistoryMapper(): ExpenseHistoryMapper = ExpenseHistoryMapper()
+    fun provideExpenseHistoryMapper(): ExpenseHistoryMapper = ExpenseHistoryMapper()
 
     @Singleton
     @Provides
-    fun providesExpenseGroupMapper(): ExpenseGroupMapper = ExpenseGroupMapper()
+    fun provideExpenseGroupMapper(): ExpenseGroupMapper = ExpenseGroupMapper()
 
     @Singleton
     @Provides
-    fun providesExpenseGroupHistoryMapper(): ExpenseGroupHistoryMapper = ExpenseGroupHistoryMapper()
+    fun provideExpenseGroupHistoryMapper(): ExpenseGroupHistoryMapper = ExpenseGroupHistoryMapper()
 
 }
