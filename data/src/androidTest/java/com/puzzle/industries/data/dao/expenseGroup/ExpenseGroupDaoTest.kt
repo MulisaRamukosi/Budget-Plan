@@ -29,7 +29,7 @@ private val testEntities = listOf(
         ExpenseGroupDaoInsertTest::class,
         ExpenseGroupDaoDeleteTest::class,
         ExpenseGroupDaoUpdateTest::class,
-        ExpenseGroupDaoReadAllTest::class
+        ExpenseGroupDaoReadTest::class
     ]
 )
 class ExpenseGroupDaoTest
@@ -57,12 +57,12 @@ class ExpenseGroupDaoUpdateTest :
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class ExpenseGroupDaoReadAllTest : BaseDaoTest<ExpenseGroupDao>() {
+class ExpenseGroupDaoReadTest : BaseDaoTest<ExpenseGroupDao>() {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 
     @Test
     fun readAllGroupsWithExpenses_DbEmpty_ReturnsEmptyList() = runTest {
-        val expenseGroupsWithExpenses = dao.readAll().first()
+        val expenseGroupsWithExpenses = dao.read().first()
 
         assertTrue(expenseGroupsWithExpenses.isEmpty())
     }
@@ -70,9 +70,9 @@ class ExpenseGroupDaoReadAllTest : BaseDaoTest<ExpenseGroupDao>() {
     @Test
     fun readAllGroupsWithExpenses_DbHasExpenseGroupButNoExpenses_ReturnsExpenseGroupsWithNoExpenses() =
         runTest {
-            testEntities.forEach { dao.insert(it) }
+            dao.insert(testEntities)
 
-            val expenseGroupsWithExpenses = dao.readAll().first()
+            val expenseGroupsWithExpenses = dao.read().first()
 
             expenseGroupsWithExpenses.forEach {
                 assertNotNull(it.expenseGroup)
@@ -84,18 +84,20 @@ class ExpenseGroupDaoReadAllTest : BaseDaoTest<ExpenseGroupDao>() {
     fun readAllGroupsWithExpenses_DbHasExpenseGroupWithExpenses_ReturnsExpenseGroupsWithExpenses() =
         runTest {
             testEntities.forEach {
-                dao.insert(it)
+                dao.insert(listOf(it))
                 db.expenseDao().insert(
+                    listOf(
                     ExpenseEntity(
                         expenseGroupId = it.id,
                         name = "test",
                         amount = 12.0,
                         frequency = "monthly"
                     )
+                    )
                 )
             }
 
-            val expenseGroupsWithExpenses = dao.readAll().first()
+            val expenseGroupsWithExpenses = dao.read().first()
 
             expenseGroupsWithExpenses.forEach {
                 assertNotNull(it.expenseGroup)
