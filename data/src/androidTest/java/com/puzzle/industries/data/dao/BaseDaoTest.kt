@@ -1,4 +1,4 @@
-package com.puzzle.industries.data
+package com.puzzle.industries.data.dao
 
 import android.content.Context
 import androidx.room.Room

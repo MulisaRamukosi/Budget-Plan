@@ -1,4 +1,4 @@
-package com.puzzle.industries.data
+package com.puzzle.industries.data.dao
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.puzzle.industries.data.database.dao.base.Insert
@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal abstract class BaseUpdateTest<Dao, E>(val testEntities: List<E>) :
+internal abstract class BaseDaoUpdateTest<Dao, E>(val testEntities: List<E>) :
     BaseDaoTest<Dao>() where Dao : Update<E>, Dao : Insert<E>{
 
     @Test

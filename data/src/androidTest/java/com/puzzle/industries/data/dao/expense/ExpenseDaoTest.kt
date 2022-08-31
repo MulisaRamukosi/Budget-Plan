@@ -1,10 +1,10 @@
 package com.puzzle.industries.data.dao.expense
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.puzzle.industries.data.BaseDeleteTest
-import com.puzzle.industries.data.BaseInsertTest
-import com.puzzle.industries.data.BaseReadTest
-import com.puzzle.industries.data.BaseUpdateTest
+import com.puzzle.industries.data.dao.BaseDaoDeleteTest
+import com.puzzle.industries.data.dao.BaseDaoInsertTest
+import com.puzzle.industries.data.dao.BaseDaoReadTest
+import com.puzzle.industries.data.dao.BaseDaoUpdateTest
 import com.puzzle.industries.data.database.dao.expense.ExpenseDao
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,27 +42,27 @@ internal class ExpenseDaoTest
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 internal class ExpenseDaoInsertTest :
-    BaseInsertTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
+    BaseDaoInsertTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 internal class ExpenseDaoUpdateTest :
-    BaseUpdateTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
+    BaseDaoUpdateTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 internal class ExpenseDaoDeleteTest :
-    BaseDeleteTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
+    BaseDaoDeleteTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 internal class ExpenseDaoReadTest :
-    BaseReadTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
+    BaseDaoReadTest<ExpenseDao, ExpenseEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseDao = db.expenseDao()
 }

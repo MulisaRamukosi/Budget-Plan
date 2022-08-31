@@ -1,10 +1,10 @@
 package com.puzzle.industries.data.dao.expenseGroup
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.puzzle.industries.data.BaseDaoTest
-import com.puzzle.industries.data.BaseDeleteTest
-import com.puzzle.industries.data.BaseInsertTest
-import com.puzzle.industries.data.BaseUpdateTest
+import com.puzzle.industries.data.dao.BaseDaoTest
+import com.puzzle.industries.data.dao.BaseDaoDeleteTest
+import com.puzzle.industries.data.dao.BaseDaoInsertTest
+import com.puzzle.industries.data.dao.BaseDaoUpdateTest
 import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupDao
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
 import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupEntity
@@ -37,21 +37,21 @@ internal class ExpenseGroupDaoTest
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 internal class ExpenseGroupDaoInsertTest :
-    BaseInsertTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
+    BaseDaoInsertTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 internal class ExpenseGroupDaoDeleteTest :
-    BaseDeleteTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
+    BaseDaoDeleteTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 }
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 internal class ExpenseGroupDaoUpdateTest :
-    BaseUpdateTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
+    BaseDaoUpdateTest<ExpenseGroupDao, ExpenseGroupEntity>(testEntities = testEntities) {
     override fun initDao(): ExpenseGroupDao = db.expenseGroupDao()
 }
 

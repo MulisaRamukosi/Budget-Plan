@@ -1,9 +1,9 @@
 package com.puzzle.industries.data.dao.income
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.puzzle.industries.data.BaseDeleteTest
-import com.puzzle.industries.data.BaseInsertTest
-import com.puzzle.industries.data.BaseReadTest
+import com.puzzle.industries.data.dao.BaseDaoDeleteTest
+import com.puzzle.industries.data.dao.BaseDaoInsertTest
+import com.puzzle.industries.data.dao.BaseDaoReadTest
 import com.puzzle.industries.data.database.dao.income.IncomeHistoryDao
 import com.puzzle.industries.data.database.entity.income.IncomeHistoryEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,7 +46,7 @@ internal class IncomeHistoryDaoTest
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal class IncomeHistoryDaoInsertTest : BaseInsertTest<IncomeHistoryDao, IncomeHistoryEntity>(
+internal class IncomeHistoryDaoInsertTest : BaseDaoInsertTest<IncomeHistoryDao, IncomeHistoryEntity>(
     testEntities = testEntities
 ) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
@@ -54,7 +54,7 @@ internal class IncomeHistoryDaoInsertTest : BaseInsertTest<IncomeHistoryDao, Inc
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal class IncomeHistoryDaoDeleteTest : BaseDeleteTest<IncomeHistoryDao, IncomeHistoryEntity>(
+internal class IncomeHistoryDaoDeleteTest : BaseDaoDeleteTest<IncomeHistoryDao, IncomeHistoryEntity>(
     testEntities = testEntities
 ) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
@@ -62,7 +62,7 @@ internal class IncomeHistoryDaoDeleteTest : BaseDeleteTest<IncomeHistoryDao, Inc
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal class IncomeHistoryDaoReadTest : BaseReadTest<IncomeHistoryDao, IncomeHistoryEntity>(
+internal class IncomeHistoryDaoReadTest : BaseDaoReadTest<IncomeHistoryDao, IncomeHistoryEntity>(
     testEntities = testEntities
 ) {
     override fun initDao(): IncomeHistoryDao = db.incomeHistoryDao()
