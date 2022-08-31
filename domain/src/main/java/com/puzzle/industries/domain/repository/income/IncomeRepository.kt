@@ -6,4 +6,4 @@ import com.puzzle.industries.domain.common.Delete
 import com.puzzle.industries.domain.common.Read
 import com.puzzle.industries.domain.common.Update
 
-interface IncomeRepository : Create<Income>, Read<Income>, Update<Income>, Delete<String>
+interface IncomeRepository : Create<Income>, Read<Income>, Update<Income>, Delete<Income>
