@@ -16,7 +16,7 @@ internal class ExpenseGroupHistoryMapper {
         )
     }
 
-    fun toExpenseGroupEntity(expenseGroupHistory: ExpenseGroupHistoryEntity): ExpenseGroupHistory {
+    fun toExpenseGroupHistory(expenseGroupHistory: ExpenseGroupHistoryEntity): ExpenseGroupHistory {
         return ExpenseGroupHistory(
             id = expenseGroupHistory.id,
             oldName = expenseGroupHistory.oldName,
