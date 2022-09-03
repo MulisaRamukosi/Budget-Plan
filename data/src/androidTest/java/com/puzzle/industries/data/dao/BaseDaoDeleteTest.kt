@@ -16,16 +16,16 @@ internal abstract class BaseDaoDeleteTest<Dao, E>(val testEntities: Array<E>) :
 
     @Test
     fun deleteEntity_EntityDoesNotExistInDb_ReturnsZero() = runTest {
-        val result = dao.delete(testEntities[0])
+        val result = dao.delete(*testEntities.copyOfRange(0, 1))
 
         assertEquals(0, result)
     }
 
     @Test
     fun deleteEntity_EntityExistsInDb_ReturnsOne() = runTest {
-        dao.insert(testEntities[0])
+        dao.insert(*testEntities)
 
-        val result = dao.delete(testEntities[0])
+        val result = dao.delete(*testEntities.copyOfRange(0, 1))
 
         assertEquals(1, result)
     }
@@ -48,7 +48,7 @@ internal abstract class BaseDaoDeleteTest<Dao, E>(val testEntities: Array<E>) :
 
     @Test
     fun deleteEntities_SomeEntitiesExistInDb_ReturnsNumOfAffectedRows() = runTest {
-        dao.insert(testEntities[0])
+        dao.insert(*testEntities.copyOfRange(0, 1))
 
         val result = dao.delete(*testEntities)
 

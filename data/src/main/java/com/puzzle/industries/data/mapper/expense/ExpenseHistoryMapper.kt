@@ -11,7 +11,7 @@ internal class ExpenseHistoryMapper {
     fun toExpenseHistoryEntity(expenseHistory: ExpenseHistory): ExpenseHistoryEntity {
         return ExpenseHistoryEntity(
             id = expenseHistory.id,
-            expenseGroupId = UUID.fromString(expenseHistory.expenseGroupId),
+            expenseGroupId = expenseHistory.expenseGroupId,
             oldName = expenseHistory.oldName,
             newName = expenseHistory.newName,
             oldAmount = expenseHistory.oldAmount,
@@ -26,7 +26,7 @@ internal class ExpenseHistoryMapper {
     fun toExpenseHistory(expenseHistory: ExpenseHistoryEntity): ExpenseHistory {
         return ExpenseHistory(
             id = expenseHistory.id,
-            expenseGroupId = expenseHistory.expenseGroupId.toString(),
+            expenseGroupId = expenseHistory.expenseGroupId,
             oldName = expenseHistory.oldName,
             newName = expenseHistory.newName,
             oldAmount = expenseHistory.oldAmount,

@@ -20,16 +20,26 @@ class ResponseMessageFactory(val context: Context) {
         }
     }
 
-    fun buildDeleteMessage(success: Boolean): Response<Boolean> {
-        val resId = if (success) R.string.delete_success else R.string.delete_failed
-        return constructResponse(success, resId)
+    inline fun buildDeleteMessage(expectedAffectedRow: Int, delete: () -> Int): Response<Boolean> {
+        val result = delete()
+        val resId = when {
+            result == expectedAffectedRow -> R.string.delete_success
+            result > 0 -> R.string.delete_partial
+            else -> R.string.delete_failed
+        }
+
+        return constructResponse(result > 0, resId)
     }
 
-    inline fun buildUpdateMessage(update: () -> Boolean): Response<Boolean> {
+    inline fun buildUpdateMessage(expectedAffectedRow: Int, update: () -> Int): Response<Boolean> {
         return try {
-            val success = update()
-            val resId = if (success) R.string.update_success else R.string.update_failed
-            constructResponse(response = success, resId = resId)
+            val result = update()
+            val resId = when {
+                result == expectedAffectedRow -> R.string.update_success
+                result > 0 -> R.string.update_partial
+                else -> R.string.update_failed
+            }
+            constructResponse(response = result > 0, resId = resId)
         } catch (ex: Exception) {
             constructResponse(
                 response = false,

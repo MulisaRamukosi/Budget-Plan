@@ -16,16 +16,16 @@ internal abstract class BaseDaoUpdateTest<Dao, E>(val testEntities: Array<E>) :
 
     @Test
     fun updateEntity_EntityDoesNotExistInDb_ReturnsZero() = runTest {
-        val result = dao.update(testEntities[0])
+        val result = dao.update(*testEntities.copyOfRange(0, 1))
 
         assertEquals(0, result)
     }
 
     @Test
     fun updateEntity_EntityExistInDb_ReturnsOne() = runTest {
-        dao.insert(testEntities[0])
+        dao.insert(*testEntities.copyOfRange(0, 1))
 
-        val result = dao.update(testEntities[0])
+        val result = dao.update(*testEntities.copyOfRange(0, 1))
 
         assertEquals(1, result)
     }

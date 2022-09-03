@@ -15,7 +15,7 @@ internal abstract class BaseDaoInsertTest<Dao : Insert<E>, E>(val testEntities: 
 
     @Test
     fun insertEntity_dbHasNoEntity_InsertSuccess() = runTest {
-        val entity = dao.insert(testEntities[0])
+        val entity = dao.insert(*testEntities.copyOfRange(0, 1))
 
         assertEquals(1, entity.size)
     }
