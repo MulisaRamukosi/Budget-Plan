@@ -4,7 +4,7 @@ import com.puzzle.industries.domain.constants.Frequency
 import java.util.*
 
 data class Expense(
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
     val expenseGroupId: UUID,
     val name: String,
     val amount: Double,

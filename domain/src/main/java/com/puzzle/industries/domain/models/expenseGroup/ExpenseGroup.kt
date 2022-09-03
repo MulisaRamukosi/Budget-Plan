@@ -3,7 +3,7 @@ package com.puzzle.industries.domain.models.expenseGroup
 import java.util.*
 
 data class ExpenseGroup(
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
     val name: String,
-    val lastModifyDate: Date
+    val lastModifyDate: Date = Date()
 )

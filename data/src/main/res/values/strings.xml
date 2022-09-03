@@ -4,6 +4,8 @@
     <string name="insert_failed_already_exist">Failed to save item because it already exist.</string>
     <string name="update_success">Successfully updated item.</string>
     <string name="update_failed">Failed to update item.</string>
+    <string name="update_partial">Some items were not updated because they don\'t exist in the database.</string>
     <string name="delete_success">Successfully deleted item(s).</string>
-    <string name="delete_failed">Failed to delete item(s).</string>
+    <string name="delete_failed">Failed to delete item(s) because they don\'t exist.</string>
+    <string name="delete_partial">Some items were not deleted because they don\'t exist in the database.</string>
 </resources>
