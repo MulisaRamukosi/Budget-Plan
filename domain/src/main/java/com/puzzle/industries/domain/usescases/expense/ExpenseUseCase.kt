@@ -1,6 +1,6 @@
 package com.puzzle.industries.domain.usescases.expense
 
-import com.puzzle.industries.domain.common.*
+import com.puzzle.industries.domain.common.crud.*
 import com.puzzle.industries.domain.models.expense.Expense
 
 interface CreateExpenseUseCase : Create<Expense>

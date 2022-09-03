@@ -1,6 +1,6 @@
 package com.puzzle.industries.domain.usescases.expenseGroup
 
-import com.puzzle.industries.domain.common.*
+import com.puzzle.industries.domain.common.crud.*
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupHistory
 
 interface CreateExpenseGroupHistoryUseCase : Create<ExpenseGroupHistory>
