@@ -19,7 +19,7 @@ internal class IncomeRepositoryImpl @Inject constructor(
     private val responseMessageFactory: ResponseMessageFactory
 ) : IncomeRepository {
 
-    override suspend fun create(vararg entity: Income): Response<Boolean> {
+    override suspend fun insert(vararg entity: Income): Response<Boolean> {
         val entities =
             entity.map { income -> incomeMapper.toIncomeEntity(income = income) }.toTypedArray()
 
@@ -41,20 +41,21 @@ internal class IncomeRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun update(entity: Income): Response<Boolean> {
-        val updateEntity = incomeMapper.toIncomeEntity(income = entity)
+    override suspend fun update(vararg entity: Income): Response<Boolean> {
+        val entities =
+            entity.map { income -> incomeMapper.toIncomeEntity(income = income) }.toTypedArray()
 
-        return responseMessageFactory.buildUpdateMessage {
-            val result = incomeDao.update(updateEntity)
-            result == 1
+        return responseMessageFactory.buildUpdateMessage(expectedAffectedRow = entities.size) {
+            incomeDao.update(entity = entities)
         }
     }
 
     override suspend fun delete(vararg entity: Income): Response<Boolean> {
         val entities =
             entity.map { income -> incomeMapper.toIncomeEntity(income = income) }.toTypedArray()
-        val result = incomeDao.delete(entity = entities)
 
-        return responseMessageFactory.buildDeleteMessage(success = result == entity.size)
+        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size){
+            incomeDao.delete(entity = entities)
+        }
     }
 }

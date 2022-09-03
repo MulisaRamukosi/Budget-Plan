@@ -20,7 +20,7 @@ internal class ExpenseGroupRepositoryImpl @Inject constructor(
     private val responseMessageFactory: ResponseMessageFactory
 ) : ExpenseGroupRepository {
 
-    override suspend fun create(vararg entity: ExpenseGroup): Response<Boolean> {
+    override suspend fun insert(vararg entity: ExpenseGroup): Response<Boolean> {
         val entities =
             entity.map { expenseGroup -> expenseGroupMapper.toExpenseGroupEntity(expenseGroup = expenseGroup) }
                 .toTypedArray()
@@ -43,12 +43,13 @@ internal class ExpenseGroupRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun update(entity: ExpenseGroup): Response<Boolean> {
-        val updateEntity = expenseGroupMapper.toExpenseGroupEntity(expenseGroup = entity)
+    override suspend fun update(vararg entity: ExpenseGroup): Response<Boolean> {
+        val entities =
+            entity.map { expenseGroup -> expenseGroupMapper.toExpenseGroupEntity(expenseGroup = expenseGroup) }
+                .toTypedArray()
 
-        return responseMessageFactory.buildUpdateMessage {
-            val result = expenseGroupDao.update(updateEntity)
-            result == 1
+        return responseMessageFactory.buildUpdateMessage(expectedAffectedRow = entities.size) {
+            expenseGroupDao.update(entity = entities)
         }
     }
 
@@ -56,8 +57,8 @@ internal class ExpenseGroupRepositoryImpl @Inject constructor(
         val entities =
             entity.map { expenseGroup -> expenseGroupMapper.toExpenseGroupEntity(expenseGroup = expenseGroup) }
                 .toTypedArray()
-        val result = expenseGroupDao.delete(entity = entities)
-
-        return responseMessageFactory.buildDeleteMessage(success = result == entity.size)
+        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size) {
+            expenseGroupDao.delete(entity = entities)
+        }
     }
 }

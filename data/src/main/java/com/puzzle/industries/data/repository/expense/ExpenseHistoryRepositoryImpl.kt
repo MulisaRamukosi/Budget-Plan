@@ -19,7 +19,7 @@ internal class ExpenseHistoryRepositoryImpl @Inject constructor(
     private val responseMessageFactory: ResponseMessageFactory
 ) : ExpenseHistoryRepository {
 
-    override suspend fun create(vararg entity: ExpenseHistory): Response<Boolean> {
+    override suspend fun insert(vararg entity: ExpenseHistory): Response<Boolean> {
         val entities =
             entity.map { expense -> expenseHistoryMapper.toExpenseHistoryEntity(expenseHistory = expense) }
                 .toTypedArray()
@@ -35,9 +35,10 @@ internal class ExpenseHistoryRepositoryImpl @Inject constructor(
         val entities =
             entity.map { expense -> expenseHistoryMapper.toExpenseHistoryEntity(expenseHistory = expense) }
                 .toTypedArray()
-        val result = expenseHistoryDao.delete(entity = entities)
 
-        return responseMessageFactory.buildDeleteMessage(success = result == entity.size)
+        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size) {
+            expenseHistoryDao.delete(entity = entities)
+        }
     }
 
     override fun read(): Response<Flow<List<ExpenseHistory>>> {

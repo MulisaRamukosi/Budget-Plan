@@ -19,7 +19,7 @@ internal class ExpenseGroupHistoryRepositoryImpl @Inject constructor(
     private val responseMessageFactory: ResponseMessageFactory
 ) : ExpenseGroupHistoryRepository {
 
-    override suspend fun create(vararg entity: ExpenseGroupHistory): Response<Boolean> {
+    override suspend fun insert(vararg entity: ExpenseGroupHistory): Response<Boolean> {
         val entities = entity.map { expenseGroupHistory ->
             expenseGroupHistoryMapper.toExpenseGroupHistoryEntity(expenseGroupHistory = expenseGroupHistory)
         }.toTypedArray()
@@ -46,8 +46,9 @@ internal class ExpenseGroupHistoryRepositoryImpl @Inject constructor(
         val entities = entity.map { expenseGroupHistory ->
             expenseGroupHistoryMapper.toExpenseGroupHistoryEntity(expenseGroupHistory = expenseGroupHistory)
         }.toTypedArray()
-        val result = expenseGroupHistoryDao.delete(entity = entities)
 
-        return responseMessageFactory.buildDeleteMessage(success = result == entity.size)
+        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size) {
+            expenseGroupHistoryDao.delete(entity = entities)
+        }
     }
 }

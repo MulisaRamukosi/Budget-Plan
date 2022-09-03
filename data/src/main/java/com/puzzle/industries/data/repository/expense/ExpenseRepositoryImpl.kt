@@ -14,7 +14,7 @@ internal class ExpenseRepositoryImpl @Inject constructor(
     private val responseMessageFactory: ResponseMessageFactory
 ) : ExpenseRepository {
 
-    override suspend fun create(vararg entity: Expense): Response<Boolean> {
+    override suspend fun insert(vararg entity: Expense): Response<Boolean> {
         val entities = entity.map { expense -> expenseMapper.toExpenseEntity(expense = expense) }
             .toTypedArray()
 
@@ -24,20 +24,21 @@ internal class ExpenseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun update(entity: Expense): Response<Boolean> {
-        val updateEntity = expenseMapper.toExpenseEntity(entity)
+    override suspend fun update(vararg entity: Expense): Response<Boolean> {
+        val entities = entity.map { expense -> expenseMapper.toExpenseEntity(expense = expense) }
+            .toTypedArray()
 
-        return responseMessageFactory.buildUpdateMessage {
-            val result = expenseDao.update(updateEntity)
-            result == 1
+        return responseMessageFactory.buildUpdateMessage(expectedAffectedRow = entities.size) {
+            expenseDao.update(entity = entities)
         }
     }
 
     override suspend fun delete(vararg entity: Expense): Response<Boolean> {
         val entities = entity.map { expense -> expenseMapper.toExpenseEntity(expense = expense) }
             .toTypedArray()
-        val result = expenseDao.delete(entity = entities)
 
-        return responseMessageFactory.buildDeleteMessage(success = result == entity.size)
+        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size){
+            expenseDao.delete(entity = entities)
+        }
     }
 }
