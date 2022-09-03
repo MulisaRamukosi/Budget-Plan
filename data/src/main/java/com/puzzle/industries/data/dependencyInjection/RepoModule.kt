@@ -18,6 +18,7 @@ import com.puzzle.industries.data.repository.expenseGroup.ExpenseGroupHistoryRep
 import com.puzzle.industries.data.repository.expenseGroup.ExpenseGroupRepositoryImpl
 import com.puzzle.industries.data.repository.income.IncomeHistoryRepositoryImpl
 import com.puzzle.industries.data.repository.income.IncomeRepositoryImpl
+import com.puzzle.industries.data.util.ResponseMessageFactory
 import com.puzzle.industries.domain.repository.expense.ExpenseHistoryRepository
 import com.puzzle.industries.domain.repository.expense.ExpenseRepository
 import com.puzzle.industries.domain.repository.expenseGroup.ExpenseGroupHistoryRepository
@@ -36,56 +37,74 @@ internal class RepoModule {
 
     @Singleton
     @Provides
-    fun provideIncomeRepo(incomeMapper: IncomeMapper, incomeDao: IncomeDao): IncomeRepository =
-        IncomeRepositoryImpl(incomeMapper = incomeMapper, incomeDao = incomeDao)
+    fun provideIncomeRepo(
+        incomeMapper: IncomeMapper,
+        incomeDao: IncomeDao,
+        responseMessageFactory: ResponseMessageFactory
+    ): IncomeRepository =
+        IncomeRepositoryImpl(
+            incomeMapper = incomeMapper,
+            incomeDao = incomeDao,
+            responseMessageFactory = responseMessageFactory
+        )
 
     @Singleton
     @Provides
     fun provideIncomeHistoryRepo(
         incomeHistoryMapper: IncomeHistoryMapper,
-        incomeHistoryDao: IncomeHistoryDao
+        incomeHistoryDao: IncomeHistoryDao,
+        responseMessageFactory: ResponseMessageFactory
     ): IncomeHistoryRepository = IncomeHistoryRepositoryImpl(
         incomeHistoryMapper = incomeHistoryMapper,
-        incomeHistoryDao = incomeHistoryDao
+        incomeHistoryDao = incomeHistoryDao,
+        responseMessageFactory = responseMessageFactory
     )
 
     @Singleton
     @Provides
     fun provideExpenseGroupRepo(
         expenseGroupMapper: ExpenseGroupMapper,
-        expenseGroupDao: ExpenseGroupDao
+        expenseGroupDao: ExpenseGroupDao,
+        responseMessageFactory: ResponseMessageFactory
     ): ExpenseGroupRepository = ExpenseGroupRepositoryImpl(
         expenseGroupMapper = expenseGroupMapper,
-        expenseGroupDao = expenseGroupDao
+        expenseGroupDao = expenseGroupDao,
+        responseMessageFactory = responseMessageFactory
     )
 
     @Singleton
     @Provides
     fun provideExpenseGroupHistoryRepo(
         expenseGroupHistoryMapper: ExpenseGroupHistoryMapper,
-        expenseGroupHistoryDao: ExpenseGroupHistoryDao
+        expenseGroupHistoryDao: ExpenseGroupHistoryDao,
+        responseMessageFactory: ResponseMessageFactory
     ): ExpenseGroupHistoryRepository = ExpenseGroupHistoryRepositoryImpl(
         expenseGroupHistoryMapper = expenseGroupHistoryMapper,
-        expenseGroupHistoryDao = expenseGroupHistoryDao
+        expenseGroupHistoryDao = expenseGroupHistoryDao,
+        responseMessageFactory = responseMessageFactory
     )
 
     @Singleton
     @Provides
     fun provideExpenseRepo(
         expenseMapper: ExpenseMapper,
-        expenseDao: ExpenseDao
-    ) : ExpenseRepository = ExpenseRepositoryImpl(
+        expenseDao: ExpenseDao,
+        responseMessageFactory: ResponseMessageFactory
+    ): ExpenseRepository = ExpenseRepositoryImpl(
         expenseMapper = expenseMapper,
-        expenseDao = expenseDao
+        expenseDao = expenseDao,
+        responseMessageFactory = responseMessageFactory
     )
 
     @Singleton
     @Provides
     fun provideExpenseHistoryRepo(
         expenseHistoryMapper: ExpenseHistoryMapper,
-        expenseHistoryDao: ExpenseHistoryDao
-    ) : ExpenseHistoryRepository = ExpenseHistoryRepositoryImpl(
+        expenseHistoryDao: ExpenseHistoryDao,
+        responseMessageFactory: ResponseMessageFactory
+    ): ExpenseHistoryRepository = ExpenseHistoryRepositoryImpl(
         expenseHistoryMapper = expenseHistoryMapper,
-        expenseHistoryDao = expenseHistoryDao
+        expenseHistoryDao = expenseHistoryDao,
+        responseMessageFactory = responseMessageFactory
     )
 }
