@@ -11,7 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-private val testEntities = listOf(
+private val testEntities = arrayOf(
     IncomeEntity(
         frequency = "monthly",
         amount = 1200.0,

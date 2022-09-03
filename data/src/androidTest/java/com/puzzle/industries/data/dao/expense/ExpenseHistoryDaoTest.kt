@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Suite
 import java.util.*
 
-private val testEntities = listOf(
+private val testEntities = arrayOf(
     ExpenseHistoryEntity(
         expenseGroupId = UUID.randomUUID(),
         oldName = "old",

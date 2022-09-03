@@ -10,20 +10,21 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal abstract class BaseDaoInsertTest<Dao : Insert<E>, E>(val testEntities: List<E>) :
+internal abstract class BaseDaoInsertTest<Dao : Insert<E>, E>(val testEntities: Array<E>) :
     BaseDaoTest<Dao>() {
 
     @Test
     fun insertEntity_dbHasNoEntity_InsertSuccess() = runTest {
-        val entity = dao.insert(listOf(testEntities[0]))
+        val entity = dao.insert(testEntities[0])
 
         assertEquals(1, entity.size)
     }
 
     @Test
     fun insertEntities_dbHasNoEntities_InsertSuccess() = runTest {
-        val entities = dao.insert(testEntities)
+        val entities = dao.insert(*testEntities)
 
         assertEquals(2, entities.size)
     }
+
 }

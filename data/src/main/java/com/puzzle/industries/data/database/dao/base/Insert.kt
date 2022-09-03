@@ -5,5 +5,5 @@ import androidx.room.Insert
 
 internal interface Insert<T> {
     @Insert
-    suspend fun insert(entity: List<T>): List<Long>
+    suspend fun insert(vararg entity: T): List<Long>
 }

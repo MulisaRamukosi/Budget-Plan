@@ -17,7 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
-private val testEntities = listOf(
+private val testEntities = arrayOf(
     ExpenseGroupEntity(name = "some name"),
     ExpenseGroupEntity(name = "some other name")
 )
@@ -70,7 +70,7 @@ internal class ExpenseGroupDaoReadTest : BaseDaoTest<ExpenseGroupDao>() {
     @Test
     fun readAllGroupsWithExpenses_DbHasExpenseGroupButNoExpenses_ReturnsExpenseGroupsWithNoExpenses() =
         runTest {
-            dao.insert(testEntities)
+            dao.insert(*testEntities)
 
             val expenseGroupsWithExpenses = dao.read().first()
 
@@ -84,15 +84,13 @@ internal class ExpenseGroupDaoReadTest : BaseDaoTest<ExpenseGroupDao>() {
     fun readAllGroupsWithExpenses_DbHasExpenseGroupWithExpenses_ReturnsExpenseGroupsWithExpenses() =
         runTest {
             testEntities.forEach {
-                dao.insert(listOf(it))
+                dao.insert(it)
                 db.expenseDao().insert(
-                    listOf(
-                        ExpenseEntity(
-                            expenseGroupId = it.id,
-                            name = "test",
-                            amount = 12.0,
-                            frequency = "monthly"
-                        )
+                    ExpenseEntity(
+                        expenseGroupId = it.id,
+                        name = "test",
+                        amount = 12.0,
+                        frequency = "monthly"
                     )
                 )
             }

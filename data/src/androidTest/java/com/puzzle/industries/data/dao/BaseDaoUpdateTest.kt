@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal abstract class BaseDaoUpdateTest<Dao, E>(val testEntities: List<E>) :
+internal abstract class BaseDaoUpdateTest<Dao, E>(val testEntities: Array<E>) :
     BaseDaoTest<Dao>() where Dao : Update<E>, Dao : Insert<E>{
 
     @Test
@@ -23,7 +23,7 @@ internal abstract class BaseDaoUpdateTest<Dao, E>(val testEntities: List<E>) :
 
     @Test
     fun updateEntity_EntityExistInDb_ReturnsOne() = runTest {
-        dao.insert(listOf(testEntities[0]))
+        dao.insert(testEntities[0])
 
         val result = dao.update(testEntities[0])
 

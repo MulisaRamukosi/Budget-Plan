@@ -11,46 +11,46 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal abstract class BaseDaoDeleteTest<Dao, E>(val testEntities: List<E>) :
+internal abstract class BaseDaoDeleteTest<Dao, E>(val testEntities: Array<E>) :
     BaseDaoTest<Dao>() where Dao : Delete<E>, Dao : Insert<E> {
 
     @Test
     fun deleteEntity_EntityDoesNotExistInDb_ReturnsZero() = runTest {
-        val result = dao.delete(listOf(testEntities[0]))
+        val result = dao.delete(testEntities[0])
 
         assertEquals(0, result)
     }
 
     @Test
     fun deleteEntity_EntityExistsInDb_ReturnsOne() = runTest {
-        dao.insert(listOf(testEntities[0]))
+        dao.insert(testEntities[0])
 
-        val result = dao.delete(listOf(testEntities[0]))
+        val result = dao.delete(testEntities[0])
 
         assertEquals(1, result)
     }
 
     @Test
     fun deleteEntities_EntitiesDoNotExistInDb_ReturnsZero() = runTest {
-        val result = dao.delete(testEntities)
+        val result = dao.delete(*testEntities)
 
         assertEquals(0, result)
     }
 
     @Test
     fun deleteEntities_EntitiesExistInDb_ReturnsNumOfAffectedRows() = runTest {
-        dao.insert(testEntities)
+        dao.insert(*testEntities)
 
-        val result = dao.delete(testEntities)
+        val result = dao.delete(*testEntities)
 
         assertEquals(2, result)
     }
 
     @Test
     fun deleteEntities_SomeEntitiesExistInDb_ReturnsNumOfAffectedRows() = runTest {
-        dao.insert(listOf(testEntities[0]))
+        dao.insert(testEntities[0])
 
-        val result = dao.delete(testEntities)
+        val result = dao.delete(*testEntities)
 
         assertEquals(1, result)
     }

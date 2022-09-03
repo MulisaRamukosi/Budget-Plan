@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-internal abstract class BaseDaoReadTest<Dao, E>(val testEntities: List<E>) :
+internal abstract class BaseDaoReadTest<Dao, E>(val testEntities: Array<E>) :
     BaseDaoTest<Dao>() where Dao : Read<E>, Dao : Insert<E> {
 
     @Test
@@ -25,8 +25,7 @@ internal abstract class BaseDaoReadTest<Dao, E>(val testEntities: List<E>) :
 
     @Test
     fun readAllEntities_DbHasEntities_ReturnsListOfAllEntities() = runTest {
-        dao.insert(testEntities)
-        //testEntities.forEach { dao.insert(it) }
+        dao.insert(*testEntities)
 
         val entities = dao.read().first()
 
