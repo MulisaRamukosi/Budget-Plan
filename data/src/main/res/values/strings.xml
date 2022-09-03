@@ -1,0 +1,9 @@
+<resources>
+    <string name="insert_success">Successfully saved item.</string>
+    <string name="insert_failed">Failed to save item.</string>
+    <string name="insert_failed_already_exist">Failed to save item because it already exist.</string>
+    <string name="update_success">Successfully updated item.</string>
+    <string name="update_failed">Failed to update item.</string>
+    <string name="delete_success">Successfully deleted item(s).</string>
+    <string name="delete_failed">Failed to delete item(s).</string>
+</resources>
