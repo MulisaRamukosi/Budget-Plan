@@ -5,5 +5,5 @@ import androidx.room.Update
 
 internal interface Update<T> {
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(entity: T): Int
+    suspend fun update(vararg entity: T): Int
 }
