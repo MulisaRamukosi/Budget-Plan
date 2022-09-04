@@ -1,17 +1,16 @@
 package com.puzzle.industries.data.mapper.expenseGroup
 
 import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupHistoryEntity
-import com.puzzle.industries.domain.constants.Action
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupHistory
+import javax.inject.Inject
 
-internal class ExpenseGroupHistoryMapper {
+internal class ExpenseGroupHistoryMapper @Inject constructor(private val expenseGroupMapper: ExpenseGroupMapper){
 
     fun toExpenseGroupHistoryEntity(expenseGroupHistory: ExpenseGroupHistory): ExpenseGroupHistoryEntity {
         return ExpenseGroupHistoryEntity(
             id = expenseGroupHistory.id,
-            oldName = expenseGroupHistory.oldName,
-            newName = expenseGroupHistory.newName,
-            action = expenseGroupHistory.action.name,
+            expenseGroup = expenseGroupMapper.toExpenseGroupEntity(expenseGroupHistory.expenseGroup),
+            action = expenseGroupHistory.action,
             reason = expenseGroupHistory.reason
         )
     }
@@ -19,9 +18,8 @@ internal class ExpenseGroupHistoryMapper {
     fun toExpenseGroupHistory(expenseGroupHistory: ExpenseGroupHistoryEntity): ExpenseGroupHistory {
         return ExpenseGroupHistory(
             id = expenseGroupHistory.id,
-            oldName = expenseGroupHistory.oldName,
-            newName = expenseGroupHistory.newName,
-            action = Action.valueOf(expenseGroupHistory.action),
+            expenseGroup = expenseGroupMapper.toExpenseGroup(expenseGroupHistory.expenseGroup),
+            action = expenseGroupHistory.action,
             reason = expenseGroupHistory.reason,
             entryDate = expenseGroupHistory.entryDate
         )

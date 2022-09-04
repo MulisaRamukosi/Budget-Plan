@@ -11,12 +11,7 @@ import java.util.*
 internal class IncomeHistoryEntity(
     @PrimaryKey
     override val id: UUID = UUID.randomUUID(),
-    val oldAmount: Double,
-    val newAmount: Double,
-    val oldFrequency: String,
-    val newFrequency: String,
-    val oldTitle: String,
-    val newTitle: String,
+    val income: IncomeEntity,
     override val reason: String,
     override val action: Action,
     override val entryDate: Date = Date()
