@@ -16,28 +16,35 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 internal class MapperModule {
 
-    @Singleton
-    @Provides
-    fun provideIncomeMapper(): IncomeMapper = IncomeMapper()
+    private val incomeMapper: IncomeMapper = IncomeMapper()
+    private val expenseMapper: ExpenseMapper = ExpenseMapper()
+    private val expenseGroupMapper: ExpenseGroupMapper = ExpenseGroupMapper()
 
     @Singleton
     @Provides
-    fun provideIncomeHistoryMapper(): IncomeHistoryMapper = IncomeHistoryMapper()
+    fun provideIncomeMapper(): IncomeMapper = incomeMapper
 
     @Singleton
     @Provides
-    fun provideExpenseMapper(): ExpenseMapper = ExpenseMapper()
+    fun provideIncomeHistoryMapper(): IncomeHistoryMapper =
+        IncomeHistoryMapper(incomeMapper = incomeMapper)
 
     @Singleton
     @Provides
-    fun provideExpenseHistoryMapper(): ExpenseHistoryMapper = ExpenseHistoryMapper()
+    fun provideExpenseMapper(): ExpenseMapper = expenseMapper
 
     @Singleton
     @Provides
-    fun provideExpenseGroupMapper(): ExpenseGroupMapper = ExpenseGroupMapper()
+    fun provideExpenseHistoryMapper(): ExpenseHistoryMapper =
+        ExpenseHistoryMapper(expenseMapper = expenseMapper)
 
     @Singleton
     @Provides
-    fun provideExpenseGroupHistoryMapper(): ExpenseGroupHistoryMapper = ExpenseGroupHistoryMapper()
+    fun provideExpenseGroupMapper(): ExpenseGroupMapper = expenseGroupMapper
+
+    @Singleton
+    @Provides
+    fun provideExpenseGroupHistoryMapper(): ExpenseGroupHistoryMapper =
+        ExpenseGroupHistoryMapper(expenseGroupMapper = expenseGroupMapper)
 
 }
