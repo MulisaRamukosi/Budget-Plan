@@ -2,7 +2,6 @@ package com.puzzle.industries.data.mapper.expenseGroup
 
 import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupEntity
 import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupWithExpensesEntity
-import com.puzzle.industries.domain.constants.Frequency
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupWithExpenses
@@ -25,7 +24,7 @@ internal class ExpenseGroupMapper {
                     expenseGroupId = expenseEntity.expenseGroupId,
                     name = expenseEntity.name,
                     amount = expenseEntity.amount,
-                    frequency = Frequency.valueOf(expenseEntity.frequency)
+                    frequency = expenseEntity.frequency
                 )
             }
         )

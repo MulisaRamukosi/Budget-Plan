@@ -1,9 +1,8 @@
 package com.puzzle.industries.data.mapper.expense
 
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
-import com.puzzle.industries.domain.constants.Frequency
 import com.puzzle.industries.domain.models.expense.Expense
-import kotlin.math.exp
+
 
 internal class ExpenseMapper {
 
@@ -13,7 +12,7 @@ internal class ExpenseMapper {
             expenseGroupId = expense.expenseGroupId,
             name = expense.name,
             amount = expense.amount,
-            frequency = expense.frequency.name,
+            frequency = expense.frequency,
         )
     }
 
@@ -23,7 +22,7 @@ internal class ExpenseMapper {
             expenseGroupId = expense.expenseGroupId,
             name = expense.name,
             amount = expense.amount,
-            frequency = Frequency.valueOf(expense.frequency),
+            frequency = expense.frequency,
         )
     }
 }

@@ -1,9 +1,7 @@
 package com.puzzle.industries.data.mapper.income
 
 import com.puzzle.industries.data.database.entity.income.IncomeEntity
-import com.puzzle.industries.domain.constants.Frequency
 import com.puzzle.industries.domain.models.income.Income
-import java.util.*
 
 internal class IncomeMapper {
 
@@ -12,7 +10,7 @@ internal class IncomeMapper {
             id = income.id,
             title = income.title,
             amount = income.amount,
-            frequency = income.frequency.name,
+            frequency = income.frequency,
             description = income.description
         )
     }
@@ -22,7 +20,7 @@ internal class IncomeMapper {
             id = income.id,
             title = income.title,
             amount = income.amount,
-            frequency = Frequency.valueOf(income.frequency),
+            frequency = income.frequency,
             description = income.description,
             lastModifyDate = income.lastModifyDate
         )
