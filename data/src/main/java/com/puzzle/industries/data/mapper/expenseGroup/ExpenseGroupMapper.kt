@@ -30,7 +30,7 @@ internal class ExpenseGroupMapper {
         )
     }
 
-    private fun toExpenseGroup(expenseGroup: ExpenseGroupEntity): ExpenseGroup {
+    fun toExpenseGroup(expenseGroup: ExpenseGroupEntity): ExpenseGroup {
         return ExpenseGroup(
             id = expenseGroup.id,
             name = expenseGroup.name,
