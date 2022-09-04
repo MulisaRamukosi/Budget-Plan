@@ -18,7 +18,10 @@ import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupHisto
 import com.puzzle.industries.data.database.entity.income.IncomeEntity
 import com.puzzle.industries.data.database.entity.income.IncomeHistoryEntity
 import com.puzzle.industries.data.database.typeConverters.DateConverter
+import com.puzzle.industries.data.database.typeConverters.jsonConverter.ExpenseEntityConverter
 import com.puzzle.industries.data.database.typeConverters.FrequencyConverter
+import com.puzzle.industries.data.database.typeConverters.jsonConverter.IncomeEntityConverter
+import com.puzzle.industries.data.database.typeConverters.jsonConverter.ExpenseGroupEntityConverter
 
 @Database(
     entities = [
@@ -35,7 +38,10 @@ import com.puzzle.industries.data.database.typeConverters.FrequencyConverter
 @TypeConverters(
     value = [
         DateConverter::class,
-        FrequencyConverter::class
+        FrequencyConverter::class,
+        IncomeEntityConverter::class,
+        ExpenseEntityConverter::class,
+        ExpenseGroupEntityConverter::class,
     ]
 )
 internal abstract class AppDatabase : RoomDatabase() {
