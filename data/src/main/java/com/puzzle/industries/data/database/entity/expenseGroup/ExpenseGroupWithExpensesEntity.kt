@@ -4,7 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Relation
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
 
-data class ExpenseGroupWithExpensesEntity(
+internal data class ExpenseGroupWithExpensesEntity(
     @Embedded
     val expenseGroup: ExpenseGroupEntity,
     @Relation(

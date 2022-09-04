@@ -7,7 +7,7 @@ import com.puzzle.industries.data.database.entity.BaseHistory
 import java.util.*
 
 @Entity(tableName = Entities.INCOME_HISTORY)
-class IncomeHistoryEntity(
+internal class IncomeHistoryEntity(
     @PrimaryKey
     override val id: UUID = UUID.randomUUID(),
     val oldAmount: Double,

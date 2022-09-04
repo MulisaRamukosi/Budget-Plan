@@ -6,7 +6,7 @@ import com.puzzle.industries.data.database.constants.Entities
 import java.util.*
 
 @Entity(tableName = Entities.EXPENSE)
-data class ExpenseEntity(
+internal data class ExpenseEntity(
     @PrimaryKey
     val id: UUID = UUID.randomUUID(),
     val expenseGroupId: UUID,

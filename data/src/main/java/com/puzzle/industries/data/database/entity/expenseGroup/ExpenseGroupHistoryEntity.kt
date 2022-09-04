@@ -7,7 +7,7 @@ import com.puzzle.industries.data.database.entity.BaseHistory
 import java.util.*
 
 @Entity(tableName = Entities.EXPENSE_GROUP_HISTORY)
-data class ExpenseGroupHistoryEntity(
+internal data class ExpenseGroupHistoryEntity(
     @PrimaryKey
     override val id: UUID = UUID.randomUUID(),
     val oldName: String,

@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import com.puzzle.industries.domain.constants.Frequency
 import java.util.*
 
-class FrequencyConverter {
+internal class FrequencyConverter {
 
     @TypeConverter
     fun toString(frequency: Frequency): String {
@@ -21,7 +21,5 @@ class FrequencyConverter {
             else -> Frequency.MONTHLY
         }
     }
-
-
 
 }

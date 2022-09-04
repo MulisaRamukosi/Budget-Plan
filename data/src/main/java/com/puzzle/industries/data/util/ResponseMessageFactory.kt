@@ -4,7 +4,7 @@ import android.content.Context
 import com.puzzle.industries.data.R
 import com.puzzle.industries.domain.common.response.Response
 
-class ResponseMessageFactory(val context: Context) {
+internal class ResponseMessageFactory(val context: Context) {
 
     inline fun buildInsertMessage(create: () -> Boolean): Response<Boolean> {
         return try {
