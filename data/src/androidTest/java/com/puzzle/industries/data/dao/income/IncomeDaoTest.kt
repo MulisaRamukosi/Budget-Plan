@@ -7,19 +7,20 @@ import com.puzzle.industries.data.dao.BaseDaoReadTest
 import com.puzzle.industries.data.dao.BaseDaoUpdateTest
 import com.puzzle.industries.data.database.dao.income.IncomeDao
 import com.puzzle.industries.data.database.entity.income.IncomeEntity
+import com.puzzle.industries.domain.constants.Frequency
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
     IncomeEntity(
-        frequency = "monthly",
+        frequency = Frequency.MONTHLY,
         amount = 1200.0,
         title = "income",
         description = "description"
     ),
     IncomeEntity(
-        frequency = "monthly",
+        frequency = Frequency.MONTHLY,
         amount = 1200.0,
         title = "income",
         description = "description"

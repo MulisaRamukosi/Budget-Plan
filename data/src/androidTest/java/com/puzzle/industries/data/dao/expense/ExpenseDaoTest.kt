@@ -7,6 +7,7 @@ import com.puzzle.industries.data.dao.BaseDaoReadTest
 import com.puzzle.industries.data.dao.BaseDaoUpdateTest
 import com.puzzle.industries.data.database.dao.expense.ExpenseDao
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
+import com.puzzle.industries.domain.constants.Frequency
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
@@ -17,13 +18,13 @@ private val testEntities = arrayOf(
         expenseGroupId = UUID.randomUUID(),
         name = "name",
         amount = 123.0,
-        frequency = "monthly"
+        frequency = Frequency.MONTHLY
     ),
     ExpenseEntity(
         expenseGroupId = UUID.randomUUID(),
         name = "other name",
         amount = 125.0,
-        frequency = "yearly"
+        frequency = Frequency.YEARLY
     )
 )
 
