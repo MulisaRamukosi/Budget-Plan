@@ -2,11 +2,13 @@ package com.puzzle.industries.data.repo.expenseGroup
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupHistoryMapper
+import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupMapper
 import com.puzzle.industries.data.repo.BaseRepoDeleteTest
 import com.puzzle.industries.data.repo.BaseRepoInsertTest
 import com.puzzle.industries.data.repo.BaseRepoReadTest
 import com.puzzle.industries.data.repository.expenseGroup.ExpenseGroupHistoryRepositoryImpl
 import com.puzzle.industries.domain.constants.Action
+import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupHistory
 import com.puzzle.industries.domain.repository.expenseGroup.ExpenseGroupHistoryRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,20 +17,23 @@ import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
     ExpenseGroupHistory(
-        oldName = "test",
-        newName = "something",
+        expenseGroup = ExpenseGroup(
+            name = "group 1"
+        ),
         action = Action.CREATE,
         reason = "some reason"
     ),
     ExpenseGroupHistory(
-        oldName = "test",
-        newName = "something",
+        expenseGroup = ExpenseGroup(
+            name = "group 2"
+        ),
         action = Action.CREATE,
         reason = "some reason"
     )
 )
 
-private val expenseGroupHistoryMapper = ExpenseGroupHistoryMapper()
+private val expenseGroupHistoryMapper =
+    ExpenseGroupHistoryMapper(expenseGroupMapper = ExpenseGroupMapper())
 
 @RunWith(Suite::class)
 @ExperimentalCoroutinesApi

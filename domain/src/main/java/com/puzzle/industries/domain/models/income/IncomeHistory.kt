@@ -7,12 +7,7 @@ import java.util.*
 
 class IncomeHistory(
     override val id: UUID = UUID.randomUUID(),
-    val oldAmount: Double,
-    val newAmount: Double,
-    val oldFrequency: Frequency,
-    val newFrequency: Frequency,
-    val oldTitle: String,
-    val newTitle: String,
+    val income: Income,
     override val reason: String,
     override val action: Action,
     override val entryDate: Date = Date()

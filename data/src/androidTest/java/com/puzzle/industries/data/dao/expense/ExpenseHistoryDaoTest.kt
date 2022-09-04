@@ -6,7 +6,10 @@ import com.puzzle.industries.data.dao.BaseDaoInsertTest
 import com.puzzle.industries.data.dao.BaseDaoReadTest
 import com.puzzle.industries.data.dao.BaseDaoUpdateTest
 import com.puzzle.industries.data.database.dao.expense.ExpenseHistoryDao
+import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
 import com.puzzle.industries.data.database.entity.expense.ExpenseHistoryEntity
+import com.puzzle.industries.domain.constants.Action
+import com.puzzle.industries.domain.constants.Frequency
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
@@ -14,25 +17,23 @@ import java.util.*
 
 private val testEntities = arrayOf(
     ExpenseHistoryEntity(
-        expenseGroupId = UUID.randomUUID(),
-        oldName = "old",
-        newName = "new",
-        newAmount = 12.0,
-        oldAmount = 14.5,
-        oldFrequency = "monthly",
-        newFrequency = "yearly",
-        action = "update",
+        expense = ExpenseEntity(
+            expenseGroupId = UUID.randomUUID(),
+            name = "new",
+            amount = 12.0,
+            frequency = Frequency.MONTHLY
+        ),
+        action = Action.UPDATE,
         reason = "sd"
     ),
     ExpenseHistoryEntity(
-        expenseGroupId = UUID.randomUUID(),
-        oldName = "old expense",
-        newName = "new expense",
-        newAmount = 12.0,
-        oldAmount = 14.5,
-        oldFrequency = "weekly",
-        newFrequency = "monthly",
-        action = "delete",
+        expense = ExpenseEntity(
+            expenseGroupId = UUID.randomUUID(),
+            name = "new",
+            amount = 12.0,
+            frequency = Frequency.MONTHLY
+        ),
+        action = Action.DELETE,
         reason = "sd"
     )
 )

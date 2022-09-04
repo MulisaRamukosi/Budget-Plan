@@ -7,13 +7,7 @@ import java.util.*
 
 data class ExpenseHistory (
     override val id: UUID = UUID.randomUUID(),
-    val expenseGroupId: UUID,
-    val oldName: String,
-    val newName: String,
-    val oldAmount: Double,
-    val newAmount: Double,
-    val oldFrequency: Frequency,
-    val newFrequency: Frequency,
+    val expense: Expense,
     override val action: Action,
     override val reason: String,
     override val entryDate: Date = Date()

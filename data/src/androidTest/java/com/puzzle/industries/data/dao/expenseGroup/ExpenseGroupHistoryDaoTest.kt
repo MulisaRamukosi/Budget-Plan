@@ -5,22 +5,26 @@ import com.puzzle.industries.data.dao.BaseDaoDeleteTest
 import com.puzzle.industries.data.dao.BaseDaoInsertTest
 import com.puzzle.industries.data.dao.BaseDaoReadTest
 import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupHistoryDao
+import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupEntity
 import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupHistoryEntity
+import com.puzzle.industries.domain.constants.Action
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
     ExpenseGroupHistoryEntity(
-        oldName = "old",
-        newName = "new",
-        action = "post",
+        expenseGroup = ExpenseGroupEntity(
+            name = "new name"
+        ),
+        action = Action.CREATE,
         reason = "some reason"
     ),
     ExpenseGroupHistoryEntity(
-        oldName = "old",
-        newName = "new",
-        action = "post",
+        expenseGroup = ExpenseGroupEntity(
+            name = "new name"
+        ),
+        action = Action.CREATE,
         reason = "some reason"
     ),
 )

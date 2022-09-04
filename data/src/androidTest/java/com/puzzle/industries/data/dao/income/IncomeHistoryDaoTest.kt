@@ -5,31 +5,34 @@ import com.puzzle.industries.data.dao.BaseDaoDeleteTest
 import com.puzzle.industries.data.dao.BaseDaoInsertTest
 import com.puzzle.industries.data.dao.BaseDaoReadTest
 import com.puzzle.industries.data.database.dao.income.IncomeHistoryDao
+import com.puzzle.industries.data.database.entity.income.IncomeEntity
 import com.puzzle.industries.data.database.entity.income.IncomeHistoryEntity
+import com.puzzle.industries.domain.constants.Action
+import com.puzzle.industries.domain.constants.Frequency
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
     IncomeHistoryEntity(
-        oldAmount = 12.0,
-        newAmount = 13.0,
-        oldFrequency = "monthly",
-        newFrequency = "yearly",
-        oldTitle = "oldTitle",
-        newTitle = "newTitle",
+        income = IncomeEntity(
+            frequency = Frequency.YEARLY,
+            amount = 13.0,
+            title = "some title",
+            description = "some desc"
+        ),
         reason = "some reason",
-        action = "update"
+        action = Action.CREATE
     ),
     IncomeHistoryEntity(
-        oldAmount = 18.0,
-        newAmount = 13.0,
-        oldFrequency = "yearly",
-        newFrequency = "weekly",
-        oldTitle = "oldTitle",
-        newTitle = "newTitle",
+        income = IncomeEntity(
+            frequency = Frequency.MONTHLY,
+            amount = 138.0,
+            title = "other title",
+            description = "some more desc"
+        ),
         reason = "some reason",
-        action = "update"
+        action = Action.UPDATE
     )
 )
 
