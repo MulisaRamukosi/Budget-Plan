@@ -1,16 +1,16 @@
 package com.puzzle.industries.domain.usescases.expense
 
-import com.puzzle.industries.domain.common.crud.*
 import com.puzzle.industries.domain.models.expense.Expense
+import com.puzzle.industries.domain.usescases.base.UseCaseDelete
+import com.puzzle.industries.domain.usescases.base.UseCaseInsert
+import com.puzzle.industries.domain.usescases.base.UseCaseUpdate
 
-interface InsertExpenseUseCase : Insert<Expense>
-interface ReadExpenseUseCase : Read<Expense>
-interface UpdateExpenseUseCase : Update<Expense>
-interface DeleteExpenseUseCase : Delete<Expense>
+interface InsertExpenseUseCase : UseCaseInsert<Expense>
+interface UpdateExpenseUseCase : UseCaseUpdate<Expense>
+interface DeleteExpenseUseCase : UseCaseDelete<Expense>
 
 interface ExpenseUseCase {
     val create: InsertExpenseUseCase
-    val read: ReadExpenseUseCase
     val update: UpdateExpenseUseCase
     val delete: DeleteExpenseUseCase
 }
