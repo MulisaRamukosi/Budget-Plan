@@ -12,9 +12,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-internal class ExpenseGroupRepositoryImpl @Inject constructor(
+internal class ExpenseGroupRepositoryImpl constructor(
     private val expenseGroupMapper: ExpenseGroupMapper,
     private val expenseGroupDao: ExpenseGroupDao,
     private val responseMessageFactory: ResponseMessageFactory

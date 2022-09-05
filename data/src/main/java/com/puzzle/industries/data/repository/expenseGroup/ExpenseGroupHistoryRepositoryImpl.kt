@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-internal class ExpenseGroupHistoryRepositoryImpl @Inject constructor(
+internal class ExpenseGroupHistoryRepositoryImpl constructor(
     private val expenseGroupHistoryMapper: ExpenseGroupHistoryMapper,
     private val expenseGroupHistoryDao: ExpenseGroupHistoryDao,
     private val responseMessageFactory: ResponseMessageFactory

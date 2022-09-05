@@ -11,9 +11,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-internal class IncomeHistoryRepositoryImpl @Inject constructor(
+internal class IncomeHistoryRepositoryImpl constructor(
     private val incomeHistoryMapper: IncomeHistoryMapper,
     private val incomeHistoryDao: IncomeHistoryDao,
     private val responseMessageFactory: ResponseMessageFactory
@@ -47,7 +46,7 @@ internal class IncomeHistoryRepositoryImpl @Inject constructor(
             entity.map { incomeHistory -> incomeHistoryMapper.toIncomeHistoryEntity(incomeHistory = incomeHistory) }
                 .toTypedArray()
 
-        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size){
+        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size) {
             incomeHistoryDao.delete(entity = entities)
         }
     }

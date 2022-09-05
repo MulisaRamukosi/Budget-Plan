@@ -6,9 +6,8 @@ import com.puzzle.industries.data.util.ResponseMessageFactory
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.repository.expense.ExpenseRepository
-import javax.inject.Inject
 
-internal class ExpenseRepositoryImpl @Inject constructor(
+internal class ExpenseRepositoryImpl constructor(
     private val expenseMapper: ExpenseMapper,
     private val expenseDao: ExpenseDao,
     private val responseMessageFactory: ResponseMessageFactory
@@ -37,7 +36,7 @@ internal class ExpenseRepositoryImpl @Inject constructor(
         val entities = entity.map { expense -> expenseMapper.toExpenseEntity(expense = expense) }
             .toTypedArray()
 
-        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size){
+        return responseMessageFactory.buildDeleteMessage(expectedAffectedRow = entities.size) {
             expenseDao.delete(entity = entities)
         }
     }
