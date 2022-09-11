@@ -15,5 +15,7 @@
     <string name="desc_add_income">Add income</string>
     <string name="desc_income">income amount</string>
     <string name="desc_income_frequency">Income frequency</string>
+    <string name="desc_expenses_toggle">Toggle expenses icon</string>
+    <string name="desc_expense_frequency">Expense frequency</string>
 
 </resources>
