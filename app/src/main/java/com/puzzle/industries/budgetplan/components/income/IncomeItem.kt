@@ -54,7 +54,7 @@ fun IncomeItem(income: IncomeDto, onClick: () -> Unit = {}) {
                 )
 
                 Text(
-                    text = stringResource(id = R.string.income_amount, income.amount),
+                    text = stringResource(id = R.string.income_amount, "R", income.amount),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleLarge
                 )

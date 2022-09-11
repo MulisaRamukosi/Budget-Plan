@@ -37,7 +37,7 @@ fun TotalIncome(
         Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
 
         Text(
-            text = stringResource(id = R.string.income_amount, income),
+            text = stringResource(id = R.string.income_amount, "R", income),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyLarge
         )
