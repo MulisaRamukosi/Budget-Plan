@@ -2,7 +2,6 @@ package com.puzzle.industries.budgetplan.components.expenses
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowRight
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -10,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.CheckboxButton
 import com.puzzle.industries.budgetplan.components.divider.HorizontalDivider
@@ -96,7 +95,9 @@ private fun PendingExpense(checked: Boolean) {
             Text(
                 modifier = Modifier.weight(1f),
                 text = "Rent",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
             Text(
