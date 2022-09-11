@@ -1,5 +1,6 @@
 package com.puzzle.industries.budgetplan.screens.budget
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
+@ExperimentalAnimationApi
 fun BudgetScreen() {
     val tabs = listOf(
         stringResource(id = R.string.income),
@@ -77,8 +79,9 @@ fun BudgetScreen() {
 
 @Composable
 @Preview(showBackground = true)
-@ExperimentalMaterial3Api
 @ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalMaterial3Api
 @ExperimentalMaterial3WindowSizeClassApi
 private fun BudgetScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {

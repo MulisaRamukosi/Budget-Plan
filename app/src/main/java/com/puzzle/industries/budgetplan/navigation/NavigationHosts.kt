@@ -1,5 +1,6 @@
 package com.puzzle.industries.budgetplan.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,6 +14,7 @@ import com.puzzle.industries.budgetplan.navigation.graphs.mainScreenGraph
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
+@ExperimentalAnimationApi
 fun AppScreensNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(
@@ -25,6 +27,7 @@ fun AppScreensNavHost(modifier: Modifier = Modifier) {
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
+@ExperimentalAnimationApi
 fun MainScreenNestedNavHost(navController: NavHostController, modifier: Modifier = Modifier){
     NavHost(
         modifier = modifier,

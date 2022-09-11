@@ -1,5 +1,6 @@
 package com.puzzle.industries.budgetplan.screens.main
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -29,6 +30,7 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
+@ExperimentalAnimationApi
 fun MainScreen() {
     val nestedNavController = rememberNavController()
 
@@ -40,6 +42,7 @@ fun MainScreen() {
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
+@ExperimentalAnimationApi
 private fun Content(
     navController: NavHostController
 ) {
@@ -99,6 +102,7 @@ private fun Content(
 @Preview(showBackground = true)
 @ExperimentalMaterial3Api
 @ExperimentalPagerApi
+@ExperimentalAnimationApi
 @ExperimentalMaterial3WindowSizeClassApi
 private fun MainScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {

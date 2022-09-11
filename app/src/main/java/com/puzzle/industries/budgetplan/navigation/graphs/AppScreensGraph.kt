@@ -1,5 +1,6 @@
 package com.puzzle.industries.budgetplan.navigation.graphs
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph
@@ -15,6 +16,7 @@ import com.puzzle.industries.budgetplan.screens.SplashScreen
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
+@ExperimentalAnimationApi
 fun appScreensGraph(navController: NavHostController) : NavGraph {
     return navController.createGraph(startDestination = MainScreens.SPLASH.name){
         composable(route = Routes.Splash.path){

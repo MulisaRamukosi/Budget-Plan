@@ -1,5 +1,6 @@
 package com.puzzle.industries.budgetplan.navigation.graphs
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph
@@ -14,6 +15,7 @@ import com.puzzle.industries.budgetplan.screens.budget.BudgetScreen
 
 @Composable
 @ExperimentalMaterial3Api
+@ExperimentalAnimationApi
 @ExperimentalPagerApi
 fun mainScreenGraph(navController: NavHostController) : NavGraph {
     return navController.createGraph(startDestination = Routes.Home.path){
