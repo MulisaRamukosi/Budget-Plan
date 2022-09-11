@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.previewProviders.providers.IncomeItemPreviewDataProvider
+import com.puzzle.industries.budgetplan.data.IncomeDto
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
-import com.puzzle.industries.domain.models.IncomeDto
+import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.models.income.Income
 import java.util.*
 
 
@@ -93,8 +93,7 @@ fun IncomeItemPreview() {
             title = "Some title",
             description = "some description about the income",
             amount = 13000.0,
-            frequency = "monthly",
-            lastModifyDate = Date()
+            frequency = "Monthly",
         )
         IncomeItem(income) {}
     }
