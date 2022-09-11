@@ -17,10 +17,6 @@ import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.data.IncomeDto
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
-import com.puzzle.industries.domain.constants.Frequency
-import com.puzzle.industries.domain.models.income.Income
-import java.util.*
-
 
 @Composable
 @ExperimentalMaterial3Api
@@ -54,7 +50,7 @@ fun IncomeItem(income: IncomeDto, onClick: () -> Unit = {}) {
                 )
 
                 Text(
-                    text = stringResource(id = R.string.income_amount, "R", income.amount),
+                    text = stringResource(id = R.string.total_amount, "R", income.amount),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.titleLarge
                 )
