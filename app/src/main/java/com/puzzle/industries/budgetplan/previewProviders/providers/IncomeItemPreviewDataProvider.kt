@@ -1,8 +1,7 @@
 package com.puzzle.industries.budgetplan.previewProviders.providers
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import com.puzzle.industries.domain.models.IncomeDto
-import java.util.*
+import com.puzzle.industries.budgetplan.data.IncomeDto
 
 class IncomeItemPreviewDataProvider : PreviewParameterProvider<List<IncomeDto>> {
 
@@ -14,8 +13,7 @@ class IncomeItemPreviewDataProvider : PreviewParameterProvider<List<IncomeDto>> 
                     title = "Some title",
                     description = "some description about the income",
                     amount = 13000.0,
-                    frequency = "monthly",
-                    lastModifyDate = Date()
+                    frequency = "monthly"
                 ),
                 IncomeDto(
                     id = 0,
@@ -24,16 +22,14 @@ class IncomeItemPreviewDataProvider : PreviewParameterProvider<List<IncomeDto>> 
                             "go over several lines and not just one. This description is really long " +
                             "and goes over multiple lines.",
                     amount = 200000.0,
-                    frequency = "yearly",
-                    lastModifyDate = Date()
+                    frequency = "yearly"
                 ),
                 IncomeDto(
                     id = 0,
                     title = "No Desc",
                     description = "",
                     amount = 13000.0,
-                    frequency = "monthly",
-                    lastModifyDate = Date()
+                    frequency = "monthly"
                 ),
             )
         )
