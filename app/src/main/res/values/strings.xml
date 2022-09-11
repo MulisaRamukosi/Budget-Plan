@@ -11,7 +11,7 @@
     <string name="expenses">Expenses</string>
     <string name="reminder">Reminders</string>
     <string name="add_income">Add Income</string>
-    <string name="total_amount">%s%.2f</string>
+    <string name="currency_amount">%s%.2f</string>
     <string name="desc_add_income">Add income</string>
     <string name="desc_income">income amount</string>
     <string name="remaining_cash">Remaining Cash</string>
@@ -29,5 +29,7 @@
     <string name="total">Total</string>
     <string name="add_unplanned_expense">Add unplanned expense</string>
     <string name="desc_arrow_right_icon">arrow right icon</string>
+    <string name="payment_reminders">Payment Reminders</string>
+    <string name="desc_alarm_icon">Alarm icon</string>
 
 </resources>

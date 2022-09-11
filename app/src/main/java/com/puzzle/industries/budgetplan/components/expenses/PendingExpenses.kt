@@ -79,7 +79,7 @@ private fun TotalExpensesAmount(currency: String, amount: Double) {
         )
 
         Text(
-            text = stringResource(id = R.string.total_amount, currency, amount),
+            text = stringResource(id = R.string.currency_amount, currency, amount),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.primary
         )
@@ -100,7 +100,7 @@ private fun PendingExpense(checked: Boolean) {
             )
             Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
             Text(
-                text = stringResource(id = R.string.total_amount, "R", 320.0),
+                text = stringResource(id = R.string.currency_amount, "R", 320.0),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.primary
             )
