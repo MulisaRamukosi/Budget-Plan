@@ -47,7 +47,7 @@ fun BudgetPlanHeader(modifier: Modifier) {
                     )
                     Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
                     Text(
-                        text = stringResource(id = R.string.income_amount, "R", 45000.0),
+                        text = stringResource(id = R.string.total_amount, "R", 45000.0),
                         style = MaterialTheme.typography.headlineLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
@@ -59,13 +59,13 @@ fun BudgetPlanHeader(modifier: Modifier) {
                     MoneyInfo(
                         modifier = Modifier,
                         title = stringResource(id = R.string.total_income_for_month),
-                        amount = stringResource(id = R.string.income_amount, "R", 64000.0)
+                        amount = stringResource(id = R.string.total_amount, "R", 64000.0)
                     )
                     Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
                     MoneyInfo(
                         modifier = Modifier,
                         title = stringResource(id = R.string.forecast_after_all_payments),
-                        amount = stringResource(id = R.string.income_amount, "R", 64000.0)
+                        amount = stringResource(id = R.string.total_amount, "R", 64000.0)
                     )
                 }
             }
