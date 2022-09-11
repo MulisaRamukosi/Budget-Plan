@@ -2,6 +2,7 @@ package com.puzzle.industries.budgetplan.components.appBar.topAppBar
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.*
@@ -26,25 +27,24 @@ fun topAppBar(
     onHomeClick: () -> Unit = {}
 ) : @Composable () -> Unit{
     return {
-        SmallTopAppBar(
-            title = {
-                Column{
+        TopAppBar(title = {
+            Column{
+                Text(
+                    text = title,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.titleLarge,
+                    overflow = TextOverflow.Ellipsis
+                )
+                if(subTitle.isNotBlank()) {
                     Text(
-                        text = title,
+                        text = subTitle,
                         maxLines = 1,
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleSmall,
                         overflow = TextOverflow.Ellipsis
                     )
-                    if(subTitle.isNotBlank()) {
-                        Text(
-                            text = subTitle,
-                            maxLines = 1,
-                            style = MaterialTheme.typography.titleSmall,
-                            overflow = TextOverflow.Ellipsis
-                        )
-                    }
                 }
-            },
+            }
+        },
             navigationIcon = {
                 if (isHomeEnabled) {
                     IconButton(onClick = onHomeClick) {
@@ -64,8 +64,7 @@ fun topAppBar(
                         )
                     }
                 }
-            }
-        )
+            })
 
     }
 }
