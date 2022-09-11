@@ -84,6 +84,20 @@ object TypographyFactory {
                 fontSize = 12.sp,
                 lineHeight = 16.sp,
                 letterSpacing = 0.4.sp,
+            ),
+            labelSmall = TextStyle(
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 11.sp,
+                lineHeight = 16.sp,
+                letterSpacing = 0.5.sp
+            ),
+            labelLarge = TextStyle(
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Medium,
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                letterSpacing = 0.1.sp
             )
         )
     }
