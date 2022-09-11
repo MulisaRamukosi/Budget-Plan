@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.puzzle.industries.budgetplan.ext.applyAnimation
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import kotlinx.coroutines.delay
 
@@ -27,11 +28,12 @@ fun SplashScreen(onNavigate : () -> Unit) {
             .background(color = MaterialTheme.colorScheme.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
-        TextAnimation(onAnimationComplete = onNavigate)
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "usually plan A doesn\'t work, use")
+            TextAnimation(onAnimationComplete = onNavigate)
+        }
     }
 }
-
-
 
 @Composable
 private fun TextAnimation(onAnimationComplete: () -> Unit = {}) {
@@ -65,6 +67,16 @@ private fun TextAnimation(onAnimationComplete: () -> Unit = {}) {
     }
 
 
+    MainText(currentMiddleTextWidth, currentDashRotation, currentDashXScale)
+
+}
+
+@Composable
+private fun MainText(
+    currentMiddleTextWidth: Float,
+    currentDashRotation: Float,
+    currentDashXScale: Float
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         SplashText(text = "B")
         SplashText(
@@ -80,20 +92,6 @@ private fun TextAnimation(onAnimationComplete: () -> Unit = {}) {
         )
 
         SplashText(text = "Plan")
-    }
-
-}
-
-private suspend fun <V : AnimationVector> Animatable<Float, V>.applyAnimation(
-    targetValue: Float,
-    durationMillis: Int,
-    onNewValue: (Float) -> Unit
-): Any {
-    return animateTo(
-        targetValue = targetValue,
-        animationSpec = tween(durationMillis = durationMillis)
-    ) {
-        onNewValue(value)
     }
 }
 
