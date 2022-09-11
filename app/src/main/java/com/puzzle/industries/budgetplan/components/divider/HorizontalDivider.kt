@@ -16,8 +16,7 @@ fun HorizontalDivider(
 ) {
     Divider(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = MaterialTheme.spacing.small),
+            .fillMaxWidth(),
         color = color
     )
 }
