@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
@@ -21,89 +20,22 @@ import com.puzzle.industries.budgetplan.theme.spacing
 
 @ExperimentalMaterial3Api
 @Composable
-fun BudgetPlanHeader(modifier: Modifier) {
-    val chipRowScrollState = rememberScrollState()
-
+fun BudgetPlanHeader(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
     ) {
         Column(modifier = Modifier.padding(vertical = MaterialTheme.spacing.large)) {
-            Column(
-                modifier = Modifier.padding(
-                    horizontal = MaterialTheme.spacing.medium
-                )
-            ) {
-                Text(
-                    text = stringResource(id = R.string.remaining_cash),
-                    style = MaterialTheme.typography.titleSmall
-                )
 
+            Column(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
+                Title()
                 Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Rounded.Money,
-                        contentDescription = stringResource(id = R.string.desc_money_icon)
-                    )
-                    Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
-                    Text(
-                        text = stringResource(id = R.string.currency_amount, "R", 45000.0),
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-
+                RemainingCash()
                 Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    MoneyInfo(
-                        modifier = Modifier,
-                        title = stringResource(id = R.string.total_income_for_month),
-                        amount = stringResource(id = R.string.currency_amount, "R", 64000.0)
-                    )
-                    Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
-                    MoneyInfo(
-                        modifier = Modifier,
-                        title = stringResource(id = R.string.forecast_after_all_payments),
-                        amount = stringResource(id = R.string.currency_amount, "R", 64000.0)
-                    )
-                }
+                BalanceInfo()
             }
 
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-
-            Row(
-                modifier = Modifier
-                    .horizontalScroll(
-                        state = chipRowScrollState
-                    )
-                    .padding(horizontal = MaterialTheme.spacing.medium)
-
-            ) {
-                AssistChip(
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Payments,
-                            contentDescription = stringResource(id = R.string.desc_payment_icon)
-                        )
-                    },
-                    label = { Text(text = stringResource(id = R.string.view_expenses)) },
-                    onClick = {}
-                )
-
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
-
-                AssistChip(
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Rounded.Event,
-                            contentDescription = stringResource(id = R.string.desc_event_icon)
-                        )
-                    },
-                    label = { Text(text = stringResource(id = R.string.view_next_payments)) },
-                    onClick = {}
-                )
-            }
+            ChipOptions()
         }
 
 
@@ -111,14 +43,87 @@ fun BudgetPlanHeader(modifier: Modifier) {
 }
 
 @Composable
+private fun Title() {
+    Text(
+        text = stringResource(id = R.string.remaining_cash),
+        style = MaterialTheme.typography.titleSmall
+    )
+}
+
+@Composable
+private fun RemainingCash() {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = Icons.Rounded.Money,
+            contentDescription = stringResource(id = R.string.desc_money_icon)
+        )
+        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+        Text(
+            text = stringResource(id = R.string.currency_amount, "R", 45000.0),
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
+    }
+}
+
+@Composable
+private fun BalanceInfo() {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        MoneyInfo(
+            modifier = Modifier,
+            title = stringResource(id = R.string.total_income_for_month),
+            amount = stringResource(id = R.string.currency_amount, "R", 64000.0)
+        )
+        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+        MoneyInfo(
+            modifier = Modifier,
+            title = stringResource(id = R.string.forecast_after_all_payments),
+            amount = stringResource(id = R.string.currency_amount, "R", 64000.0)
+        )
+    }
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun ChipOptions() {
+    val chipRowScrollState = rememberScrollState()
+
+    Row(
+        modifier = Modifier
+            .horizontalScroll(state = chipRowScrollState)
+            .padding(horizontal = MaterialTheme.spacing.medium)
+
+    ) {
+        AssistChip(
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Rounded.Payments,
+                    contentDescription = stringResource(id = R.string.desc_payment_icon)
+                )
+            },
+            label = { Text(text = stringResource(id = R.string.view_expenses)) },
+            onClick = {}
+        )
+
+        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+
+        AssistChip(
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Rounded.Event,
+                    contentDescription = stringResource(id = R.string.desc_event_icon)
+                )
+            },
+            label = { Text(text = stringResource(id = R.string.view_next_payments)) },
+            onClick = {}
+        )
+    }
+}
+
+@Composable
 private fun MoneyInfo(modifier: Modifier, title: String, amount: String) {
     Column(modifier = modifier) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelSmall,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1
-        )
+        SingleLineText(text = title, style = MaterialTheme.typography.labelSmall)
         Text(
             text = amount,
             style = MaterialTheme.typography.labelLarge,
