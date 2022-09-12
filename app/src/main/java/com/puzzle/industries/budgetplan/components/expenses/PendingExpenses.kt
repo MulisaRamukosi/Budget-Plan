@@ -2,6 +2,7 @@ package com.puzzle.industries.budgetplan.components.expenses
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -11,8 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.CheckboxButton
+import com.puzzle.industries.budgetplan.components.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.divider.HorizontalDivider
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -25,28 +28,49 @@ fun PendingExpenses(modifier: Modifier) {
                 .padding(horizontal = MaterialTheme.spacing.medium)
                 .padding(top = MaterialTheme.spacing.medium)
         ) {
-            Text(
-                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                text = stringResource(id = R.string.pending_expenses),
-                style = MaterialTheme.typography.bodyLarge
+            HomeCardTitle(
+                modifier = Modifier.Companion.align(alignment = Alignment.CenterHorizontally),
+                text = stringResource(id = R.string.pending_expenses)
             )
-
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
 
-            PendingExpense(checked = true)
-            PendingExpense(checked = false)
+            PendingExpenseItems()
+            //AllExpensesPaidView(modifier = Modifier.fillMaxWidth())
 
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
-
-            TotalExpensesAmount(currency = "R", amount = 1000.0)
 
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
 
             HorizontalDivider()
             AddUnplannedExpense()
-
         }
     }
+}
+
+@Composable
+private fun AllExpensesPaidView(modifier: Modifier = Modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(
+            imageVector = Icons.Rounded.CheckCircle,
+            contentDescription = stringResource(id = R.string.desc_check_icon),
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(size = 64.dp)
+        )
+        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
+        Text(
+            text = stringResource(id = R.string.all_expenses_paid),
+            color = MaterialTheme.colorScheme.secondary
+        )
+    }
+}
+
+@Composable
+private fun PendingExpenseItems() {
+    PendingExpense(checked = true)
+    PendingExpense(checked = false)
+
+    Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+
+    TotalExpensesAmount(currency = "R", amount = 1000.0)
 }
 
 @Composable
@@ -114,7 +138,7 @@ private fun PendingExpense(checked: Boolean) {
 @ExperimentalMaterial3WindowSizeClassApi
 fun PreviewPendingExpenses() {
     BudgetPlanTheme(dynamicColor = false) {
-        PendingExpenses(modifier = Modifier)
+        PendingExpenses(modifier = Modifier.fillMaxWidth())
     }
 }
 
