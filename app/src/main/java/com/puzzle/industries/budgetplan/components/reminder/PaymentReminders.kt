@@ -6,7 +6,6 @@ import androidx.compose.material.icons.rounded.Alarm
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.SingleLineText
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -21,24 +21,27 @@ import com.puzzle.industries.budgetplan.theme.spacing
 @Composable
 fun PaymentReminders(modifier: Modifier) {
     Card(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .padding(all = MaterialTheme.spacing.medium)
-        ) {
-            Text(
+
+        Column(modifier = Modifier.padding(all = MaterialTheme.spacing.medium)) {
+
+            HomeCardTitle(
                 modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-                text = stringResource(id = R.string.payment_reminders),
-                style = MaterialTheme.typography.bodyLarge
+                text = stringResource(id = R.string.payment_reminders)
             )
-
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            AlarmItems()
 
-            AlarmItem(modifier = Modifier.padding(bottom = MaterialTheme.spacing.medium))
-            AlarmItem(modifier = Modifier.padding(bottom = MaterialTheme.spacing.medium))
-            AlarmItem()
         }
     }
 }
+
+@Composable
+private fun AlarmItems() {
+    AlarmItem(modifier = Modifier.padding(bottom = MaterialTheme.spacing.medium))
+    AlarmItem(modifier = Modifier.padding(bottom = MaterialTheme.spacing.medium))
+    AlarmItem()
+}
+
 
 @Composable
 private fun AlarmItem(modifier: Modifier = Modifier) {
