@@ -12,7 +12,7 @@
     <string name="reminder">Reminders</string>
     <string name="add_income">Add Income</string>
     <string name="currency_amount">%s%.2f</string>
-    <string name="pie_chart_key">(%.2f%) %s</string>
+    <string name="pie_chart_key">(%.2f%%) %s</string>
     <string name="desc_add_income">Add income</string>
     <string name="desc_income">income amount</string>
     <string name="remaining_cash">Remaining Cash</string>
@@ -35,5 +35,7 @@
     <string name="desc_check_icon">check icon</string>
     <string name="all_expenses_paid">All expenses have been paid</string>
     <string name="current_month_expenses">Current Month Expenses</string>
+    <string name="desc_check_alarm_off_icon">Alarm off icon</string>
+    <string name="no_alarms_available">There are no payment alarms available</string>
 
 </resources>
