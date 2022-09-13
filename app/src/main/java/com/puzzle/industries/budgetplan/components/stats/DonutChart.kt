@@ -115,12 +115,15 @@ private fun ExpenseGroupsWithPercentage(
         titles.forEachIndexed { index: Int, title: String ->
 
             val percentage = percentages[index]
-            Row{
-                Text(text = "•", color = colors[index])
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                BulletPoint(color = colors[index])
                 Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
                 SingleLineText(
-                    text = stringResource(id = R.string.pie_chart_key, percentage, title),
-                    style = MaterialTheme.typography.bodyMedium
+                    text = stringResource(
+                        id = R.string.pie_chart_key,
+                        percentage,
+                        title
+                    ), style = MaterialTheme.typography.bodyMedium
                 )
             }
 
