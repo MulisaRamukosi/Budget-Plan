@@ -74,12 +74,13 @@ private fun DrawDonutChart(
     Canvas(modifier = modifier) {
         val canvasSize = size.width
         val donutRadius = size.width / 1.25f
+        val gap = if(colors.size == 1) 0 else (8 * 2)/colors.size
 
         angles.forEachIndexed { index, angle ->
             drawArc(
                 color = colors[index],
                 startAngle = startAngle,
-                sweepAngle = angle,
+                sweepAngle = angle - gap,
                 useCenter = false,
                 size = Size(width = donutRadius, height = donutRadius),
                 topLeft = Offset(
