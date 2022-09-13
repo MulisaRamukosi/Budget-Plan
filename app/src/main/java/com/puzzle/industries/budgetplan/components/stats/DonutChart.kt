@@ -21,18 +21,15 @@ import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.SingleLineText
+import com.puzzle.industries.budgetplan.data.stats.StatItem
 import com.puzzle.industries.budgetplan.previewProviders.providers.DonutChartPreviewProvider
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
-data class ChartItem(
-    val title: String,
-    val value: Double,
-    val color: Color
-)
+
 
 @Composable
-fun DonutChart(title: String, values: List<ChartItem>) {
+fun DonutChart(title: String, values: List<StatItem>) {
     val chartItemValues = values.map { it.value }
 
     val percentages = remember { convertValuesToPercentage(values = chartItemValues) }
