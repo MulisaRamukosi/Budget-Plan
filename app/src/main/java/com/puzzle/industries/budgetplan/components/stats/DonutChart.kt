@@ -132,19 +132,16 @@ private fun ExpenseGroupsWithPercentage(
     }
 }
 
-@Preview(showBackground = true)
+
+
+@Preview
 @Composable
 @ExperimentalMaterial3WindowSizeClassApi
-private fun PreviewExpenseGroupPieChart() {
+private fun PreviewExpenseGroupPieChart(@PreviewParameter(DonutChartPreviewProvider::class) values: List<StatItem>) {
     BudgetPlanTheme(dynamicColor = false) {
         DonutChart(
             title = "Current Month Expenses",
-            values = listOf(
-                ChartItem(title = "Entertainment", value = 70.0, color = Color(color = 0xFF103D61)),
-                ChartItem(title = "Groceries", value = 20.0, color = Color(color = 0xFF1F7947)),
-                ChartItem(title = "HouseHold", value = 40.0, color = Color(color = 0xFF9E9333)),
-                ChartItem(title = "Family", value = 40.0, color = Color(color = 0xFFA74343)),
-            )
+            values = values
         )
     }
 }
