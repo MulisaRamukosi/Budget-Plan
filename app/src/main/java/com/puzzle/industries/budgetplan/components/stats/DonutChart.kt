@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.BulletPoint
 import com.puzzle.industries.budgetplan.components.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.SingleLineText
 import com.puzzle.industries.budgetplan.data.stats.StatItem
@@ -46,7 +46,10 @@ fun DonutChart(title: String, values: List<StatItem>) {
 
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
 
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
                 DrawDonutChart(
                     modifier = Modifier.size(size = 80.dp),
                     angles = angles,
@@ -54,7 +57,7 @@ fun DonutChart(title: String, values: List<StatItem>) {
                 )
                 Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
                 ExpenseGroupsWithPercentage(
-                    modifier = Modifier.weight(weight = 1f),
+                    modifier = Modifier,
                     titles = titles,
                     percentages = percentages,
                     colors = colors
