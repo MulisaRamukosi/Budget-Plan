@@ -3,15 +3,19 @@ package com.puzzle.industries.budgetplan.components.reminder
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Alarm
+import androidx.compose.material.icons.rounded.AlarmOff
+import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.SingleLineText
@@ -30,8 +34,25 @@ fun PaymentReminders(modifier: Modifier) {
             )
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
             AlarmItems()
-
+            //NoAlarmsAvailable()
         }
+    }
+}
+
+@Composable
+private fun NoAlarmsAvailable(modifier: Modifier = Modifier) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Icon(
+            imageVector = Icons.Rounded.AlarmOff,
+            contentDescription = stringResource(id = R.string.desc_check_alarm_off_icon),
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(size = 64.dp)
+        )
+        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
+        Text(
+            text = stringResource(id = R.string.no_alarms_available),
+            color = MaterialTheme.colorScheme.secondary
+        )
     }
 }
 
