@@ -15,10 +15,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.BulletPoint
 import com.puzzle.industries.budgetplan.components.HomeCardTitle
+import com.puzzle.industries.budgetplan.components.divider.HorizontalDashedDivider
+import com.puzzle.industries.budgetplan.data.stats.Key
 import com.puzzle.industries.budgetplan.data.stats.StatItem
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -36,8 +39,9 @@ fun BarChart(title: String, values: List<BarGroup>) {
     val barMaxHeight = 60.dp
     var selectedItem = remember { values.size - 1 }
     val titles = remember { values.map { barGroup -> barGroup.title } }
-    val colors = remember { values.map { barGroup -> barGroup.values.map { it.color } } }
+    val colors = remember { values.map { barGroup -> barGroup.values.map { it.key.color } } }
     val baseValues = remember { values.map { barGroup -> barGroup.values.map { it.value } } }
+    val keys = remember { values.flatMap { it.values.map { statItem -> statItem.key } }.distinct() }
     val highestValue = remember {
         baseValues.fold(1.0) { acc, list ->
             if (list.max() > acc) list.max() else acc
@@ -71,26 +75,46 @@ fun BarChart(title: String, values: List<BarGroup>) {
             )
 
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
-
+            GraphKeys(keys = keys)
+            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
             SelectedGroupInfo(group = values[selectedItem])
         }
     }
 }
 
 @Composable
-private fun SelectedGroupInfo(modifier: Modifier = Modifier, group: BarGroup){
+private fun GraphKeys(modifier: Modifier = Modifier, keys: List<Key>){
+    Row(modifier = modifier){
+        keys.forEach { key ->
+            KeyInfo(key = key)
+            Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+        }
+    }
+}
+
+@Composable
+private fun KeyInfo(key: Key){
+    Row (verticalAlignment = Alignment.CenterVertically){
+        Bar(height = 10.dp.value, width = 4.dp.value, color = key.color)
+        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.extraSmall))
+        Text(text = key.title, style = MaterialTheme.typography.labelSmall)
+    }
+}
+
+@Composable
+private fun SelectedGroupInfo(modifier: Modifier = Modifier, group: BarGroup) {
     Column(modifier = modifier) {
         Text(text = group.title, style = MaterialTheme.typography.labelLarge)
 
         Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-           group.values.forEach { value ->
-               BulletPoint(color = value.color, size = 6.dp)
-               Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
-               Text(text = stringResource(id = R.string.currency_amount, "R", value.value))
-               Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
-           }
+            group.values.forEach { value ->
+                BulletPoint(color = value.key.color, size = 6.dp)
+                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+                Text(text = stringResource(id = R.string.currency_amount, "R", value.value))
+                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+            }
         }
     }
 }
@@ -104,8 +128,16 @@ private fun BarGraph(
     selectedItem: Int
 ) {
     Box(modifier = Modifier.fillMaxWidth()) {
-        Row {
-            Spacer(modifier = Modifier.weight(weight = 1f))
+        HorizontalDashedDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = barMaxHeight.dp)
+            ,
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outline
+        )
+
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
             titles.forEachIndexed { index, title ->
                 BarGroupBars(
                     title = title,
@@ -114,9 +146,9 @@ private fun BarGraph(
                     colors = barColors[index],
                     isSelected = index == selectedItem
                 )
-                Spacer(modifier = Modifier.weight(weight = 1f))
             }
         }
+
     }
 }
 
@@ -135,10 +167,12 @@ private fun BarGroupBars(
             horizontalArrangement = Arrangement.Center
         ) {
             Spacer(modifier = Modifier.size(size = 2.dp))
+
             values.forEachIndexed { index, value ->
                 Bar(height = value, color = colors[index])
                 Spacer(modifier = Modifier.size(size = 2.dp))
             }
+
         }
         Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.extraSmall))
         Text(text = title, style = MaterialTheme.typography.labelSmall)
@@ -161,12 +195,12 @@ private fun SelectionIndicator(modifier: Modifier) {
 }
 
 @Composable
-private fun Bar(height: Float, color: Color) {
+private fun Bar(height: Float, width: Float = 6.dp.value, cornerRadius: Dp = 2.dp, color: Color) {
     Box(
         modifier = Modifier
             .height(height = height.dp)
-            .clip(shape = RoundedCornerShape(size = 2.dp))
-            .width(width = 6.dp)
+            .clip(shape = RoundedCornerShape(size = cornerRadius))
+            .width(width = width.dp)
             .background(color = color)
     )
 }
@@ -191,14 +225,18 @@ private fun PreviewBarChart() {
                     title = "Jan",
                     values = listOf(
                         StatItem(
-                            title = "Income",
-                            value = 100.0,
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            key = Key(
+                                title = "Income",
+                                color = MaterialTheme.colorScheme.inversePrimary,
+                            ),
+                            value = 100.0
                         ),
                         StatItem(
-                            title = "Outcome",
-                            value = 60.0,
-                            color = MaterialTheme.colorScheme.primary
+                            key = Key(
+                                title = "Outcome",
+                                color = MaterialTheme.colorScheme.primary,
+                            ),
+                            value = 60.0
                         )
                     )
                 ),
@@ -206,19 +244,25 @@ private fun PreviewBarChart() {
                     title = "Feb",
                     values = listOf(
                         StatItem(
-                            title = "Income",
-                            value = 200.0,
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            key = Key(
+                                title = "Income",
+                                color = MaterialTheme.colorScheme.inversePrimary,
+                            ),
+                            value = 200.0
                         ),
                         StatItem(
-                            title = "Outcome",
-                            value = 80.0,
-                            color = MaterialTheme.colorScheme.primary
+                            key = Key(
+                                title = "Outcome",
+                                color = MaterialTheme.colorScheme.primary,
+                            ),
+                            value = 80.0
                         ),
                         StatItem(
-                            title = "Missed payments",
-                            value = 20.0,
-                            color = MaterialTheme.colorScheme.error
+                            key = Key(
+                                title = "Missed payments",
+                                color = MaterialTheme.colorScheme.error,
+                            ),
+                            value = 20.0
                         ),
                     )
                 ),
@@ -226,14 +270,18 @@ private fun PreviewBarChart() {
                     title = "Mar",
                     values = listOf(
                         StatItem(
-                            title = "Income",
-                            value = 200.0,
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            key = Key(
+                                title = "Income",
+                                color = MaterialTheme.colorScheme.inversePrimary,
+                            ),
+                            value = 200.0
                         ),
                         StatItem(
-                            title = "Outcome",
-                            value = 60.0,
-                            color = MaterialTheme.colorScheme.primary
+                            key = Key(
+                                title = "Outcome",
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            value = 60.0
                         )
                     )
                 ),
@@ -241,19 +289,25 @@ private fun PreviewBarChart() {
                     title = "Apr",
                     values = listOf(
                         StatItem(
-                            title = "Income",
-                            value = 200.0,
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            key = Key(
+                                title = "Income",
+                                color = MaterialTheme.colorScheme.inversePrimary
+                            ),
+                            value = 200.0
                         ),
                         StatItem(
-                            title = "Outcome",
-                            value = 30.0,
-                            color = MaterialTheme.colorScheme.primary
+                            key = Key(
+                                title = "Outcome",
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            value = 30.0
                         ),
                         StatItem(
-                            title = "Missed payments",
-                            value = 30.0,
-                            color = MaterialTheme.colorScheme.error
+                            key = Key(
+                                title = "Missed payments",
+                                color = MaterialTheme.colorScheme.error,
+                            ),
+                            value = 30.0
                         )
                     )
                 ),
@@ -261,14 +315,19 @@ private fun PreviewBarChart() {
                     title = "May",
                     values = listOf(
                         StatItem(
-                            title = "Income",
-                            value = 180.0,
-                            color = MaterialTheme.colorScheme.inversePrimary
+                            key = Key(
+                                title = "Income",
+                                color = MaterialTheme.colorScheme.inversePrimary
+                            ),
+                            value = 180.0
+
                         ),
                         StatItem(
-                            title = "Outcome",
-                            value = 100.0,
-                            color = MaterialTheme.colorScheme.primary
+                            key = Key(
+                                title = "Outcome",
+                                color = MaterialTheme.colorScheme.primary
+                            ),
+                            value = 100.0
                         )
                     )
                 ),
