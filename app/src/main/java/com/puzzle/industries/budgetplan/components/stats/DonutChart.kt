@@ -33,9 +33,9 @@ fun DonutChart(title: String, values: List<StatItem>) {
     val chartItemValues = values.map { it.value }
 
     val percentages = remember { convertValuesToPercentage(values = chartItemValues) }
-    val titles = remember { values.map { it.title } }
+    val titles = remember { values.map { it.key.title } }
     val angles = remember { convertPercentagesToAngles(percentages = percentages) }
-    val colors = remember { values.map { it.color } }
+    val colors = remember { values.map { it.key.color } }
 
     Card {
         Column(modifier = Modifier.padding(all = MaterialTheme.spacing.medium)) {
