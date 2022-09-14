@@ -18,9 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.BulletPoint
-import com.puzzle.industries.budgetplan.components.HomeCardTitle
-import com.puzzle.industries.budgetplan.components.SingleLineText
+import com.puzzle.industries.budgetplan.components.symbols.BulletPoint
+import com.puzzle.industries.budgetplan.components.text.HomeCardTitle
+import com.puzzle.industries.budgetplan.components.text.SingleLineText
 import com.puzzle.industries.budgetplan.data.stats.StatItem
 import com.puzzle.industries.budgetplan.previewProviders.providers.DonutChartPreviewProvider
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
