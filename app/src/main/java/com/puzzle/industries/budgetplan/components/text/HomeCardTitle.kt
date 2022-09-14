@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.components
+package com.puzzle.industries.budgetplan.components.text
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

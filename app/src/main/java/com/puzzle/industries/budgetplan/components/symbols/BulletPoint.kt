@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.components
+package com.puzzle.industries.budgetplan.components.symbols
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
