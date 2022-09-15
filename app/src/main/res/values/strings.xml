@@ -28,6 +28,8 @@
     <string name="desc_event_icon">Event icon</string>
     <string name="pending_expenses">Pending Expenses</string>
     <string name="total">Total</string>
+    <string name="currency">Currency</string>
+    <string name="amount">Amount</string>
     <string name="add_unplanned_expense">Add unplanned expense</string>
     <string name="desc_arrow_right_icon">arrow right icon</string>
     <string name="payment_reminders">Payment Reminders</string>
@@ -44,5 +46,14 @@
     <string name="add_expense">Add Expense</string>
     <string name="desc_add_icon">Add icon</string>
     <string name="reminder_for_payment">Reminder for payment</string>
+    <string name="guide_select_currency">Select currency which you would like to be displayed alongside your expenses</string>
+    <string name="note_changeable_in_settings">Note: This can be changed later in settings</string>
+    <string name="opt_continue">Continue</string>
+    <string name="guide_input_income">insert your monthly income, this will be used to initially setup your budget plan.</string>
+    <string name="note_income_addition">Note: You can add in more income later on</string>
+    <string name="allow_debt">Allow debt</string>
+    <string name="debt">Debt</string>
+    <string name="guide_allow_debt">Allow your budget plan to have a negative balance when outcomes exceed the income. This is disabled by default.</string>
+    <string name="desc_arrow_drop_down_icon">Drop down arrow icon</string>
 
 </resources>
