@@ -1,41 +1,37 @@
+@file:OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3WindowSizeClassApi::class,
+    ExperimentalAnimationApi::class
+)
+
 package com.puzzle.industries.budgetplan.components.expenses
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ExpandMore
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Event
+import androidx.compose.material.icons.rounded.Payments
+import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.divider.HorizontalDivider
-import com.puzzle.industries.budgetplan.ext.applyAnimation
+import com.puzzle.industries.budgetplan.components.MiniCaption
+import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
+import com.puzzle.industries.budgetplan.components.TitleAndDescription
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
-import kotlinx.coroutines.async
 
 
 @Composable
 @ExperimentalAnimationApi
 fun ExpenseGroupItem() {
-    var expanded by remember { mutableStateOf(false) }
+    /*var expanded by remember { mutableStateOf(false) }
     var arrowRotation by remember { mutableStateOf(0f) }
     var itemPadding by remember { mutableStateOf(0.dp.value) }
     val itemTargetPadding = MaterialTheme.spacing.medium.value
@@ -64,86 +60,78 @@ fun ExpenseGroupItem() {
 
         arrowAnim.await()
         paddingAnim.await()
-    }
+    }*/
 
-    ExpenseGroup(itemPadding, expanded, arrowRotation, onExpandClick = { expanded = !expanded })
+    ExpenseGroup(
+        title = "Expense Title",
+        description = "some description",
+        amount = 5000.0,
+        numOfExpenses = 12
+    )
 }
 
 @Composable
 private fun ExpenseGroup(
-    itemPadding: Float,
-    expanded: Boolean,
-    arrowRotation: Float,
-    onExpandClick: () -> Unit = {}
+    title: String,
+    description: String,
+    amount: Double,
+    numOfExpenses: Int
 ) {
-    Surface(modifier = Modifier.padding(all = itemPadding.dp), shape = MaterialTheme.shapes.medium) {
+    ModifiableItemWrapper(modifier = Modifier.fillMaxWidth()) {
         Column {
-            Row(
-                modifier = Modifier.padding(
-                    all = MaterialTheme.spacing.medium
-                ),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    modifier = Modifier
-                        .clickable {
-                            onExpandClick()
-                        }
-                        .rotate(arrowRotation),
-                    imageVector = Icons.Rounded.ExpandMore,
-                    contentDescription = stringResource(id = R.string.desc_expenses_toggle)
-                )
+            Column(modifier = it) {
 
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+                TitleAndDescription(title = title, description = description)
 
-                Column(modifier = Modifier.weight(weight = 1f)) {
-                    Text(
-                        text = "Expense Title",
-                        maxLines = 1,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Medium,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
 
-                    Text(
-                        text = "total expenses: 5",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
+                OutcomeAmount(amount = amount)
 
-
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
-
-                Text(
-                    modifier = Modifier.align(alignment = Alignment.Top),
-                    text = "R13",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
-                )
             }
 
-            AnimatedVisibility(
-                visible = expanded,
-                enter = expandVertically(expandFrom = Alignment.Top) { 0 },
-                exit = shrinkVertically(animationSpec = tween()) { fullHeight -> fullHeight / 2 },
-            ) {
-                HorizontalDivider(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.small))
+            ExpenseOptions(modifier = Modifier.padding(start = MaterialTheme.spacing.medium))
 
-                Column {
-                    repeat(5) {
-                        ExpenseItem(modifier = Modifier.padding(all = MaterialTheme.spacing.medium))
-                    }
-                }
-            }
+            MiniCaption(
+                modifier = it,
+                imageVector = Icons.Rounded.Payments,
+                message = stringResource(id = R.string.num_of_expenses, numOfExpenses)
+            )
         }
+
+    }
+}
+
+@Composable
+private fun ExpenseOptions(modifier: Modifier){
+    val chipRowScrollState = rememberScrollState()
+
+    Row(
+        modifier = modifier
+            .horizontalScroll(state = chipRowScrollState)
+
+    ) {
+        AssistChip(
+            label = { Text(text = stringResource(id = R.string.view_expenses)) },
+            onClick = {}
+        )
+
+        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+
+        AssistChip(
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = stringResource(id = R.string.desc_add_icon)
+                )
+            },
+            label = { Text(text = stringResource(id = R.string.add_expense)) },
+            onClick = {}
+        )
     }
 }
 
 @Preview
 @Composable
-@ExperimentalAnimationApi
-@ExperimentalMaterial3WindowSizeClassApi
 fun PreviewExpenseGroupItem() {
     BudgetPlanTheme(dynamicColor = false) {
         ExpenseGroupItem()
