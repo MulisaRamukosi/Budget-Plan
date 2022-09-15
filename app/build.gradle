@@ -86,7 +86,10 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':data')
 
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
+
+    //constraint layout
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
     //material 3
     implementation "androidx.compose.material3:material3-window-size-class:$material3_version"
