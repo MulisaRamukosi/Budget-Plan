@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+
 package com.puzzle.industries.budgetplan.components.appBar.bottomAppBar
 
 import android.content.res.Configuration
@@ -10,7 +12,6 @@ import com.puzzle.industries.budgetplan.previewProviders.providers.BottomAppBarP
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 
 @Composable
-@ExperimentalMaterial3Api
 fun bottomAppBar(
     selectedRoute: String = "",
     actions: List<BottomAppBarActionButton> = emptyList()
@@ -41,8 +42,6 @@ fun bottomAppBar(
 @Composable
 @Preview
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
-@ExperimentalMaterial3WindowSizeClassApi
-@ExperimentalMaterial3Api
 fun BottomAppBarPreview(
     @PreviewParameter(BottomAppBarPreviewDataProvider::class) bottomAppBarData: List<BottomAppBarActionButton>
 ) {
