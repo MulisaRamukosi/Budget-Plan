@@ -3,6 +3,7 @@ package com.puzzle.industries.budgetplan.components.expenses
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Alarm
+import androidx.compose.material.icons.rounded.Payments
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,56 +16,40 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.MiniCaption
+import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
+import com.puzzle.industries.budgetplan.components.TitleAndDescription
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
 @Composable
-fun ExpenseItem(modifier: Modifier = Modifier){
-    Column(modifier = modifier) {
-        Row{
-            Text(
-                modifier = Modifier.weight(1f),
-                text = "Expense Item",
-                maxLines = 1,
-                style = MaterialTheme.typography.bodyMedium,
-                overflow = TextOverflow.Ellipsis
-            )
+private fun ExpenseItem(
+    modifier: Modifier,
+    title: String,
+    amount: Double,
+    frequency: String
+) {
+    ModifiableItemWrapper(modifier = modifier) {
+        Column(modifier = it) {
 
-            Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+            TitleAndDescription(title = title)
 
-            Text(
-                text = "R13",
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.bodyLarge
-            )
-        }
+            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
 
-        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.extraSmall))
+            OutcomeAmount(amount = amount)
 
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                modifier = Modifier.size(size = 12.dp),
-                imageVector = Icons.Rounded.Alarm,
-                contentDescription = stringResource(id = R.string.desc_expense_frequency),
-                tint = MaterialTheme.colorScheme.secondary
-            )
+            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
 
-            Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
-
-            Text(
-                text = "monthly",
-                color = MaterialTheme.colorScheme.secondary,
-                style = MaterialTheme.typography.bodySmall
-            )
+            MiniCaption(imageVector = Icons.Rounded.Alarm, message = frequency)
         }
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview
 @ExperimentalMaterial3WindowSizeClassApi
 fun ExpenseItemPreview(){
     BudgetPlanTheme(dynamicColor = false) {
-        ExpenseItem()
+        ExpenseItem(modifier = Modifier.fillMaxWidth(), title = "Expense Item", amount = 13.0, frequency = "Monthly")
     }
 }
