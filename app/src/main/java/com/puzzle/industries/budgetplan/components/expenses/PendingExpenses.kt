@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.CheckboxButton
 import com.puzzle.industries.budgetplan.components.divider.HorizontalDivider
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.components.text.HomeCardTitle
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -32,15 +34,15 @@ fun PendingExpenses(modifier: Modifier) {
                 modifier = Modifier.Companion.align(alignment = Alignment.CenterHorizontally),
                 text = stringResource(id = R.string.pending_expenses)
             )
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            V_M_Space()
 
             PendingExpenseItems()
             //AllExpensesPaidView(modifier = Modifier.fillMaxWidth())
 
-
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
+            V_S_Space()
 
             HorizontalDivider()
+
             AddUnplannedExpense()
         }
     }
@@ -55,7 +57,7 @@ private fun AllExpensesPaidView(modifier: Modifier = Modifier) {
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(size = 64.dp)
         )
-        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
+        V_S_Space()
         Text(
             text = stringResource(id = R.string.all_expenses_paid),
             color = MaterialTheme.colorScheme.secondary
@@ -68,7 +70,7 @@ private fun PendingExpenseItems() {
     PendingExpense(checked = true)
     PendingExpense(checked = false)
 
-    Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+    V_M_Space()
 
     TotalExpensesAmount(currency = "R", amount = 1000.0)
 }

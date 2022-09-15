@@ -15,6 +15,7 @@ import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.MiniCaption
 import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
 import com.puzzle.industries.budgetplan.components.TitleAndDescription
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.data.IncomeDto
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -24,10 +25,15 @@ import com.puzzle.industries.budgetplan.theme.spacing
 fun IncomeItem(income: IncomeDto, onClick: () -> Unit = {}) {
     ModifiableItemWrapper(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = it) {
+
             TitleAndDescription(title = income.title, description = income.description)
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+
+            V_M_Space()
+
             IncomeAmount(amount = income.amount)
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+
+            V_M_Space()
+
             MiniCaption(imageVector = Icons.Rounded.Alarm, message = income.frequency)
         }
     }

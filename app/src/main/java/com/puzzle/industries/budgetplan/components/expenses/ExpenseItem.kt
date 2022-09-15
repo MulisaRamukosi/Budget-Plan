@@ -19,6 +19,7 @@ import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.MiniCaption
 import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
 import com.puzzle.industries.budgetplan.components.TitleAndDescription
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
@@ -34,11 +35,11 @@ private fun ExpenseItem(
 
             TitleAndDescription(title = title)
 
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            V_M_Space()
 
             OutcomeAmount(amount = amount)
 
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            V_M_Space()
 
             MiniCaption(imageVector = Icons.Rounded.Alarm, message = frequency)
         }

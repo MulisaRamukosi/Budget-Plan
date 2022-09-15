@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
@@ -35,7 +36,7 @@ fun TotalIncome(
             tint = MaterialTheme.colorScheme.primary
         )
 
-        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+        H_S_Space()
 
         Text(
             text = stringResource(id = R.string.currency_amount, "R", income),

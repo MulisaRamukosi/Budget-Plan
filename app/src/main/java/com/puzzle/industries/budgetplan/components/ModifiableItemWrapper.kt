@@ -20,6 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
+import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
+import com.puzzle.industries.budgetplan.components.spacer.H_XS_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_XS_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
@@ -61,7 +65,8 @@ fun TitleAndDescription(title: String, description: String = "") {
     )
 
     if (description.isNotBlank()) {
-        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.extraSmall))
+        V_XS_Space()
+
         Text(
             text = description,
             style = MaterialTheme.typography.labelSmall,
@@ -81,7 +86,7 @@ fun MiniCaption(modifier: Modifier = Modifier, imageVector: ImageVector, message
             tint = MaterialTheme.colorScheme.secondary
         )
 
-        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+        H_S_Space()
 
         Text(
             text = message,
@@ -105,21 +110,25 @@ private fun ModifyOptionsHolder(
             modifier = Modifier.padding(all = MaterialTheme.spacing.small),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+            H_S_Space()
+
             Icon(
                 modifier = Modifier.clickable { onDeleteClick() },
                 imageVector = Icons.Rounded.Delete,
                 contentDescription = stringResource(id = R.string.desc_delete_icon),
                 tint = Color.White
             )
-            Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+
+            H_M_Space()
+
             Icon(
                 modifier = Modifier.clickable { onEdit() },
                 imageVector = Icons.Rounded.Edit,
                 contentDescription = stringResource(id = R.string.desc_edit_icon),
                 tint = Color.White
             )
-            Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+
+            H_S_Space()
         }
     }
 }

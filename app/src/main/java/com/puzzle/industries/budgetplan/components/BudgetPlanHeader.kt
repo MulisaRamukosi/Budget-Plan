@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.components.text.SingleLineText
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -106,7 +107,7 @@ private fun ChipOptions() {
             onClick = {}
         )
 
-        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+        H_S_Space()
 
         AssistChip(
             leadingIcon = {
@@ -124,7 +125,9 @@ private fun ChipOptions() {
 @Composable
 private fun MoneyInfo(modifier: Modifier, title: String, amount: String) {
     Column(modifier = modifier) {
+
         SingleLineText(text = title, style = MaterialTheme.typography.labelSmall)
+
         Text(
             text = amount,
             style = MaterialTheme.typography.labelLarge,

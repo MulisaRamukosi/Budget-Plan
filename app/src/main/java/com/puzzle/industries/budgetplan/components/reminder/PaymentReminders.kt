@@ -16,6 +16,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.components.text.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.text.SingleLineText
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
@@ -31,7 +34,9 @@ fun PaymentReminders(modifier: Modifier) {
                 modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
                 text = stringResource(id = R.string.payment_reminders)
             )
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+
+            V_M_Space()
+
             AlarmItems()
             //NoAlarmsAvailable()
         }
@@ -47,7 +52,9 @@ private fun NoAlarmsAvailable(modifier: Modifier = Modifier) {
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(size = 64.dp)
         )
-        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
+
+        V_S_Space()
+
         Text(
             text = stringResource(id = R.string.no_alarms_available),
             color = MaterialTheme.colorScheme.secondary
@@ -72,7 +79,7 @@ private fun AlarmItem(modifier: Modifier = Modifier) {
             tint = MaterialTheme.colorScheme.tertiary
         )
 
-        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+        H_M_Space()
 
         Column {
             SingleLineText(text = "Investment", style = MaterialTheme.typography.bodyMedium)

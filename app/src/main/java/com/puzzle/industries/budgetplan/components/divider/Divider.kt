@@ -1,7 +1,9 @@
 package com.puzzle.industries.budgetplan.components.divider
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,4 +28,16 @@ fun HorizontalDashedDivider(
             pathEffect = pathEffect
         )
     }
+}
+
+@Composable
+fun HorizontalDivider(
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.outline
+) {
+    Divider(
+        modifier = modifier
+            .fillMaxWidth(),
+        color = color
+    )
 }

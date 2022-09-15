@@ -1,7 +1,9 @@
 @file:OptIn(
     ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class,
     ExperimentalMaterial3WindowSizeClassApi::class,
-    ExperimentalAnimationApi::class
+    ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class
 )
 
 package com.puzzle.industries.budgetplan.components.expenses
@@ -24,44 +26,14 @@ import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.MiniCaption
 import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
 import com.puzzle.industries.budgetplan.components.TitleAndDescription
+import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
 
 @Composable
-@ExperimentalAnimationApi
 fun ExpenseGroupItem() {
-    /*var expanded by remember { mutableStateOf(false) }
-    var arrowRotation by remember { mutableStateOf(0f) }
-    var itemPadding by remember { mutableStateOf(0.dp.value) }
-    val itemTargetPadding = MaterialTheme.spacing.medium.value
-
-    val arrowRotationAnim = remember { Animatable(arrowRotation) }
-    val itemPaddingAnim = remember { Animatable(itemPadding) }
-
-    LaunchedEffect(key1 = expanded) {
-        val arrowAnim = async {
-            arrowRotationAnim.applyAnimation(
-                targetValue = if (expanded) 180f else 0f,
-                durationMillis = 500
-            ) {
-                arrowRotation = it
-            }
-        }
-
-        val paddingAnim = async {
-            itemPaddingAnim.applyAnimation(
-                targetValue = if (expanded) itemTargetPadding else 0.dp.value,
-                durationMillis = 500
-            ) {
-                itemPadding = it
-            }
-        }
-
-        arrowAnim.await()
-        paddingAnim.await()
-    }*/
-
     ExpenseGroup(
         title = "Expense Title",
         description = "some description",
@@ -80,13 +52,11 @@ private fun ExpenseGroup(
     ModifiableItemWrapper(modifier = Modifier.fillMaxWidth()) {
         Column {
             Column(modifier = it) {
-
                 TitleAndDescription(title = title, description = description)
 
-                Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+                V_M_Space()
 
                 OutcomeAmount(amount = amount)
-
             }
 
             ExpenseOptions(modifier = Modifier.padding(start = MaterialTheme.spacing.medium))
@@ -115,7 +85,7 @@ private fun ExpenseOptions(modifier: Modifier){
             onClick = {}
         )
 
-        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+        H_S_Space()
 
         AssistChip(
             leadingIcon = {

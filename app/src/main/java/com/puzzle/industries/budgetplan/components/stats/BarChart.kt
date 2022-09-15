@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.symbols.BulletPoint
 import com.puzzle.industries.budgetplan.components.divider.HorizontalDashedDivider
+import com.puzzle.industries.budgetplan.components.spacer.*
 import com.puzzle.industries.budgetplan.components.text.HomeCardTitle
 import com.puzzle.industries.budgetplan.data.stats.Key
 import com.puzzle.industries.budgetplan.data.stats.StatItem
@@ -64,7 +65,7 @@ fun BarChart(title: String, values: List<BarGroup>) {
                 text = title
             )
 
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            V_M_Space()
 
             BarGraph(
                 titles = titles,
@@ -74,9 +75,12 @@ fun BarChart(title: String, values: List<BarGroup>) {
                 selectedItem = selectedItem
             )
 
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            V_M_Space()
+
             GraphKeys(keys = keys)
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+
+            V_M_Space()
+
             SelectedGroupInfo(group = values[selectedItem])
         }
     }
@@ -87,7 +91,8 @@ private fun GraphKeys(modifier: Modifier = Modifier, keys: List<Key>){
     Row(modifier = modifier){
         keys.forEach { key ->
             KeyInfo(key = key)
-            Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+
+            H_M_Space()
         }
     }
 }
@@ -95,8 +100,11 @@ private fun GraphKeys(modifier: Modifier = Modifier, keys: List<Key>){
 @Composable
 private fun KeyInfo(key: Key){
     Row (verticalAlignment = Alignment.CenterVertically){
+
         Bar(height = 10.dp.value, width = 4.dp.value, color = key.color)
-        Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.extraSmall))
+
+        H_XS_Space()
+
         Text(text = key.title, style = MaterialTheme.typography.labelSmall)
     }
 }
@@ -106,14 +114,18 @@ private fun SelectedGroupInfo(modifier: Modifier = Modifier, group: BarGroup) {
     Column(modifier = modifier) {
         Text(text = group.title, style = MaterialTheme.typography.labelLarge)
 
-        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
+        V_S_Space()
 
         Row(verticalAlignment = Alignment.CenterVertically) {
             group.values.forEach { value ->
+
                 BulletPoint(color = value.key.color, size = 6.dp)
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+
+                H_S_Space()
+
                 Text(text = stringResource(id = R.string.currency_amount, "R", value.value))
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+
+                H_M_Space()
             }
         }
     }
@@ -166,19 +178,22 @@ private fun BarGroupBars(
             verticalAlignment = Alignment.Bottom,
             horizontalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.size(size = 2.dp))
+            H_XS_Space()
 
             values.forEachIndexed { index, value ->
                 Bar(height = value, color = colors[index])
-                Spacer(modifier = Modifier.size(size = 2.dp))
+                H_XS_Space()
             }
 
         }
-        Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.extraSmall))
+
+        V_XS_Space()
+
         Text(text = title, style = MaterialTheme.typography.labelSmall)
 
         if (isSelected) {
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.extraSmall))
+            V_XS_Space()
+
             SelectionIndicator(modifier = Modifier.width(width = 20.dp))
         }
     }

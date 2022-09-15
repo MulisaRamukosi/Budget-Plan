@@ -1,4 +1,7 @@
-@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@file:OptIn(
+    ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3WindowSizeClassApi::class,
+    ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3WindowSizeClassApi::class
+)
 
 package com.puzzle.industries.budgetplan.components.reminder
 
@@ -17,6 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.MiniCaption
 import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
+import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_XS_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
@@ -30,15 +36,20 @@ fun PaymentReminderItem(
 ) {
     ModifiableItemWrapper(modifier = modifier) {
         Column(modifier = it) {
+
             SubtitleAndTitle(title)
 
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            V_M_Space()
+
             Amount(amount)
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+
+            V_M_Space()
 
             Row {
                 MiniCaption(imageVector = Icons.Rounded.Alarm, message = paymentDate)
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+
+                H_M_Space()
+
                 MiniCaption(imageVector = Icons.Rounded.Repeat, message = reminderFrequency)
             }
 
@@ -62,7 +73,7 @@ private fun SubtitleAndTitle(title: String) {
         style = MaterialTheme.typography.labelSmall
     )
 
-    Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.extraSmall))
+    V_XS_Space()
 
     Text(
         text = title,

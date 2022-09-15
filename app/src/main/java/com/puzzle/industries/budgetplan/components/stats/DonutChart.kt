@@ -18,6 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
+import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.symbols.BulletPoint
 import com.puzzle.industries.budgetplan.components.text.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.text.SingleLineText
@@ -44,7 +47,7 @@ fun DonutChart(title: String, values: List<StatItem>) {
                 text = title
             )
 
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+            V_M_Space()
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -55,7 +58,9 @@ fun DonutChart(title: String, values: List<StatItem>) {
                     angles = angles,
                     colors = colors
                 )
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.medium))
+
+                H_M_Space()
+
                 ExpenseGroupsWithPercentage(
                     modifier = Modifier,
                     titles = titles,
@@ -120,8 +125,11 @@ private fun ExpenseGroupsWithPercentage(
 
             val percentage = percentages[index]
             Row(verticalAlignment = Alignment.CenterVertically) {
+
                 BulletPoint(color = colors[index])
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
+
+                H_S_Space()
+
                 SingleLineText(
                     text = stringResource(
                         id = R.string.pie_chart_key,
