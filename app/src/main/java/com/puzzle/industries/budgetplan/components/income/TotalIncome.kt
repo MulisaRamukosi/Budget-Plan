@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Money
 import androidx.compose.material.icons.rounded.Payments
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +30,7 @@ fun TotalIncome(
 
     ) {
         Icon(
-            imageVector = Icons.Rounded.Payments,
+            imageVector = Icons.Rounded.Money,
             contentDescription = stringResource(id = R.string.desc_income),
             tint = MaterialTheme.colorScheme.primary
         )
@@ -39,7 +40,7 @@ fun TotalIncome(
         Text(
             text = stringResource(id = R.string.currency_amount, "R", income),
             color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.labelLarge
         )
     }
 }
