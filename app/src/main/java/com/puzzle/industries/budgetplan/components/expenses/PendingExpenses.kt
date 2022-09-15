@@ -15,8 +15,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.CheckboxButton
-import com.puzzle.industries.budgetplan.components.HomeCardTitle
 import com.puzzle.industries.budgetplan.components.divider.HorizontalDivider
+import com.puzzle.industries.budgetplan.components.text.HomeCardTitle
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
