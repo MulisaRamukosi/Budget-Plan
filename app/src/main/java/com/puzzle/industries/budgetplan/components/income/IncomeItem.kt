@@ -10,10 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.MiniCaption
+import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
+import com.puzzle.industries.budgetplan.components.TitleAndDescription
 import com.puzzle.industries.budgetplan.data.IncomeDto
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -21,65 +22,38 @@ import com.puzzle.industries.budgetplan.theme.spacing
 @Composable
 @ExperimentalMaterial3Api
 fun IncomeItem(income: IncomeDto, onClick: () -> Unit = {}) {
-    Card(modifier = Modifier.fillMaxWidth(), onClick = onClick) {
-        Column(modifier = Modifier.padding(all = MaterialTheme.spacing.medium)) {
-            Text(
-                text = income.title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium
-            )
-
-            if (income.description.isNotBlank()) {
-                Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-                Text(
-                    text = income.description,
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 4,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
+    ModifiableItemWrapper(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = it) {
+            TitleAndDescription(title = income.title, description = income.description)
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Rounded.Add,
-                    contentDescription = stringResource(id = R.string.desc_income),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-
-                Text(
-                    text = stringResource(id = R.string.currency_amount, "R", income.amount),
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-
+            IncomeAmount(amount = income.amount)
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    modifier = Modifier.size(size = 12.dp),
-                    imageVector = Icons.Rounded.Alarm,
-                    contentDescription = stringResource(id = R.string.desc_income_frequency),
-                    tint = MaterialTheme.colorScheme.secondary
-                )
-
-                Spacer(modifier = Modifier.width(width = MaterialTheme.spacing.small))
-
-                Text(
-                    text = income.frequency,
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
+            MiniCaption(imageVector = Icons.Rounded.Alarm, message = income.frequency)
         }
     }
 }
 
 @Composable
-@Preview(showBackground = true)
+private fun IncomeAmount(amount: Double) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            imageVector = Icons.Rounded.Add,
+            contentDescription = stringResource(id = R.string.desc_income),
+            tint = MaterialTheme.colorScheme.primary
+        )
+
+        Text(
+            text = stringResource(id = R.string.currency_amount, "R", amount),
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.headlineSmall
+        )
+    }
+}
+
+
+
+@Composable
+@Preview
 @ExperimentalMaterial3Api
 @ExperimentalMaterial3WindowSizeClassApi
 fun IncomeItemPreview() {
