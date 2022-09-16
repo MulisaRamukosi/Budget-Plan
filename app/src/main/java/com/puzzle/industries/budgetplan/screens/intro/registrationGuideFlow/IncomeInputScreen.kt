@@ -16,8 +16,8 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
 @Composable
-fun IncomeInputScreen(modifier: Modifier = Modifier) {
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+fun IncomeInputScreen() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         IncomeInputSection(
             modifier = Modifier.padding(all = MaterialTheme.spacing.large),
             onContinueClick = {}
@@ -58,6 +58,6 @@ private fun IncomeInput(modifier: Modifier = Modifier) {
 @Composable
 fun PreviewIncomeInputScreen() {
     BudgetPlanTheme(dynamicColor = false) {
-        IncomeInputScreen(modifier = Modifier.fillMaxSize())
+        IncomeInputScreen()
     }
 }
