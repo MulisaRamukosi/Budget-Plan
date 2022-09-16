@@ -55,5 +55,14 @@
     <string name="debt">Debt</string>
     <string name="guide_allow_debt">Allow your budget plan to have a negative balance when outcomes exceed the income. This is disabled by default.</string>
     <string name="desc_arrow_drop_down_icon">Drop down arrow icon</string>
+    <string name="welcome">Welcome</string>
+    <string name="about_budget_plan_app_summary">Budget Plan is an app to assist you with tracking your finances properly by allowing you to create a budget plan.</string>
+    <string name="opt_next">Next</string>
+    <string name="about_budget_plan_features">Creates a budget plan and allows you to add in your incomes and expenses.</string>
+    <string name="usage_tracking">Usage Tracking</string>
+    <string name="about_usage_tracking">Track how you spend your money and how your income is distributed amongst your expenses.</string>
+    <string name="about_reminder">Create alarms and get notifications for payments that you might forget to pay.</string>
+    <string name="setup">Setup</string>
+    <string name="about_setup">Let\'s setup your initial budget plan.</string>
 
 </resources>
