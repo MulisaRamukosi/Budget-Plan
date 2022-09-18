@@ -28,7 +28,7 @@ fun appScreensGraph(
     return navController.createGraph(startDestination = Routes.Splash.path) {
         splashScreen(navController = navController, viewModel = viewModel())
         welcomeScreen(navController = navController, viewModel = viewModel())
-        SetupScreensGraph(navController = navController)
+        registrationGuideFlowGraph(navController = navController)
 
         composable(route = Routes.Main.path) {
             MainScreen()

@@ -10,7 +10,7 @@ import com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow.Debt
 import com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow.IncomeInputScreen
 
 @Composable
-fun NavGraphBuilder.RegistrationGuideFlowGraph(navController: NavHostController) {
+fun NavGraphBuilder.registrationGuideFlowGraph(navController: NavHostController) {
     navigation(startDestination = Routes.Currency.path, route = Routes.Setup.path ){
         currencyScreen(navController = navController)
         incomeScreen(navController = navController)
