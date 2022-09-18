@@ -3,36 +3,74 @@ package com.puzzle.industries.budgetplan.navigation.graphs
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraph
-import androidx.navigation.NavHostController
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.*
 import androidx.navigation.compose.composable
-import androidx.navigation.createGraph
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.puzzle.industries.budgetplan.navigation.constants.MainScreens
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
+import com.puzzle.industries.budgetplan.navigation.graphs.ext.clearAllPreviousRoutes
+import com.puzzle.industries.budgetplan.screens.intro.WelcomeScreen
 import com.puzzle.industries.budgetplan.screens.main.MainScreen
-import com.puzzle.industries.budgetplan.screens.SplashScreen
+import com.puzzle.industries.budgetplan.screens.splashScreen
+import com.puzzle.industries.budgetplan.viewModels.SplashScreenViewModel
+import com.puzzle.industries.budgetplan.viewModels.WelcomeMessagesViewModel
+
 
 @Composable
 @ExperimentalPagerApi
 @ExperimentalMaterial3Api
 @ExperimentalAnimationApi
-fun appScreensGraph(navController: NavHostController) : NavGraph {
-    return navController.createGraph(startDestination = MainScreens.SPLASH.name){
-        composable(route = Routes.Splash.path){
-            SplashScreen{
-                navController.navigate(route = Routes.Main.path) {
-                    navController.graph.startDestinationRoute?.let {
-                        popUpTo(route = it) {
-                            inclusive = true
-                        }
-                    }
-                }
-            }
+fun appScreensGraph(
+    navController: NavHostController
+): NavGraph {
+    return navController.createGraph(startDestination = Routes.Splash.path) {
+        splashScreen(navController = navController, viewModel = viewModel())
+        welcomeScreen(navController = navController, viewModel = viewModel())
+        SetupScreensGraph(navController = navController)
+
+        composable(route = Routes.Main.path) {
+            MainScreen()
         }
 
-        composable(route = Routes.Main.path){
-            MainScreen()
+    }
+}
+
+private fun NavGraphBuilder.splashScreen(
+    navController: NavHostController,
+    viewModel: SplashScreenViewModel
+) {
+    composable(route = Routes.Splash.path) {
+        splashScreen {
+            val destinationPath: String =
+                if (viewModel.isFirstTimeLaunch()) Routes.Welcome.path
+                else Routes.Main.path
+
+            navController.navigate(route = destinationPath) {
+                clearAllPreviousRoutes(navController)
+            }
+        }
+    }
+}
+
+private fun NavGraphBuilder.welcomeScreen(
+    navController: NavHostController,
+    viewModel: WelcomeMessagesViewModel
+) {
+    composable(route = Routes.Welcome.path) {
+
+        val currentPage by viewModel.getCurrentPage().observeAsState(initial = 0)
+
+        WelcomeScreen(
+            currentPage = currentPage,
+            numOfPages = viewModel.getNumOfPages(),
+            currentWelcomeMessage = viewModel.getCurrentWelcomeMessage()
+        ) {
+            val navigatedToNextPage: Boolean = viewModel.navigateToNextMessage()
+            if (!navigatedToNextPage) {
+                navController.navigate(route = Routes.Setup.path)
+            }
         }
     }
 }
