@@ -2,55 +2,80 @@
 
 package com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.viewModels.registrationFlow.IncomeInputViewModel
 
 @Composable
-fun IncomeInputScreen() {
+fun IncomeInputScreen(
+    viewModel: IncomeInputViewModel = viewModel(),
+    onContinueClick: (Double) -> Unit = {}
+) {
+
+    val income by viewModel.income().observeAsState(initial = 0.0)
+
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        IncomeInputSection(
-            modifier = Modifier.padding(all = MaterialTheme.spacing.large),
-            onContinueClick = {}
-        )
+
+        Column(modifier = Modifier.padding(all = MaterialTheme.spacing.large)) {
+
+            GuideFlowComponents.InfoSection(
+                title = stringResource(id = R.string.income),
+                message = stringResource(id = R.string.guide_input_income),
+                note = stringResource(id = R.string.note_income_addition)
+            )
+
+            IncomeInput(income = income, onValueChange = { viewModel.setIncome(it) })
+
+            V_M_Space()
+
+            GuideFlowComponents.Continue(
+                enabled = income > 0,
+                onContinueClick = { onContinueClick(income) }
+            )
+        }
     }
 }
 
 @Composable
-private fun IncomeInputSection(modifier: Modifier, onContinueClick: () -> Unit) {
-    Column(modifier = modifier) {
-        GuideFlowComponents.InfoSection(
-            title = stringResource(id = R.string.income),
-            message = stringResource(id = R.string.guide_input_income),
-            note = stringResource(id = R.string.note_income_addition)
-        )
-        IncomeInput()
-        V_M_Space()
-        GuideFlowComponents.Continue(onContinueClick = onContinueClick)
-    }
-}
+private fun IncomeInput(
+    modifier: Modifier = Modifier,
+    income: Double,
+    onValueChange: (Double) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
 
-@Composable
-private fun IncomeInput(modifier: Modifier = Modifier) {
     OutlinedTextField(
         modifier = modifier,
-        value = "",
-        onValueChange = {},
+        value = if (income == 0.0) "" else income.toString(),
+        onValueChange = { onValueChange(it.toDouble()) },
         singleLine = true,
-        label = {
-            Text(
-                text = stringResource(id = R.string.amount)
-            )
-        })
+        label = { Text(text = stringResource(id = R.string.amount)) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+        keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+    )
 }
 
 

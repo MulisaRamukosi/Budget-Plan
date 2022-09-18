@@ -2,10 +2,9 @@
 
 package com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,45 +13,69 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
+import com.puzzle.industries.budgetplan.data.CountryCurrency
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
 
 @Composable
-fun CurrencySelectionScreen(modifier: Modifier = Modifier) {
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        CurrencySelectionSection(
-            modifier = Modifier.padding(all = MaterialTheme.spacing.large),
-            onContinueClick = {}
-        )
+fun CurrencySelectionScreen(
+    modifier: Modifier = Modifier,
+    viewModel: CurrencyViewModel = viewModel(),
+    onContinueClick: (CountryCurrency) -> Unit = {}
+) {
+    val selectedCountry by viewModel.getSelectedCountry().observeAsState(initial = viewModel.getDefaultCountry())
+
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+
+        Column(modifier = Modifier.padding(all = MaterialTheme.spacing.large)) {
+
+            GuideFlowComponents.InfoSection(
+                title = stringResource(id = R.string.currency),
+                message = stringResource(id = R.string.guide_select_currency),
+                note = stringResource(id = R.string.note_changeable_in_settings)
+            )
+
+            CurrencySelection(countryCurrency = selectedCountry)
+
+            V_M_Space()
+
+            GuideFlowComponents.Continue(onContinueClick = {onContinueClick(selectedCountry)})
+        }
     }
 }
 
-@Composable
-private fun CurrencySelectionSection(modifier: Modifier, onContinueClick: () -> Unit) {
-    Column(modifier = modifier) {
-        GuideFlowComponents.InfoSection(
-            title = stringResource(id = R.string.currency),
-            message = stringResource(id = R.string.guide_select_currency),
-            note = stringResource(id = R.string.note_changeable_in_settings)
-        )
-        CurrencySelection()
-        V_M_Space()
-        GuideFlowComponents.Continue(onContinueClick = onContinueClick)
-    }
-}
+
 
 @Composable
-private fun CurrencySelection() {
+private fun CurrencySelection(countryCurrency: CountryCurrency) {
     OutlinedTextField(
-        value = "ZAR-South Africa",
+        value = "${countryCurrency.currency}-${countryCurrency.country}",
         onValueChange = {},
         readOnly = true,
+        leadingIcon = {
+            Image(
+                modifier = Modifier
+                    .size(width = 40.dp, height = 30.dp)
+                    .padding(all = MaterialTheme.spacing.extraSmall)
+                    .clip(shape = RoundedCornerShape(size = MaterialTheme.spacing.small)),
+                painter = painterResource(id = countryCurrency.flagId),
+                contentDescription = countryCurrency.country
+            )
+
+        },
         trailingIcon = {
             Icon(
                 imageVector = Icons.Rounded.ArrowDropDown,
