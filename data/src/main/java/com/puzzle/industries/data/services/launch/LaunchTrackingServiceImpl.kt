@@ -12,7 +12,7 @@ internal class LaunchTrackingServiceImpl(context: Context) : LaunchTrackingServi
 
     private val launchTrackingPreferences: SharedPreferences =
         context.getSharedPreferences(prefName, Context.MODE_PRIVATE)
-    private val launchTrackingEditor: Lazy<SharedPreferences.Editor> = lazy {
+    private val launchTrackingEditor: SharedPreferences.Editor by lazy {
         launchTrackingPreferences.edit()
     }
 
@@ -21,6 +21,6 @@ internal class LaunchTrackingServiceImpl(context: Context) : LaunchTrackingServi
     }
 
     override fun updateToNotFirstTimeLaunch() {
-        launchTrackingEditor.value.putBoolean(launchTrackingKey, false).commit()
+        launchTrackingEditor.putBoolean(launchTrackingKey, false).commit()
     }
 }
