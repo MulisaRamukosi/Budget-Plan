@@ -1,3 +1,9 @@
+@file:OptIn(
+    ExperimentalPagerApi::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationApi::class
+)
+
 package com.puzzle.industries.budgetplan.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -12,9 +18,6 @@ import com.puzzle.industries.budgetplan.navigation.graphs.appScreensGraph
 import com.puzzle.industries.budgetplan.navigation.graphs.mainScreenGraph
 
 @Composable
-@ExperimentalPagerApi
-@ExperimentalMaterial3Api
-@ExperimentalAnimationApi
 fun AppScreensNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     NavHost(
@@ -25,9 +28,6 @@ fun AppScreensNavHost(modifier: Modifier = Modifier) {
 }
 
 @Composable
-@ExperimentalPagerApi
-@ExperimentalMaterial3Api
-@ExperimentalAnimationApi
 fun MainScreenNestedNavHost(navController: NavHostController, modifier: Modifier = Modifier){
     NavHost(
         modifier = modifier,
