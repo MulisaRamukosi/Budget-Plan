@@ -1,8 +1,6 @@
 package com.puzzle.industries.budgetplan.screens
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationVector
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +19,7 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(onNavigate : () -> Unit) {
+fun splashScreen(onNavigate : () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -112,7 +110,7 @@ private fun SplashText(modifier: Modifier = Modifier, text: String) {
 @ExperimentalMaterial3WindowSizeClassApi
 private fun SplashScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        SplashScreen {
+        splashScreen {
 
         }
     }
