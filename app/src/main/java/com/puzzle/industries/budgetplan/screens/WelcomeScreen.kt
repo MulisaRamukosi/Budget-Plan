@@ -1,28 +1,34 @@
 @file:OptIn(
-    ExperimentalMaterial3WindowSizeClassApi::class,
     ExperimentalMaterial3WindowSizeClassApi::class
 )
 
-package com.puzzle.industries.budgetplan.screens.intro
+package com.puzzle.industries.budgetplan.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.TrailingIconButton
+import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
@@ -36,6 +42,7 @@ fun WelcomeScreen(
     currentPage: Int,
     numOfPages: Int,
     currentWelcomeMessage: WelcomeMessage,
+    windowSizeClass: WindowSizeClass,
     onNextClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -44,6 +51,8 @@ fun WelcomeScreen(
             currentWelcomeMessage = currentWelcomeMessage,
             selectedIndex = currentPage,
             numOfPages = numOfPages,
+            widthSizeClass = windowSizeClass.widthSizeClass,
+            heightSizeClass = windowSizeClass.heightSizeClass,
             onNextClick = onNextClick
         )
     }
@@ -55,8 +64,40 @@ private fun WelcomeMessageSection(
     currentWelcomeMessage: WelcomeMessage,
     selectedIndex: Int,
     numOfPages: Int,
+    widthSizeClass: WindowWidthSizeClass,
+    heightSizeClass: WindowHeightSizeClass,
     onNextClick: () -> Unit
 ) {
+    if(heightSizeClass == WindowHeightSizeClass.Compact){
+        LandScapeMessageSection(
+            modifier = modifier,
+            currentWelcomeMessage = currentWelcomeMessage,
+            selectedIndex = selectedIndex,
+            numOfPages = numOfPages,
+            onNextClick = onNextClick
+        )
+    }
+    else {
+        PortraitMessageSection(
+            modifier = modifier,
+            currentWelcomeMessage = currentWelcomeMessage,
+            selectedIndex = selectedIndex,
+            numOfPages = numOfPages,
+            onNextClick = onNextClick
+        )
+    }
+
+
+}
+
+@Composable
+private fun PortraitMessageSection(
+    modifier: Modifier,
+    currentWelcomeMessage: WelcomeMessage,
+    selectedIndex: Int,
+    numOfPages: Int,
+    onNextClick: () -> Unit
+){
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
 
         VectorImage(
@@ -80,6 +121,37 @@ private fun WelcomeMessageSection(
         V_M_Space()
 
         NextButton(isLastStep = selectedIndex == (numOfPages - 1), onNextClick = onNextClick)
+    }
+}
+
+@Composable
+private fun LandScapeMessageSection(
+    modifier: Modifier,
+    currentWelcomeMessage: WelcomeMessage,
+    selectedIndex: Int,
+    numOfPages: Int,
+    onNextClick: () -> Unit
+) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
+        VectorImage(
+            modifier = Modifier.size(120.dp),
+            resId = currentWelcomeMessage.vectorId,
+            contentDescription = stringResource(id = currentWelcomeMessage.titleId)
+        )
+
+        H_M_Space()
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Title(resId = currentWelcomeMessage.titleId)
+
+            V_S_Space()
+
+            Message(resId = currentWelcomeMessage.messageId)
+
+            V_S_Space()
+
+            NextButton(isLastStep = selectedIndex == (numOfPages - 1), onNextClick = onNextClick)
+        }
     }
 }
 
@@ -160,7 +232,13 @@ private fun PreviewWelcomeScreen() {
                 vectorId = R.drawable.ic_welcome,
                 titleId = R.string.welcome,
                 messageId = R.string.about_budget_plan_app_summary
-            )
+            ),
+            windowSizeClass = WindowSizeClass.calculateFromSize(
+                DpSize(
+                    width = 500.dp,
+                    height = 800.dp
+                )
+            ),
         ) {}
     }
 }
