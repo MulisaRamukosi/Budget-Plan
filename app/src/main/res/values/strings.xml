@@ -64,5 +64,7 @@
     <string name="about_reminder">Create alarms and get notifications for payments that you might forget to pay.</string>
     <string name="setup">Setup</string>
     <string name="about_setup">Let\'s setup your initial budget plan.</string>
+    <string name="base_income">Base income</string>
+    <string name="desc_base_income">Monthly income</string>
 
 </resources>
