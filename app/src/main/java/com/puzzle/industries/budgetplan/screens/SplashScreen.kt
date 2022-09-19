@@ -19,7 +19,7 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun splashScreen(onNavigate : () -> Unit) {
+fun SplashScreen(onNavigate : () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -110,7 +110,7 @@ private fun SplashText(modifier: Modifier = Modifier, text: String) {
 @ExperimentalMaterial3WindowSizeClassApi
 private fun SplashScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        splashScreen {
+        SplashScreen {
 
         }
     }
