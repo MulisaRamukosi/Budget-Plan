@@ -22,23 +22,16 @@ import com.puzzle.industries.budgetplan.theme.util.ColorPaletteType
 import com.puzzle.industries.budgetplan.theme.util.FontType
 
 @Composable
-@ExperimentalMaterial3WindowSizeClassApi
 fun BudgetPlanTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
-    windowSizeClass: WindowSizeClass = WindowSizeClass.calculateFromSize(
-        DpSize(
-            width = 500.dp,
-            height = 800.dp
-        )
-    ),
     content: @Composable () -> Unit
 ) {
 
     val colorPaletteType: ColorPaletteType =
         if (darkTheme) ColorPaletteType.DARK else ColorPaletteType.LIGHT
     val typography = TypographyFactory.getTypography(FontType.MONTSERRAT)
-    val spacing = SpacingFactory.getSpacing(windowSizeClass.widthSizeClass)
+    val spacing = SpacingFactory.getSpacing()
 
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
