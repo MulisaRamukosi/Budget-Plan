@@ -8,6 +8,7 @@ package com.puzzle.industries.budgetplan.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -18,12 +19,12 @@ import com.puzzle.industries.budgetplan.navigation.graphs.appScreensGraph
 import com.puzzle.industries.budgetplan.navigation.graphs.mainScreenGraph
 
 @Composable
-fun AppScreensNavHost(modifier: Modifier = Modifier) {
+fun AppScreensNavHost(modifier: Modifier = Modifier, windowSizeClass: WindowSizeClass) {
     val navController = rememberNavController()
     NavHost(
         modifier = modifier,
         navController = navController,
-        graph = appScreensGraph(navController = navController)
+        graph = appScreensGraph(navController = navController, windowSizeClass)
     )
 }
 
