@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/mulis/AndroidStudioProjects/BudgetPlan/app/src/main/res/drawable/ic_flag_south_africa.xml" value="0.152" />
+        <entry key="..\:/Users/mulis/AndroidStudioProjects/BudgetPlan/app/src/main/res/drawable/ic_manage.xml" value="0.1935" />
+        <entry key="..\:/Users/mulis/AndroidStudioProjects/BudgetPlan/app/src/main/res/drawable/ic_reminder.xml" value="0.1935" />
+        <entry key="..\:/Users/mulis/AndroidStudioProjects/BudgetPlan/app/src/main/res/drawable/ic_setup.xml" value="0.1935" />
+        <entry key="..\:/Users/mulis/AndroidStudioProjects/BudgetPlan/app/src/main/res/drawable/ic_track.xml" value="0.1935" />
         <entry key="..\:/Users/mulis/AndroidStudioProjects/BudgetPlan/app/src/main/res/drawable/ic_welcome.xml" value="0.2555" />
       </map>
     </option>

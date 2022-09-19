@@ -44,14 +44,12 @@ private fun NavGraphBuilder.splashScreen(
     viewModel: SplashScreenViewModel
 ) {
     composable(route = Routes.Splash.path) {
-        splashScreen {
+        SplashScreen {
             val destinationPath: String =
                 if (viewModel.isFirstTimeLaunch()) Routes.Welcome.path
                 else Routes.Main.path
 
-            navController.navigate(route = destinationPath) {
-                clearAllPreviousRoutes(navController)
-            }
+            navController.navigateAndClearStack(route = destinationPath)
         }
     }
 }
