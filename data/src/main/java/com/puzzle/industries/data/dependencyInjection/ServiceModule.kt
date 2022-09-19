@@ -1,8 +1,12 @@
 package com.puzzle.industries.data.dependencyInjection
 
 import android.content.Context
-import com.puzzle.industries.data.services.launch.LaunchTrackingServiceImpl
-import com.puzzle.industries.domain.services.launch.LaunchTrackingService
+import com.puzzle.industries.data.services.CountryCurrencyPreferenceServiceImpl
+import com.puzzle.industries.data.services.DebtPreferenceServiceImpl
+import com.puzzle.industries.data.services.LaunchTrackingPreferenceServiceImpl
+import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
+import com.puzzle.industries.domain.services.DebtPreferenceService
+import com.puzzle.industries.domain.services.LaunchTrackingPreferenceService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +20,16 @@ internal class ServiceModule {
 
     @Singleton
     @Provides
-    fun provideLaunchTrackingService(@ApplicationContext context: Context): LaunchTrackingService =
-        LaunchTrackingServiceImpl(context = context)
+    fun provideLaunchTrackingService(@ApplicationContext context: Context): LaunchTrackingPreferenceService =
+        LaunchTrackingPreferenceServiceImpl(context = context)
 
+    @Singleton
+    @Provides
+    fun provideCountryCurrencyPrefService(@ApplicationContext context: Context): CountryCurrencyPreferenceService =
+        CountryCurrencyPreferenceServiceImpl(context = context)
+
+    @Singleton
+    @Provides
+    fun provideDebtPrefService(@ApplicationContext context: Context): DebtPreferenceService =
+        DebtPreferenceServiceImpl(context = context)
 }
