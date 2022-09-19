@@ -9,9 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.createGraph
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.screens.main.HomeScreen
-import com.puzzle.industries.budgetplan.screens.main.SearchScreen
-import com.puzzle.industries.budgetplan.screens.budget.BudgetScreen
+import com.puzzle.industries.budgetplan.screens.home.HomeScreen
+import com.puzzle.industries.budgetplan.screens.home.SearchScreen
+import com.puzzle.industries.budgetplan.screens.home.BudgetScreen
 
 @Composable
 @ExperimentalMaterial3Api
