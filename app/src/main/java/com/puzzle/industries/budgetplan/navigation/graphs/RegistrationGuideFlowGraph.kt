@@ -1,48 +1,64 @@
 package com.puzzle.industries.budgetplan.navigation.graphs
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.*
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.navigation
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.navigation.graphs.ext.clearAllPreviousRoutes
-import com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow.CurrencySelectionScreen
-import com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow.DebtScreen
-import com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow.IncomeInputScreen
+import com.puzzle.industries.budgetplan.navigation.graphs.ext.navigateAndClearStack
+import com.puzzle.industries.budgetplan.screens.registration.CurrencySelectionScreen
+import com.puzzle.industries.budgetplan.screens.registration.DebtScreen
+import com.puzzle.industries.budgetplan.screens.registration.IncomeInputScreen
+import com.puzzle.industries.budgetplan.viewModels.registrationFlow.RegistrationFlowViewModel
 
 @Composable
-fun NavGraphBuilder.registrationGuideFlowGraph(navController: NavHostController) {
-    navigation(startDestination = Routes.Currency.path, route = Routes.Setup.path ){
-        currencyScreen(navController = navController)
-        incomeScreen(navController = navController)
-        debtScreen(navController = navController)
+fun NavGraphBuilder.RegistrationGuideFlowGraph(
+    navController: NavHostController,
+    registrationFlowViewModel: RegistrationFlowViewModel = viewModel()
+) {
+    navigation(startDestination = Routes.Currency.path, route = Routes.Registration.path) {
+        currencyScreen(navController = navController, regFlowViewModel = registrationFlowViewModel)
+        incomeScreen(navController = navController, regFlowViewModel = registrationFlowViewModel)
+        debtScreen(navController = navController, regFlowViewModel = registrationFlowViewModel)
     }
 }
 
-private fun NavGraphBuilder.currencyScreen(navController: NavHostController){
-    composable(route = Routes.Currency.path){
+private fun NavGraphBuilder.currencyScreen(
+    navController: NavHostController,
+    regFlowViewModel: RegistrationFlowViewModel
+) {
+    composable(route = Routes.Currency.path) {
         CurrencySelectionScreen {
-            //TODO: save country currency
+            regFlowViewModel.setCurrency(countryCurrency = it)
             navController.navigate(route = Routes.Income.path)
         }
     }
 }
 
-private fun NavGraphBuilder.incomeScreen(navController: NavHostController){
-    composable(route = Routes.Income.path){
-        IncomeInputScreen{
-            //TODO: save initial income
+private fun NavGraphBuilder.incomeScreen(
+    navController: NavHostController,
+    regFlowViewModel: RegistrationFlowViewModel
+) {
+    composable(route = Routes.Income.path) {
+        IncomeInputScreen {
+            regFlowViewModel.setIncome(income = it)
             navController.navigate(route = Routes.Debt.path)
         }
     }
 }
 
-private fun NavGraphBuilder.debtScreen(navController: NavHostController){
+private fun NavGraphBuilder.debtScreen(
+    navController: NavHostController,
+    regFlowViewModel: RegistrationFlowViewModel
+) {
     composable(route = Routes.Debt.path) {
         DebtScreen {
-            //TODO: save allow debt state
-            navController.navigate(route = Routes.Main.path){
-                clearAllPreviousRoutes(navController)
-            }
+            regFlowViewModel.setDebtAllowed(debtAllowed = it)
+            regFlowViewModel.register()
+
+            navController.navigateAndClearStack(route = Routes.Main.path)
         }
     }
 }
