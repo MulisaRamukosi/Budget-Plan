@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow
+package com.puzzle.industries.budgetplan.screens.registration
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight

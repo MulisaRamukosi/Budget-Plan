@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
 
-package com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow
+package com.puzzle.industries.budgetplan.screens.registration
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,14 +28,18 @@ import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.IncomeInputViewModel
+import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.models.income.Income
 
 @Composable
 fun IncomeInputScreen(
     viewModel: IncomeInputViewModel = viewModel(),
-    onContinueClick: (Double) -> Unit = {}
+    onContinueClick: (Income) -> Unit = {}
 ) {
 
     val income by viewModel.income().observeAsState(initial = 0.0)
+    val incomeTitle = stringResource(id = R.string.base_income)
+    val incomeDescription = stringResource(id = R.string.desc_base_income)
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
@@ -53,7 +57,15 @@ fun IncomeInputScreen(
 
             GuideFlowComponents.Continue(
                 enabled = income > 0,
-                onContinueClick = { onContinueClick(income) }
+                onContinueClick = {
+                    val incomeModel = Income(
+                        frequency = Frequency.MONTHLY,
+                        amount = income,
+                        title = incomeTitle,
+                        description = incomeDescription
+                    )
+                    onContinueClick(incomeModel)
+                }
             )
         }
     }
@@ -70,7 +82,13 @@ private fun IncomeInput(
     OutlinedTextField(
         modifier = modifier,
         value = if (income == 0.0) "" else income.toString(),
-        onValueChange = { onValueChange(it.toDouble()) },
+        onValueChange = {
+            try {
+                onValueChange(it.toDouble())
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+        },
         singleLine = true,
         label = { Text(text = stringResource(id = R.string.amount)) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),

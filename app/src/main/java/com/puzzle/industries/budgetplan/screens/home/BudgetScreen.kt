@@ -1,33 +1,30 @@
-package com.puzzle.industries.budgetplan.screens.budget
+@file:OptIn(
+    ExperimentalPagerApi::class,
+)
+
+package com.puzzle.industries.budgetplan.screens.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Notifications
-import androidx.compose.material.icons.rounded.Paid
-import androidx.compose.material.icons.rounded.Payments
 import androidx.compose.material3.*
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.screens.budget.ExpenseScreen
+import com.puzzle.industries.budgetplan.screens.budget.IncomeScreen
+import com.puzzle.industries.budgetplan.screens.budget.ReminderScreen
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import kotlinx.coroutines.launch
 
 
 @Composable
-@ExperimentalPagerApi
-@ExperimentalMaterial3Api
-@ExperimentalAnimationApi
 fun BudgetScreen() {
     val tabs = listOf(
         stringResource(id = R.string.income),
@@ -41,7 +38,7 @@ fun BudgetScreen() {
 
     val coroutineScope = rememberCoroutineScope()
 
-    Column {
+    /*Column {
         TabRow(selectedTabIndex = pagerState.currentPage) {
             tabs.forEachIndexed { index, title ->
                 Tab(
@@ -73,16 +70,12 @@ fun BudgetScreen() {
                 2 -> ReminderScreen()
             }
         }
-    }
+    }*/
 
 }
 
 @Composable
 @Preview(showBackground = true)
-@ExperimentalPagerApi
-@ExperimentalAnimationApi
-@ExperimentalMaterial3Api
-@ExperimentalMaterial3WindowSizeClassApi
 private fun BudgetScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
         BudgetScreen()

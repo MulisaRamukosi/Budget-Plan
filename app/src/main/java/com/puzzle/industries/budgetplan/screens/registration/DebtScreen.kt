@@ -2,7 +2,7 @@
     ExperimentalMaterial3WindowSizeClassApi::class
 )
 
-package com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow
+package com.puzzle.industries.budgetplan.screens.registration
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme

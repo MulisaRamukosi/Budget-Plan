@@ -1,6 +1,9 @@
-@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(
+    ExperimentalMaterial3WindowSizeClassApi::class,
+    ExperimentalMaterial3Api::class
+)
 
-package com.puzzle.industries.budgetplan.screens.intro.registrationGuideFlow
+package com.puzzle.industries.budgetplan.screens.registration
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
