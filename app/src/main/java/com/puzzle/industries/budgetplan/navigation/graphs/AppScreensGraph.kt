@@ -39,6 +39,24 @@ fun appScreensGraph(
     }
 }
 
+private fun NavGraphBuilder.countryPickerScreen(
+    navController: NavHostController,
+    viewModel: CurrencyViewModel
+) {
+    composable(
+        route = Routes.CurrencyPicker.path,
+        arguments = listOf(navArgument(name = RouteParamKey.ID) { type = NavType.IntType })
+    ) { navBackStackEntry ->
+
+        val id = navBackStackEntry.arguments?.getInt(RouteParamKey.ID)
+        val selectedId by viewModel.getSelectedIndex().observeAsState(initial = id ?: 0)
+        viewModel.selectCountry(i = selectedId)
+
+        navController.SetResult(key = ValueKey.COUNTRY_CURRENCY_KEY.name, value = selectedId)
+        CountryPickerScreen(viewModel = viewModel, onDoneClick = { navController.popBackStack() })
+    }
+}
+
 private fun NavGraphBuilder.splashScreen(
     navController: NavHostController,
     viewModel: SplashScreenViewModel
