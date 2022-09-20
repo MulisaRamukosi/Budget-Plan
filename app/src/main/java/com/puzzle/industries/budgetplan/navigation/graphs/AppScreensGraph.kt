@@ -10,13 +10,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.puzzle.industries.budgetplan.ext.SetResult
+import com.puzzle.industries.budgetplan.ext.navigateAndClearStack
+import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.navigation.graphs.ext.navigateAndClearStack
-import com.puzzle.industries.budgetplan.screens.WelcomeScreen
+import com.puzzle.industries.budgetplan.navigation.constants.ValueKey
+import com.puzzle.industries.budgetplan.screens.CountryPickerScreen
 import com.puzzle.industries.budgetplan.screens.MainScreen
 import com.puzzle.industries.budgetplan.screens.SplashScreen
+import com.puzzle.industries.budgetplan.screens.WelcomeScreen
 import com.puzzle.industries.budgetplan.viewModels.SplashScreenViewModel
 import com.puzzle.industries.budgetplan.viewModels.WelcomeMessagesViewModel
+import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
 
 
 @Composable
@@ -29,7 +34,15 @@ fun appScreensGraph(
 ): NavGraph {
     return navController.createGraph(startDestination = Routes.Splash.path) {
         splashScreen(navController = navController, viewModel = viewModel())
-        welcomeScreen(navController = navController, viewModel = viewModel(), windowSizeClass = windowSizeClass)
+
+        welcomeScreen(
+            navController = navController,
+            viewModel = viewModel(),
+            windowSizeClass = windowSizeClass
+        )
+
+        countryPickerScreen(navController = navController, viewModel = viewModel())
+
         RegistrationGuideFlowGraph(navController = navController)
 
         composable(route = Routes.Main.path) {
