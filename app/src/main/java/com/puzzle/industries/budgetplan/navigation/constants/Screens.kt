@@ -1,26 +1,21 @@
 package com.puzzle.industries.budgetplan.navigation.constants
 
-enum class MainScreens {
-    SPLASH,
-    WELCOME,
-    REGISTRATION,
-    MAIN;
-
-    override fun toString(): String = name.lowercase()
+object MainScreens {
+    const val SPLASH: String = "splash"
+    const val WELCOME: String = "welcome"
+    const val REGISTRATION: String = "registration"
+    const val MAIN: String = "main"
+    const val CURRENCY_PICKER: String = "currency_picker"
 }
 
-enum class RegistrationScreens {
-    CURRENCY,
-    INCOME,
-    DEBT;
-
-    override fun toString(): String = name.lowercase()
+object RegistrationScreens {
+    const val CURRENCY: String = "currency"
+    const val INCOME: String = "income"
+    const val DEBT: String = "debt"
 }
 
-enum class HomeScreens {
-    HOME,
-    BUDGET,
-    SEARCH;
-
-    override fun toString(): String = name.lowercase()
+object HomeScreens {
+    const val HOME: String = "home"
+    const val BUDGET: String = "budget"
+    const val SEARCH: String = "search"
 }

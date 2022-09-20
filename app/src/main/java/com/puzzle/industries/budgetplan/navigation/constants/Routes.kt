@@ -1,12 +1,13 @@
 package com.puzzle.industries.budgetplan.navigation.constants
 
-private val mainScreenPath =  "${MainScreens.MAIN}"
-private val registrationPath = MainScreens.REGISTRATION.name.lowercase()
+private const val mainScreenPath =  MainScreens.MAIN
+private const val registrationPath = MainScreens.REGISTRATION
 
 open class Routes(val path: String) {
 
-    object Splash: Routes(path = "${MainScreens.SPLASH}")
-    object Welcome: Routes(path = "${MainScreens.WELCOME}")
+    object Splash: Routes(path = MainScreens.SPLASH)
+    object Welcome: Routes(path = MainScreens.WELCOME)
+    object CurrencyPicker: Routes(path = "${MainScreens.CURRENCY_PICKER}/{${RouteParamKey.ID}}")
     object Main: Routes(path = mainScreenPath)
     object Registration: Routes(path = registrationPath)
 
