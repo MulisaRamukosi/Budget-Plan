@@ -14,11 +14,14 @@ import androidx.compose.material.icons.rounded.QueryStats
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -31,7 +34,10 @@ import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController()) {
+fun MainScreen(
+    navController: NavHostController = rememberNavController(),
+    windowSizeClass: WindowSizeClass
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination?.route
 
@@ -112,6 +118,11 @@ private fun bottomAppBarOnClick(navController: NavHostController, destinationRou
 @Preview(showBackground = true)
 private fun MainScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        MainScreen()
+        MainScreen(windowSizeClass = WindowSizeClass.calculateFromSize(
+            DpSize(
+                width = 500.dp,
+                height = 800.dp
+            )
+        ))
     }
 }
