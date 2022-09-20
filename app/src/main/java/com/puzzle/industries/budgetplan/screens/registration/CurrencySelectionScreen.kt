@@ -1,11 +1,12 @@
 @file:OptIn(
-    ExperimentalMaterial3WindowSizeClassApi::class,
     ExperimentalMaterial3Api::class
 )
 
 package com.puzzle.industries.budgetplan.screens.registration
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,13 +15,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,9 +40,11 @@ import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyView
 fun CurrencySelectionScreen(
     modifier: Modifier = Modifier,
     viewModel: CurrencyViewModel = viewModel(),
+    onCurrencySelectionClick: () -> Unit = {},
     onContinueClick: (CountryCurrency) -> Unit = {}
 ) {
-    val selectedCountry by viewModel.getSelectedCountry().observeAsState(initial = viewModel.getDefaultCountry())
+    val selectedCountry by viewModel.getSelectedCountry()
+        .observeAsState(initial = viewModel.getDefaultCountry())
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
@@ -51,21 +56,31 @@ fun CurrencySelectionScreen(
                 note = stringResource(id = R.string.note_changeable_in_settings)
             )
 
-            CurrencySelection(countryCurrency = selectedCountry)
+            CurrencySelection(countryCurrency = selectedCountry, onClick = onCurrencySelectionClick)
 
             V_M_Space()
 
-            GuideFlowComponents.Continue(onContinueClick = {onContinueClick(selectedCountry)})
+            GuideFlowComponents.Continue(onContinueClick = { onContinueClick(selectedCountry) })
         }
     }
 }
 
 
-
 @Composable
-private fun CurrencySelection(countryCurrency: CountryCurrency) {
+private fun CurrencySelection(countryCurrency: CountryCurrency, onClick: () -> Unit) {
+    val source = remember { MutableInteractionSource() }
+    val pressedState = source.interactions.collectAsState(
+        initial = PressInteraction.Cancel(
+            PressInteraction.Press(Offset.Zero)
+        )
+    )
+    if (pressedState.value is PressInteraction.Release) {
+        onClick()
+        source.tryEmit(PressInteraction.Cancel(PressInteraction.Press(Offset.Zero)))
+    }
+
     OutlinedTextField(
-        value = "${countryCurrency.currency}-${countryCurrency.country}",
+        value = "${countryCurrency.currency} - ${countryCurrency.country}",
         onValueChange = {},
         readOnly = true,
         leadingIcon = {
@@ -84,7 +99,9 @@ private fun CurrencySelection(countryCurrency: CountryCurrency) {
                 imageVector = Icons.Rounded.ArrowDropDown,
                 contentDescription = stringResource(id = R.string.desc_arrow_drop_down_icon)
             )
-        })
+        },
+        interactionSource = source,
+    )
 }
 
 
