@@ -30,7 +30,27 @@ private fun NavGraphBuilder.currencyScreen(
     regFlowViewModel: RegistrationFlowViewModel
 ) {
     composable(route = Routes.Currency.path) {
-        CurrencySelectionScreen {
+
+        val currencyViewModel: CurrencyViewModel = viewModel()
+
+        navController.GetOnceResult<Int>(
+            keyResult = ValueKey.COUNTRY_CURRENCY_KEY.name,
+            onResult = { currencyId ->
+                currencyViewModel.selectCountry(i = currencyId)
+            }
+        )
+
+        CurrencySelectionScreen(
+            viewModel = currencyViewModel,
+            onCurrencySelectionClick = {
+                navController.navigate(
+                    route = Routes.CurrencyPicker.addParam(
+                        key = RouteParamKey.ID,
+                        value = currencyViewModel.getSelectedIndex().value.toString()
+                    ).path
+                )
+            }) {
+
             regFlowViewModel.setCurrency(countryCurrency = it)
             navController.navigate(route = Routes.Income.path)
         }
