@@ -33,7 +33,7 @@ fun appScreensGraph(
         RegistrationGuideFlowGraph(navController = navController)
 
         composable(route = Routes.Main.path) {
-            MainScreen()
+            MainScreen(windowSizeClass = windowSizeClass)
         }
 
     }
