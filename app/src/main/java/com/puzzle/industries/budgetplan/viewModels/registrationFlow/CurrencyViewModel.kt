@@ -35,6 +35,10 @@ class CurrencyViewModel @Inject constructor() : ViewModel() {
         MutableLiveData(countries[0])
     }
 
+    private val selectedIndex: MutableLiveData<Int> by lazy {
+        MutableLiveData(0)
+    }
+
     fun getAllFlags(): List<CountryCurrency> {
         return countries
     }
@@ -43,11 +47,16 @@ class CurrencyViewModel @Inject constructor() : ViewModel() {
         return selectedCountry
     }
 
+    fun getSelectedIndex(): LiveData<Int> {
+        return selectedIndex
+    }
+
     fun getDefaultCountry(): CountryCurrency {
         return countries[0]
     }
 
     fun selectCountry(i: Int) {
-        selectedCountry.value = countries[i]
+        selectedIndex.value = i
+        selectedCountry.value = countries[selectedIndex.value!!]
     }
 }
