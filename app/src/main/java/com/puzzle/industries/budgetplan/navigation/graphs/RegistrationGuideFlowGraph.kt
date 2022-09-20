@@ -6,11 +6,15 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.puzzle.industries.budgetplan.ext.GetOnceResult
+import com.puzzle.industries.budgetplan.ext.navigateAndClearStack
+import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.navigation.graphs.ext.navigateAndClearStack
+import com.puzzle.industries.budgetplan.navigation.constants.ValueKey
 import com.puzzle.industries.budgetplan.screens.registration.CurrencySelectionScreen
 import com.puzzle.industries.budgetplan.screens.registration.DebtScreen
 import com.puzzle.industries.budgetplan.screens.registration.IncomeInputScreen
+import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.RegistrationFlowViewModel
 
 @Composable
