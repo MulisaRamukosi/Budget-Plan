@@ -29,7 +29,10 @@ fun AppScreensNavHost(modifier: Modifier = Modifier, windowSizeClass: WindowSize
 }
 
 @Composable
-fun MainScreenNestedNavHost(navController: NavHostController, modifier: Modifier = Modifier){
+fun MainScreenNestedNavHost(
+    modifier: Modifier = Modifier,
+    navController: NavHostController
+){
     NavHost(
         modifier = modifier,
         navController = navController,
