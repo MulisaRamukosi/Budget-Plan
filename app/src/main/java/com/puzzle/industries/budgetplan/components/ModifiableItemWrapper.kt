@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-
 package com.puzzle.industries.budgetplan.components
 
 import androidx.compose.foundation.clickable
@@ -37,7 +35,7 @@ fun ModifiableItemWrapper(modifier: Modifier, content: @Composable (modifier: Mo
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .constrainAs(cardConstraints) {
+                .constrainAs(ref = cardConstraints) {
                     linkTo(start = parent.start, end = parent.end)
                 },
             content = {
