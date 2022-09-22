@@ -11,6 +11,7 @@ import com.puzzle.industries.budgetplan.ext.navigateAndClearStack
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.navigation.constants.ValueKey
+import com.puzzle.industries.budgetplan.screens.registration.BudgetPlanGenerationDayScreen
 import com.puzzle.industries.budgetplan.screens.registration.CurrencySelectionScreen
 import com.puzzle.industries.budgetplan.screens.registration.DebtScreen
 import com.puzzle.industries.budgetplan.screens.registration.IncomeInputScreen
@@ -26,6 +27,10 @@ fun NavGraphBuilder.RegistrationGuideFlowGraph(
         currencyScreen(navController = navController, regFlowViewModel = registrationFlowViewModel)
         incomeScreen(navController = navController, regFlowViewModel = registrationFlowViewModel)
         debtScreen(navController = navController, regFlowViewModel = registrationFlowViewModel)
+        budgetPlanGenerationDayScreen(
+            navController = navController,
+            regFlowViewModel = registrationFlowViewModel
+        )
     }
 }
 
@@ -40,7 +45,7 @@ private fun NavGraphBuilder.currencyScreen(
         navController.GetOnceResult<Int>(
             keyResult = ValueKey.COUNTRY_CURRENCY_KEY.name,
             onResult = { currencyId ->
-                currencyViewModel.selectCountry(i = currencyId)
+                currencyViewModel.pub.value = currencyId
             }
         )
 
@@ -50,7 +55,7 @@ private fun NavGraphBuilder.currencyScreen(
                 navController.navigate(
                     route = Routes.CurrencyPicker.addParam(
                         key = RouteParamKey.ID,
-                        value = currencyViewModel.getSelectedIndex().value.toString()
+                        value = currencyViewModel.sub.value.toString()
                     ).path
                 )
             }) {
@@ -80,6 +85,18 @@ private fun NavGraphBuilder.debtScreen(
     composable(route = Routes.Debt.path) {
         DebtScreen {
             regFlowViewModel.setDebtAllowed(debtAllowed = it)
+            navController.navigate(route = Routes.PlanDay.path)
+        }
+    }
+}
+
+private fun NavGraphBuilder.budgetPlanGenerationDayScreen(
+    navController: NavHostController,
+    regFlowViewModel: RegistrationFlowViewModel
+) {
+    composable(route = Routes.PlanDay.path) {
+        BudgetPlanGenerationDayScreen {
+            regFlowViewModel.setBudgetPlanGenerationDay(day = it)
             regFlowViewModel.register()
 
             navController.navigateAndClearStack(route = Routes.Main.path)
