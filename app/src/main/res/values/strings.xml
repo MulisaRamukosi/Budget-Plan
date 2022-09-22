@@ -49,7 +49,8 @@
     <string name="guide_select_currency">Select currency which you would like to be displayed alongside your expenses</string>
     <string name="note_changeable_in_settings">Note: This can be changed later in settings.</string>
     <string name="opt_continue">Continue</string>
-    <string name="guide_input_income">insert your monthly income, this will be used to initially setup your budget plan.</string>
+    <string name="guide_input_income">Insert your monthly income, this will be used to initially setup your budget plan.</string>
+    <string name="guide_budget_plan_day">Select a day on which a new budget plan will be generated on a monthly basis.</string>
     <string name="note_income_addition">Note: You can add in more income later on.</string>
     <string name="allow_debt">Allow debt</string>
     <string name="debt">Debt</string>
@@ -68,5 +69,10 @@
     <string name="desc_base_income">Monthly income</string>
     <string name="select_currency">Select Currency</string>
     <string name="done">Done</string>
+    <string name="settings">Settings</string>
+    <string name="desc_settings">Settings page button</string>
+    <string name="budget_plan_day">Budget Plan Day</string>
+    <string name="desc_budget_plan_day_icon">budget plan day icon</string>
+    <string name="note_delete_expense">Note: you can long press an expense to remove it if you not  paying it this month.</string>
 
 </resources>
