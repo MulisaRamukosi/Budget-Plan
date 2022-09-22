@@ -27,6 +27,7 @@ fun PendingExpenses(modifier: Modifier) {
     Card(modifier = modifier) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.medium)
                 .padding(top = MaterialTheme.spacing.medium)
         ) {
@@ -34,6 +35,13 @@ fun PendingExpenses(modifier: Modifier) {
                 modifier = Modifier.Companion.align(alignment = Alignment.CenterHorizontally),
                 text = stringResource(id = R.string.pending_expenses)
             )
+
+            V_S_Space()
+            Text(
+                text = stringResource(id = R.string.note_delete_expense),
+                style = MaterialTheme.typography.labelSmall
+            )
+
             V_M_Space()
 
             PendingExpenseItems()
@@ -44,6 +52,8 @@ fun PendingExpenses(modifier: Modifier) {
             HorizontalDivider()
 
             AddUnplannedExpense()
+
+
         }
     }
 }

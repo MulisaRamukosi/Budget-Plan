@@ -34,7 +34,7 @@ data class BarGroup(
 )
 
 @Composable
-fun BarChart(title: String, values: List<BarGroup>) {
+fun BarChart(modifier: Modifier, title: String, values: List<BarGroup>) {
     //TODO: Calculations to be moved to view model
 
     val barMaxHeight = 60.dp
@@ -58,8 +58,8 @@ fun BarChart(title: String, values: List<BarGroup>) {
         }
     }
 
-    Card {
-        Column(modifier = Modifier.padding(all = MaterialTheme.spacing.medium)) {
+    Card(modifier = modifier) {
+        Column(modifier = Modifier.fillMaxWidth().padding(all = MaterialTheme.spacing.medium)) {
             HomeCardTitle(
                 modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
                 text = title
@@ -234,6 +234,7 @@ private fun constraintListToHeight(
 private fun PreviewBarChart() {
     BudgetPlanTheme(dynamicColor = false) {
         BarChart(
+            modifier = Modifier,
             title = "Income Outcome History(last 4 months)",
             values = listOf(
                 BarGroup(

@@ -28,7 +28,7 @@ import com.puzzle.industries.budgetplan.theme.spacing
 fun PaymentReminders(modifier: Modifier) {
     Card(modifier = modifier) {
 
-        Column(modifier = Modifier.padding(all = MaterialTheme.spacing.medium)) {
+        Column(modifier = Modifier.fillMaxWidth().padding(all = MaterialTheme.spacing.medium)) {
 
             HomeCardTitle(
                 modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
@@ -72,7 +72,7 @@ private fun AlarmItems() {
 
 @Composable
 private fun AlarmItem(modifier: Modifier = Modifier) {
-    Row(modifier = modifier) {
+    Row(modifier= modifier) {
         Icon(
             imageVector = Icons.Rounded.Alarm,
             contentDescription = stringResource(id = R.string.desc_alarm_icon),
@@ -81,7 +81,7 @@ private fun AlarmItem(modifier: Modifier = Modifier) {
 
         H_M_Space()
 
-        Column {
+        Column(modifier = Modifier.weight(weight = 1f)) {
             SingleLineText(text = "Investment", style = MaterialTheme.typography.bodyMedium)
             SingleLineText(
                 text = "payment on 3 sep 2022",

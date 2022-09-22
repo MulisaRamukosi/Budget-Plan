@@ -32,7 +32,7 @@ import com.puzzle.industries.budgetplan.theme.spacing
 
 
 @Composable
-fun DonutChart(title: String, values: List<StatItem>) {
+fun DonutChart(modifier: Modifier, title: String, values: List<StatItem>) {
     val chartItemValues = values.map { it.value }
 
     val percentages = remember { convertValuesToPercentage(values = chartItemValues) }
@@ -40,8 +40,8 @@ fun DonutChart(title: String, values: List<StatItem>) {
     val angles = remember { convertPercentagesToAngles(percentages = percentages) }
     val colors = remember { values.map { it.key.color } }
 
-    Card {
-        Column(modifier = Modifier.padding(all = MaterialTheme.spacing.medium)) {
+    Card(modifier = modifier) {
+        Column(modifier = Modifier.fillMaxWidth().padding(all = MaterialTheme.spacing.medium)) {
             HomeCardTitle(
                 modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
                 text = title
@@ -50,6 +50,7 @@ fun DonutChart(title: String, values: List<StatItem>) {
             V_M_Space()
 
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -151,6 +152,7 @@ private fun ExpenseGroupsWithPercentage(
 private fun PreviewExpenseGroupPieChart(@PreviewParameter(DonutChartPreviewProvider::class) values: List<StatItem>) {
     BudgetPlanTheme(dynamicColor = false) {
         DonutChart(
+            modifier = Modifier,
             title = "Current Month Expenses",
             values = values
         )
