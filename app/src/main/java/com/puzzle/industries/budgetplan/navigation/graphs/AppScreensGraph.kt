@@ -1,7 +1,5 @@
 package com.puzzle.industries.budgetplan.navigation.graphs
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,7 +7,6 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.composable
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.puzzle.industries.budgetplan.ext.SetResult
 import com.puzzle.industries.budgetplan.ext.navigateAndClearStack
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
@@ -25,9 +22,6 @@ import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyView
 
 
 @Composable
-@ExperimentalPagerApi
-@ExperimentalMaterial3Api
-@ExperimentalAnimationApi
 fun appScreensGraph(
     navController: NavHostController,
     windowSizeClass: WindowSizeClass
@@ -62,8 +56,8 @@ private fun NavGraphBuilder.countryPickerScreen(
     ) { navBackStackEntry ->
 
         val id = navBackStackEntry.arguments?.getInt(RouteParamKey.ID)
-        val selectedId by viewModel.getSelectedIndex().observeAsState(initial = id ?: 0)
-        viewModel.selectCountry(i = selectedId)
+        val selectedId by viewModel.pub.observeAsState(initial = id ?: 0)
+        viewModel.pub.value = selectedId
 
         navController.SetResult(key = ValueKey.COUNTRY_CURRENCY_KEY.name, value = selectedId)
         CountryPickerScreen(viewModel = viewModel, onDoneClick = { navController.popBackStack() })
