@@ -34,7 +34,7 @@ fun CountryPickerScreen(
     viewModel: CurrencyViewModel,
     onDoneClick: () -> Unit
 ) {
-    val selectedIndex by viewModel.getSelectedIndex().observeAsState()
+    val selectedIndex by viewModel.sub.observeAsState()
 
     Column {
         Text(
@@ -45,12 +45,12 @@ fun CountryPickerScreen(
 
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
 
-            itemsIndexed(items = viewModel.getAllFlags()) { index, item ->
+            itemsIndexed(items = viewModel.countries) { index, item ->
                 CountryCurrencyItem(
                     modifier = Modifier.fillMaxWidth(),
                     countryCurrency = item,
                     isSelected = index == selectedIndex,
-                    onClick = { viewModel.selectCountry(i = index) }
+                    onClick = { viewModel.pub.value = index }
                 )
             }
         }
