@@ -29,7 +29,7 @@ fun DebtScreen(
     viewModel: DebtViewModel = viewModel(),
     onContinueClick: (Boolean) -> Unit
 ) {
-    val debtEnabled by viewModel.debt().observeAsState(initial = false)
+    val debtEnabled by viewModel.sub.observeAsState(initial = false)
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
@@ -43,7 +43,7 @@ fun DebtScreen(
 
             DebtCheckbox(
                 checked = debtEnabled,
-                onCheckedChange = { viewModel.enableDebt(enabled = it) })
+                onCheckedChange = { viewModel.pub.value = it })
 
             V_M_Space()
 

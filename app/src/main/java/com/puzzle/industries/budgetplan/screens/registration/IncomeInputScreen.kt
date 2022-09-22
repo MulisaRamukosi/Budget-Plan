@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3WindowSizeClassApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(
+    ExperimentalMaterial3Api::class
+)
 
 package com.puzzle.industries.budgetplan.screens.registration
 
@@ -37,7 +39,7 @@ fun IncomeInputScreen(
     onContinueClick: (Income) -> Unit = {}
 ) {
 
-    val income by viewModel.income().observeAsState(initial = 0.0)
+    val income by viewModel.sub.observeAsState(initial = 0.0)
     val incomeTitle = stringResource(id = R.string.base_income)
     val incomeDescription = stringResource(id = R.string.desc_base_income)
 
@@ -51,7 +53,7 @@ fun IncomeInputScreen(
                 note = stringResource(id = R.string.note_income_addition)
             )
 
-            IncomeInput(income = income, onValueChange = { viewModel.setIncome(it) })
+            IncomeInput(income = income, onValueChange = { viewModel.pub.value = it })
 
             V_M_Space()
 
