@@ -5,12 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.data.CountryCurrency
+import com.puzzle.industries.budgetplan.viewModels.PubSubViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CurrencyViewModel @Inject constructor() : ViewModel() {
-    private val countries: List<CountryCurrency> = listOf(
+class CurrencyViewModel @Inject constructor() : PubSubViewModel<Int>(initial = 0) {
+    val countries: List<CountryCurrency> = listOf(
         CountryCurrency(
             currency = "ZAR",
             country = "South Africa",
@@ -30,33 +31,4 @@ class CurrencyViewModel @Inject constructor() : ViewModel() {
             flagId = R.drawable.ic_flag_lesotho
         )
     )
-
-    private val selectedCountry: MutableLiveData<CountryCurrency> by lazy {
-        MutableLiveData(countries[0])
-    }
-
-    private val selectedIndex: MutableLiveData<Int> by lazy {
-        MutableLiveData(0)
-    }
-
-    fun getAllFlags(): List<CountryCurrency> {
-        return countries
-    }
-
-    fun getSelectedCountry(): LiveData<CountryCurrency> {
-        return selectedCountry
-    }
-
-    fun getSelectedIndex(): LiveData<Int> {
-        return selectedIndex
-    }
-
-    fun getDefaultCountry(): CountryCurrency {
-        return countries[0]
-    }
-
-    fun selectCountry(i: Int) {
-        selectedIndex.value = i
-        selectedCountry.value = countries[selectedIndex.value!!]
-    }
 }
