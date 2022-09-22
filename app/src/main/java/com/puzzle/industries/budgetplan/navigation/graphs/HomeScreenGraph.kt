@@ -12,6 +12,7 @@ import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.screens.home.HomeScreen
 import com.puzzle.industries.budgetplan.screens.home.SearchScreen
 import com.puzzle.industries.budgetplan.screens.home.BudgetScreen
+import com.puzzle.industries.budgetplan.screens.home.SettingsScreen
 
 @Composable
 @ExperimentalMaterial3Api
@@ -29,6 +30,10 @@ fun mainScreenGraph(navController: NavHostController) : NavGraph {
 
         composable(route = Routes.Search.path){
             SearchScreen()
+        }
+
+        composable(route = Routes.Settings.path){
+            SettingsScreen()
         }
     }
 }
