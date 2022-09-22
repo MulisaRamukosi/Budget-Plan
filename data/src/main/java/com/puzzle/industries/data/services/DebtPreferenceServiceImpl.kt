@@ -3,7 +3,7 @@ package com.puzzle.industries.data.services
 import android.content.Context
 import com.puzzle.industries.domain.services.DebtPreferenceService
 
-class DebtPreferenceServiceImpl(context: Context) :
+internal class DebtPreferenceServiceImpl(context: Context) :
     PreferenceService(prefName = "Debt", context = context), DebtPreferenceService {
 
     private val debtKey = "dk"

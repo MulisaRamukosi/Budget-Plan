@@ -3,7 +3,7 @@ package com.puzzle.industries.data.services
 import android.content.Context
 import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
 
-class CountryCurrencyPreferenceServiceImpl(context: Context) :
+internal class CountryCurrencyPreferenceServiceImpl(context: Context) :
     PreferenceService(prefName = "currency", context = context), CountryCurrencyPreferenceService {
 
     private val currencySymbolKey = "csk"
