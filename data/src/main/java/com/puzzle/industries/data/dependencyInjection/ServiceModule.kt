@@ -1,9 +1,11 @@
 package com.puzzle.industries.data.dependencyInjection
 
 import android.content.Context
+import com.puzzle.industries.data.services.BPlanGenDayPreferenceServiceImpl
 import com.puzzle.industries.data.services.CountryCurrencyPreferenceServiceImpl
 import com.puzzle.industries.data.services.DebtPreferenceServiceImpl
 import com.puzzle.industries.data.services.LaunchTrackingPreferenceServiceImpl
+import com.puzzle.industries.domain.services.BPlanGenDayPreferenceService
 import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
 import com.puzzle.industries.domain.services.DebtPreferenceService
 import com.puzzle.industries.domain.services.LaunchTrackingPreferenceService
@@ -32,4 +34,9 @@ internal class ServiceModule {
     @Provides
     fun provideDebtPrefService(@ApplicationContext context: Context): DebtPreferenceService =
         DebtPreferenceServiceImpl(context = context)
+
+    @Singleton
+    @Provides
+    fun provideBPlanGenDayPrefService(@ApplicationContext context: Context): BPlanGenDayPreferenceService =
+        BPlanGenDayPreferenceServiceImpl(context = context)
 }
