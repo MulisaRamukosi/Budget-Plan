@@ -15,11 +15,13 @@ open class Routes(val path: String) {
     object Home: Routes(path = "$mainScreenPath/${HomeScreens.HOME}")
     object Budget: Routes(path = "$mainScreenPath/${HomeScreens.BUDGET}")
     object Search: Routes(path = "$mainScreenPath/${HomeScreens.SEARCH}")
+    object Settings: Routes(path = "$mainScreenPath/${HomeScreens.SETTINGS}")
 
     //registration flow screens
     object Currency: Routes(path = "$registrationPath/${RegistrationScreens.CURRENCY}")
     object Income: Routes(path = "$registrationPath/${RegistrationScreens.INCOME}")
     object Debt: Routes(path = "$registrationPath/${RegistrationScreens.DEBT}")
+    object PlanDay: Routes(path = "$registrationPath/${RegistrationScreens.BUDGET_PLAN_DAY}")
 
     fun addParam(key: String, value: String) : Routes{
         val newPath = path.replace("{$key}", value)
