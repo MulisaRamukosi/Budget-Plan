@@ -1,11 +1,11 @@
 package com.puzzle.industries.budgetplan.viewModels.registrationFlow
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.puzzle.industries.budgetplan.data.CountryCurrency
 
 import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.services.BPlanGenDayPreferenceService
 import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
 import com.puzzle.industries.domain.services.DebtPreferenceService
 import com.puzzle.industries.domain.services.LaunchTrackingPreferenceService
@@ -19,11 +19,13 @@ class RegistrationFlowViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
     private val countryCurrencyPreferenceService: CountryCurrencyPreferenceService,
     private val debtPreferenceService: DebtPreferenceService,
-    private val launchTrackingPreferenceService: LaunchTrackingPreferenceService
+    private val launchTrackingPreferenceService: LaunchTrackingPreferenceService,
+    private val bPlanGenDayPreferenceService: BPlanGenDayPreferenceService
 ) : ViewModel() {
 
     private lateinit var countryCurrency: CountryCurrency
     private lateinit var income: Income
+    private var day: Int = 1
     private var debtAllowed: Boolean = false
 
 
@@ -33,6 +35,7 @@ class RegistrationFlowViewModel @Inject constructor(
         }
 
         countryCurrencyPreferenceService.saveCurrencySymbol(symbol = countryCurrency.symbol)
+        bPlanGenDayPreferenceService.saveDay(day = day)
         debtPreferenceService.saveAllowDebtOption(option = debtAllowed)
         launchTrackingPreferenceService.updateToNotFirstTimeLaunch()
     }
@@ -47,5 +50,9 @@ class RegistrationFlowViewModel @Inject constructor(
 
     fun setDebtAllowed(debtAllowed: Boolean){
         this.debtAllowed = debtAllowed
+    }
+
+    fun setBudgetPlanGenerationDay(day: Int) {
+        this.day = day
     }
 }
