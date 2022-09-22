@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.puzzle.industries.budgetplan.components
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Event
 import androidx.compose.material.icons.rounded.Money
@@ -12,6 +15,7 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
@@ -20,11 +24,10 @@ import com.puzzle.industries.budgetplan.components.text.SingleLineText
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
-@ExperimentalMaterial3Api
 @Composable
 fun BudgetPlanHeader(modifier: Modifier = Modifier) {
     Surface(
-        modifier = modifier
+        modifier = modifier.clip(shape = RoundedCornerShape(size = MaterialTheme.spacing.small))
     ) {
         Column(modifier = Modifier.padding(vertical = MaterialTheme.spacing.large)) {
 
