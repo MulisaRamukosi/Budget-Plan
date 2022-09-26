@@ -11,7 +11,8 @@ internal class ExpenseGroupMapper {
     fun toExpenseGroupEntity(expenseGroup: ExpenseGroup): ExpenseGroupEntity {
         return ExpenseGroupEntity(
             id = expenseGroup.id,
-            name = expenseGroup.name
+            name = expenseGroup.name,
+            description = expenseGroup.description
         )
     }
 
@@ -24,7 +25,9 @@ internal class ExpenseGroupMapper {
                     expenseGroupId = expenseEntity.expenseGroupId,
                     name = expenseEntity.name,
                     amount = expenseEntity.amount,
-                    frequency = expenseEntity.frequency
+                    frequencyType = expenseEntity.frequencyType,
+                    frequencyWhen = expenseEntity.frequencyWhen,
+                    description = expenseEntity.description
                 )
             }
         )
@@ -34,6 +37,7 @@ internal class ExpenseGroupMapper {
         return ExpenseGroup(
             id = expenseGroup.id,
             name = expenseGroup.name,
+            description = expenseGroup.description,
             lastModifyDate = expenseGroup.lastModifyDate
         )
     }

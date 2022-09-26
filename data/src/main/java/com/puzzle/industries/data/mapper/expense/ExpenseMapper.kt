@@ -12,7 +12,9 @@ internal class ExpenseMapper {
             expenseGroupId = expense.expenseGroupId,
             name = expense.name,
             amount = expense.amount,
-            frequency = expense.frequency,
+            frequencyType = expense.frequencyType,
+            frequencyWhen = expense.frequencyWhen,
+            description = expense.description
         )
     }
 
@@ -22,7 +24,9 @@ internal class ExpenseMapper {
             expenseGroupId = expense.expenseGroupId,
             name = expense.name,
             amount = expense.amount,
-            frequency = expense.frequency,
+            frequencyType = expense.frequencyType,
+            frequencyWhen = expense.frequencyWhen,
+            description = expense.description
         )
     }
 }

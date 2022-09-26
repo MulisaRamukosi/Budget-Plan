@@ -10,7 +10,8 @@ internal class IncomeMapper {
             id = income.id,
             title = income.title,
             amount = income.amount,
-            frequency = income.frequency,
+            frequencyType = income.frequencyType,
+            frequencyWhen = income.frequencyWhen,
             description = income.description
         )
     }
@@ -20,7 +21,8 @@ internal class IncomeMapper {
             id = income.id,
             title = income.title,
             amount = income.amount,
-            frequency = income.frequency,
+            frequencyType = income.frequencyType,
+            frequencyWhen = income.frequencyWhen,
             description = income.description,
             lastModifyDate = income.lastModifyDate
         )
