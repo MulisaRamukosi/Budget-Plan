@@ -33,9 +33,14 @@ fun MainScreenNestedNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ){
+    val incomeViewModel: IncomeViewModel  = hiltViewModel()
+
     NavHost(
         modifier = modifier,
         navController = navController,
-        graph = mainScreenGraph(navController = navController)
+        graph = homeScreenGraph(
+            navController = navController,
+            incomeViewModel = incomeViewModel
+        )
     )
 }
