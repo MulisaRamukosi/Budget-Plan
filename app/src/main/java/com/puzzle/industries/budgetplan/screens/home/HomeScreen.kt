@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.components.BudgetPlanHeader
 import com.puzzle.industries.budgetplan.components.StaggeredVerticalGrid
 import com.puzzle.industries.budgetplan.components.expenses.PendingExpenses
@@ -21,12 +22,16 @@ import com.puzzle.industries.budgetplan.data.stats.Key
 import com.puzzle.industries.budgetplan.data.stats.StatItem
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(incomeViewModel: IncomeViewModel) {
     val itemModifier = Modifier.fillMaxWidth().padding(all = MaterialTheme.spacing.small)
+
     StaggeredVerticalGrid(
-        modifier = Modifier.verticalScroll(state = rememberScrollState()).padding(all = MaterialTheme.spacing.small),
+        modifier = Modifier
+            .verticalScroll(state = rememberScrollState())
+            .padding(all = MaterialTheme.spacing.small),
         maxColumnWidth = 500.dp
     ) {
         BudgetPlanHeader(modifier = itemModifier)
@@ -185,6 +190,6 @@ private fun dummyDonut() = listOf(
 @Composable
 fun PreviewHome() {
     BudgetPlanTheme(dynamicColor = false) {
-        HomeScreen()
+        HomeScreen(viewModel())
     }
 }
