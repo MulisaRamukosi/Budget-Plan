@@ -40,7 +40,7 @@ fun MainScreen(
         ), navController = navController
     ) { paddingValues ->
 
-        MainScreenNestedNavHost(
+        HomeScreenNestedNavHost(
             modifier = Modifier.padding(paddingValues = paddingValues).fillMaxSize(),
             navController = navController
         )
