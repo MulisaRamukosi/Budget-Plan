@@ -1,10 +1,15 @@
 package com.puzzle.industries.budgetplan.components.income
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Alarm
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,25 +21,35 @@ import com.puzzle.industries.budgetplan.components.MiniCaption
 import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
 import com.puzzle.industries.budgetplan.components.TitleAndDescription
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
-import com.puzzle.industries.budgetplan.data.IncomeDto
+import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
-import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.domain.constants.FrequencyType
+import com.puzzle.industries.domain.models.income.Income
+import java.util.*
 
 @Composable
 @ExperimentalMaterial3Api
-fun IncomeItem(income: IncomeDto, onClick: () -> Unit = {}) {
-    ModifiableItemWrapper(modifier = Modifier.fillMaxWidth()) {
+fun IncomeItem(
+    income: Income,
+    onEditClick: (Income) -> Unit,
+    onDeleteClick: (Income) -> Unit
+) {
+    ModifiableItemWrapper(
+        modifier = Modifier.fillMaxWidth(),
+        onEditClick = { onEditClick(income) },
+        onDeleteClick = { onDeleteClick(income) }
+    ) {
         Column(modifier = it) {
 
             TitleAndDescription(title = income.title, description = income.description)
 
-            V_M_Space()
+            V_S_Space()
 
             IncomeAmount(amount = income.amount)
 
             V_M_Space()
 
-            MiniCaption(imageVector = Icons.Rounded.Alarm, message = income.frequency)
+            MiniCaption(imageVector = Icons.Rounded.Alarm, message = income.frequencyType.toString())
         }
     }
 }
@@ -57,21 +72,21 @@ private fun IncomeAmount(amount: Double) {
 }
 
 
-
 @Composable
 @Preview
 @ExperimentalMaterial3Api
 @ExperimentalMaterial3WindowSizeClassApi
 fun IncomeItemPreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        val income = IncomeDto(
-            id = 0,
+        val income = Income(
+            id = UUID.randomUUID(),
             title = "Some title",
             description = "some description about the income",
             amount = 13000.0,
-            frequency = "Monthly",
+            frequencyType = FrequencyType.MONTHLY,
+            frequencyWhen = "2"
         )
-        IncomeItem(income) {}
+        IncomeItem(income, {}, {})
     }
 
 }
