@@ -5,5 +5,6 @@ import java.util.*
 data class ExpenseGroup(
     val id: UUID = UUID.randomUUID(),
     val name: String,
+    val description: String,
     val lastModifyDate: Date = Date()
 )
