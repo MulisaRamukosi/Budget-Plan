@@ -74,5 +74,14 @@
     <string name="budget_plan_day">Budget Plan Day</string>
     <string name="desc_budget_plan_day_icon">budget plan day icon</string>
     <string name="note_delete_expense">Note: you can long press an expense to remove it if you not  paying it this month.</string>
-
+    <string name="income_frequency">Income Frequency</string>
+    <string name="note_income_frequency">How frequently do you get this income?</string>
+    <string name="save_income">Save income</string>
+    <string name="save_icon">Save icon</string>
+    <string name="description_optional">Description (optional)</string>
+    <string name="input_required">*required</string>
+    <string name="title">Title</string>
+    <string name="update_income">Update income</string>
+    <string name="note_select_income_week_day">Select the week day on which you will receive this income.</string>
+    <string name="note_select_income_month_day">Select the month day on which you will receive this income.</string>
 </resources>
