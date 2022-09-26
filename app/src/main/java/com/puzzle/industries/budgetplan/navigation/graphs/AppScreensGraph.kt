@@ -4,6 +4,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.composable
@@ -16,8 +17,8 @@ import com.puzzle.industries.budgetplan.screens.CountryPickerScreen
 import com.puzzle.industries.budgetplan.screens.MainScreen
 import com.puzzle.industries.budgetplan.screens.SplashScreen
 import com.puzzle.industries.budgetplan.screens.WelcomeScreen
-import com.puzzle.industries.budgetplan.viewModels.SplashScreenViewModel
-import com.puzzle.industries.budgetplan.viewModels.WelcomeMessagesViewModel
+import com.puzzle.industries.budgetplan.viewModels.intro.SplashScreenViewModel
+import com.puzzle.industries.budgetplan.viewModels.intro.WelcomeMessagesViewModel
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
 
 
