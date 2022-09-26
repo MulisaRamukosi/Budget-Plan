@@ -6,6 +6,7 @@ object MainScreens {
     const val REGISTRATION: String = "registration"
     const val MAIN: String = "main"
     const val CURRENCY_PICKER: String = "currency_picker"
+    const val BUDGET: String = "budget"
 }
 
 object RegistrationScreens {
@@ -20,4 +21,11 @@ object HomeScreens {
     const val BUDGET: String = "budget"
     const val SEARCH: String = "search"
     const val SETTINGS: String = "Settings"
+}
+
+object BudgetScreens{
+    const val INCOME: String = "income"
+    const val REMINDER: String = "reminder"
+    const val EXPENSE_GROUP: String = "expense_group"
+    const val EXPENSE: String = "expense"
 }
