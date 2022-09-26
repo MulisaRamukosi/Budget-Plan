@@ -1,10 +1,7 @@
 package com.puzzle.industries.data.mapper.expense
 
 import com.puzzle.industries.data.database.entity.expense.ExpenseHistoryEntity
-import com.puzzle.industries.domain.constants.Action
-import com.puzzle.industries.domain.constants.Frequency
 import com.puzzle.industries.domain.models.expense.ExpenseHistory
-import java.util.*
 import javax.inject.Inject
 
 internal class ExpenseHistoryMapper @Inject constructor(private val expenseMapper: ExpenseMapper){
