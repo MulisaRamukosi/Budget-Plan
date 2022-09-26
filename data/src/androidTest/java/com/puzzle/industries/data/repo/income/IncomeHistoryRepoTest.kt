@@ -8,7 +8,7 @@ import com.puzzle.industries.data.repo.BaseRepoInsertTest
 import com.puzzle.industries.data.repo.BaseRepoReadTest
 import com.puzzle.industries.data.repository.income.IncomeHistoryRepositoryImpl
 import com.puzzle.industries.domain.constants.Action
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.models.income.IncomeHistory
 import com.puzzle.industries.domain.repository.income.IncomeHistoryRepository
@@ -20,20 +20,22 @@ import org.junit.runners.Suite
 private val testEntities = arrayOf(
     IncomeHistory(
         income = Income(
-            frequency = Frequency.MONTHLY,
             amount = 1200.0,
             title = "income",
-            description = "description"
+            description = "description",
+            frequencyType = FrequencyType.MONTHLY,
+            frequencyWhen = ""
         ),
         reason = "some reason",
         action = Action.UPDATE
     ),
     IncomeHistory(
         income = Income(
-            frequency = Frequency.DAILY,
             amount = 120.0,
             title = "income",
-            description = "description"
+            description = "description",
+            frequencyType = FrequencyType.DAILY,
+            frequencyWhen = ""
         ),
         reason = "some reason for change",
         action = Action.UPDATE

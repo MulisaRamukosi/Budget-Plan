@@ -7,7 +7,7 @@ import com.puzzle.industries.data.repo.BaseRepoInsertTest
 import com.puzzle.industries.data.repo.BaseRepoReadTest
 import com.puzzle.industries.data.repo.BaseRepoUpdateTest
 import com.puzzle.industries.data.repository.income.IncomeRepositoryImpl
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.repository.income.IncomeRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -16,13 +16,15 @@ import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
     Income(
-        frequency = Frequency.MONTHLY,
+        frequencyType = FrequencyType.MONTHLY,
+        frequencyWhen = "1",
         amount = 1200.0,
         title = "income",
         description = "description"
     ),
     Income(
-        frequency = Frequency.DAILY,
+        frequencyType = FrequencyType.DAILY,
+        frequencyWhen = "",
         amount = 120.0,
         title = "income",
         description = "description"

@@ -8,7 +8,7 @@ import com.puzzle.industries.data.repo.BaseRepoInsertTest
 import com.puzzle.industries.data.repo.BaseRepoReadTest
 import com.puzzle.industries.data.repository.expense.ExpenseHistoryRepositoryImpl
 import com.puzzle.industries.domain.constants.Action
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expense.ExpenseHistory
 import com.puzzle.industries.domain.repository.expense.ExpenseHistoryRepository
@@ -23,7 +23,9 @@ private val testEntities = arrayOf(
             expenseGroupId = UUID.randomUUID(),
             name = "asdf",
             amount = 134.0,
-            frequency = Frequency.MONTHLY
+            frequencyType = FrequencyType.MONTHLY,
+            frequencyWhen = "1",
+            description = ""
         ),
         action = Action.CREATE,
         reason = "some reason"
@@ -33,7 +35,9 @@ private val testEntities = arrayOf(
             expenseGroupId = UUID.randomUUID(),
             name = "vcbc",
             amount = 189.0,
-            frequency = Frequency.YEARLY
+            frequencyType = FrequencyType.YEARLY,
+            frequencyWhen = "",
+            description = ""
         ),
         action = Action.CREATE,
         reason = "some reason"

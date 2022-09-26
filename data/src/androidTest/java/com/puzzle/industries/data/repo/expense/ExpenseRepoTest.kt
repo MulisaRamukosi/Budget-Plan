@@ -6,7 +6,7 @@ import com.puzzle.industries.data.repo.BaseRepoDeleteTest
 import com.puzzle.industries.data.repo.BaseRepoInsertTest
 import com.puzzle.industries.data.repo.BaseRepoUpdateTest
 import com.puzzle.industries.data.repository.expense.ExpenseRepositoryImpl
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.repository.expense.ExpenseRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,13 +19,17 @@ private val testEntities = arrayOf(
         expenseGroupId = UUID.randomUUID(),
         name = "asdf",
         amount = 134.0,
-        frequency = Frequency.MONTHLY
+        frequencyType = FrequencyType.MONTHLY,
+        frequencyWhen = "",
+        description = ""
     ),
     Expense(
         expenseGroupId = UUID.randomUUID(),
         name = "vcbc",
         amount = 189.0,
-        frequency = Frequency.YEARLY
+        frequencyType = FrequencyType.YEARLY,
+        frequencyWhen = "",
+        description = ""
     )
 )
 

@@ -9,7 +9,7 @@ import com.puzzle.industries.data.repo.BaseRepoTest
 import com.puzzle.industries.data.repo.BaseRepoUpdateTest
 import com.puzzle.industries.data.repository.expense.ExpenseRepositoryImpl
 import com.puzzle.industries.data.repository.expenseGroup.ExpenseGroupRepositoryImpl
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.repository.expenseGroup.ExpenseGroupRepository
@@ -23,10 +23,12 @@ import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
     ExpenseGroup(
-        name = "group 1"
+        name = "group 1",
+        description = ""
     ),
     ExpenseGroup(
-        name = "group 2"
+        name = "group 2",
+        description = ""
     )
 )
 
@@ -118,13 +120,17 @@ internal class ExpenseGroupReadTest : BaseRepoTest<ExpenseGroupRepository>() {
                     expenseGroupId = testEntities[0].id,
                     name = "test1",
                     amount = 12.0,
-                    frequency = Frequency.DAILY
+                    description = "",
+                    frequencyType = FrequencyType.DAILY,
+                    frequencyWhen = ""
                 ),
                 Expense(
                     expenseGroupId = testEntities[0].id,
                     name = "test2",
                     amount = 13.4,
-                    frequency = Frequency.MONTHLY
+                    description = "",
+                    frequencyType = FrequencyType.MONTHLY,
+                    frequencyWhen = "1"
                 )
             )
 

@@ -9,7 +9,7 @@ import com.puzzle.industries.data.database.dao.expense.ExpenseHistoryDao
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
 import com.puzzle.industries.data.database.entity.expense.ExpenseHistoryEntity
 import com.puzzle.industries.domain.constants.Action
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
@@ -21,7 +21,9 @@ private val testEntities = arrayOf(
             expenseGroupId = UUID.randomUUID(),
             name = "new",
             amount = 12.0,
-            frequency = Frequency.MONTHLY
+            frequencyType = FrequencyType.MONTHLY,
+            frequencyWhen = "1",
+            description = "some desc"
         ),
         action = Action.UPDATE,
         reason = "sd"
@@ -31,7 +33,9 @@ private val testEntities = arrayOf(
             expenseGroupId = UUID.randomUUID(),
             name = "new",
             amount = 12.0,
-            frequency = Frequency.MONTHLY
+            frequencyType = FrequencyType.MONTHLY,
+            frequencyWhen = "1",
+            description = "some desc"
         ),
         action = Action.DELETE,
         reason = "sd"

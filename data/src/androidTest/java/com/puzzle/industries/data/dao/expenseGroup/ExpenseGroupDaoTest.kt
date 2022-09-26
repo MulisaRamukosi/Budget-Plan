@@ -8,7 +8,7 @@ import com.puzzle.industries.data.dao.BaseDaoUpdateTest
 import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupDao
 import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
 import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupEntity
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -19,8 +19,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
-    ExpenseGroupEntity(name = "some name"),
-    ExpenseGroupEntity(name = "some other name")
+    ExpenseGroupEntity(name = "some name", description = "some desc"),
+    ExpenseGroupEntity(name = "some other name", description = "some desc")
 )
 
 @RunWith(Suite::class)
@@ -91,7 +91,9 @@ internal class ExpenseGroupDaoReadTest : BaseDaoTest<ExpenseGroupDao>() {
                         expenseGroupId = it.id,
                         name = "test",
                         amount = 12.0,
-                        frequency = Frequency.MONTHLY
+                        frequencyType = FrequencyType.MONTHLY,
+                        frequencyWhen = "",
+                        description = "some desc"
                     )
                 )
             }
