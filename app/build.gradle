@@ -79,6 +79,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'com.puzzle.industries.budgetplan'
 }
 
 dependencies {
@@ -114,6 +115,7 @@ dependencies {
 
     //hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation "androidx.hilt:hilt-navigation-compose:$hilt_compose_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // Coroutines
