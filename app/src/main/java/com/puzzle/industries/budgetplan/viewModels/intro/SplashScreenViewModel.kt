@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.viewModels
+package com.puzzle.industries.budgetplan.viewModels.intro
 
 import androidx.lifecycle.ViewModel
 import com.puzzle.industries.domain.services.LaunchTrackingPreferenceService

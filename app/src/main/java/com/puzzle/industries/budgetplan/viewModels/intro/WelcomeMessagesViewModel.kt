@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.viewModels
+package com.puzzle.industries.budgetplan.viewModels.intro
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
