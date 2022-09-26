@@ -1,12 +1,14 @@
 package com.puzzle.industries.budgetplan.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,13 +22,17 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
-import com.puzzle.industries.budgetplan.components.spacer.H_XS_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_XS_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 
 @Composable
-fun ModifiableItemWrapper(modifier: Modifier, content: @Composable (modifier: Modifier) -> Unit) {
+fun ModifiableItemWrapper(
+    modifier: Modifier,
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    content: @Composable (modifier: Modifier) -> Unit
+) {
     val defaultMargin = MaterialTheme.spacing.medium
 
     ConstraintLayout(modifier = modifier) {
@@ -35,6 +41,7 @@ fun ModifiableItemWrapper(modifier: Modifier, content: @Composable (modifier: Mo
         Card(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onEditClick() }
                 .constrainAs(ref = cardConstraints) {
                     linkTo(start = parent.start, end = parent.end)
                 },
@@ -46,10 +53,14 @@ fun ModifiableItemWrapper(modifier: Modifier, content: @Composable (modifier: Mo
             }
         )
 
-        ModifyOptionsHolder(modifier = Modifier.constrainAs(optionsConstraints) {
-            linkTo(top = cardConstraints.bottom, bottom = cardConstraints.bottom)
-            end.linkTo(anchor = cardConstraints.end, margin = defaultMargin)
-        })
+        ModifyOptionsHolder(
+            modifier = Modifier.constrainAs(optionsConstraints) {
+                linkTo(top = cardConstraints.bottom, bottom = cardConstraints.bottom)
+                end.linkTo(anchor = cardConstraints.end, margin = defaultMargin)
+            },
+            onEditClick = onEditClick,
+            onDeleteClick = onDeleteClick
+        )
     }
 }
 
@@ -97,8 +108,8 @@ fun MiniCaption(modifier: Modifier = Modifier, imageVector: ImageVector, message
 @Composable
 private fun ModifyOptionsHolder(
     modifier: Modifier,
-    onDeleteClick: () -> Unit = {},
-    onEdit: () -> Unit = {}
+    onEditClick: () -> Unit,
+    onDeleteClick: () -> Unit
 ) {
     Card(
         modifier = modifier,
@@ -120,7 +131,7 @@ private fun ModifyOptionsHolder(
             H_M_Space()
 
             Icon(
-                modifier = Modifier.clickable { onEdit() },
+                modifier = Modifier.clickable { onEditClick() },
                 imageVector = Icons.Rounded.Edit,
                 contentDescription = stringResource(id = R.string.desc_edit_icon),
                 tint = Color.White
@@ -136,7 +147,11 @@ private fun ModifyOptionsHolder(
 @Composable
 private fun PreviewModifiableItemWrapper() {
     BudgetPlanTheme(dynamicColor = false) {
-        ModifiableItemWrapper(modifier = Modifier.fillMaxWidth()) {
+        ModifiableItemWrapper(
+            modifier = Modifier.fillMaxWidth(),
+            onEditClick = {},
+            onDeleteClick = {}
+        ) {
             Text(modifier = it, text = "Hello")
         }
     }
