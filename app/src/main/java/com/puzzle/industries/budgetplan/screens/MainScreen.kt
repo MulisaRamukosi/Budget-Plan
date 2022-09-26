@@ -35,9 +35,9 @@ fun MainScreen(
     windowSizeClass: WindowSizeClass
 ) {
     ScreenSizeAwareScaffold(
-        windowSizeClass = windowSizeClass, actions = actions(
-            navController = navController
-        ), navController = navController
+        windowSizeClass = windowSizeClass,
+        actions = actions(navController = navController),
+        navController = navController
     ) { paddingValues ->
 
         HomeScreenNestedNavHost(
