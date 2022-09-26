@@ -1,7 +1,6 @@
 package com.puzzle.industries.domain.models.expense
 
 import com.puzzle.industries.domain.constants.Action
-import com.puzzle.industries.domain.constants.Frequency
 import com.puzzle.industries.domain.models.BaseHistory
 import java.util.*
 

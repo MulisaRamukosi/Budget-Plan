@@ -1,6 +1,6 @@
 package com.puzzle.industries.domain.models.expense
 
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import java.util.*
 
 data class Expense(
@@ -8,5 +8,8 @@ data class Expense(
     val expenseGroupId: UUID,
     val name: String,
     val amount: Double,
-    val frequency: Frequency
+    val description: String,
+    val frequencyType: FrequencyType,
+    val frequencyWhen: String,
+    val lastModifyDate: Date = Date()
 )
