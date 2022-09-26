@@ -3,6 +3,8 @@ package com.puzzle.industries.budgetplan.viewModels.registrationFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.puzzle.industries.budgetplan.data.CountryCurrency
+import com.puzzle.industries.budgetplan.viewModels.custom.CoroutineViewModel
+import com.puzzle.industries.budgetplan.viewModels.custom.implementation.CoroutineViewModelImpl
 
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.services.BPlanGenDayPreferenceService
@@ -21,7 +23,7 @@ class RegistrationFlowViewModel @Inject constructor(
     private val debtPreferenceService: DebtPreferenceService,
     private val launchTrackingPreferenceService: LaunchTrackingPreferenceService,
     private val bPlanGenDayPreferenceService: BPlanGenDayPreferenceService
-) : ViewModel() {
+) : ViewModel(), CoroutineViewModel by CoroutineViewModelImpl() {
 
     private lateinit var countryCurrency: CountryCurrency
     private lateinit var income: Income
@@ -30,10 +32,10 @@ class RegistrationFlowViewModel @Inject constructor(
 
 
     fun register(){
-        viewModelScope.launch {
+        runCoroutine {
             incomeUseCase.create.insert(reason = "", income)
         }
-
+        
         countryCurrencyPreferenceService.saveCurrencySymbol(symbol = countryCurrency.symbol)
         bPlanGenDayPreferenceService.saveDay(day = day)
         debtPreferenceService.saveAllowDebtOption(option = debtAllowed)
