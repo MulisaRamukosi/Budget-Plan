@@ -25,7 +25,7 @@ import androidx.navigation.compose.rememberNavController
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.ScreenSizeAwareScaffold
 import com.puzzle.industries.budgetplan.components.appBar.bottomAppBar.BottomAppBarActionButton
-import com.puzzle.industries.budgetplan.navigation.MainScreenNestedNavHost
+import com.puzzle.industries.budgetplan.navigation.HomeScreenNestedNavHost
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 
