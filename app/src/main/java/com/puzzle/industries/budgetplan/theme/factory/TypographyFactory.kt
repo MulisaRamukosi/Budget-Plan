@@ -43,6 +43,13 @@ object TypographyFactory {
                 lineHeight = 40.sp,
                 letterSpacing = 0.0.sp,
             ),
+            headlineSmall = TextStyle(
+                fontFamily = fontFamily,
+                fontWeight = FontWeight.Normal,
+                fontSize = 24.sp,
+                lineHeight = 32.sp,
+                letterSpacing = 0.0.sp,
+            ),
             titleLarge = TextStyle(
                 fontFamily = fontFamily,
                 fontWeight = FontWeight.Normal,
