@@ -49,7 +49,7 @@ private fun ExpenseGroup(
     amount: Double,
     numOfExpenses: Int
 ) {
-    ModifiableItemWrapper(modifier = Modifier.fillMaxWidth()) {
+    ModifiableItemWrapper(modifier = Modifier.fillMaxWidth(), {}, {}) {
         Column {
             Column(modifier = it) {
                 TitleAndDescription(title = title, description = description)

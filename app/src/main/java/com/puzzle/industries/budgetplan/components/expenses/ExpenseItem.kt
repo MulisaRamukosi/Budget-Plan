@@ -30,7 +30,7 @@ private fun ExpenseItem(
     amount: Double,
     frequency: String
 ) {
-    ModifiableItemWrapper(modifier = modifier) {
+    ModifiableItemWrapper(modifier = modifier, {}, {}) {
         Column(modifier = it) {
 
             TitleAndDescription(title = title)
