@@ -34,7 +34,7 @@ fun PaymentReminderItem(
     paymentDate: String,
     reminderFrequency: String
 ) {
-    ModifiableItemWrapper(modifier = modifier) {
+    ModifiableItemWrapper(modifier = modifier, {}, {}) {
         Column(modifier = it) {
 
             SubtitleAndTitle(title)
