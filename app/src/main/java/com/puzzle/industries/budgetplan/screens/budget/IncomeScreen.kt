@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.puzzle.industries.budgetplan.screens.budget
 
 import androidx.compose.foundation.layout.*
@@ -7,35 +9,23 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.income.IncomeItem
 import com.puzzle.industries.budgetplan.components.income.TotalIncome
-import com.puzzle.industries.budgetplan.data.IncomeDto
-import com.puzzle.industries.budgetplan.previewProviders.providers.IncomeItemPreviewDataProvider
-import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
+import com.puzzle.industries.domain.models.income.Income
 
 @Composable
-@ExperimentalMaterial3Api
-fun IncomeScreen() {
-    Content {}
-}
-
-@Composable
-@ExperimentalMaterial3Api
-private fun Content(
-    incomes: List<IncomeDto> = emptyList(),
+fun IncomeScreen(
+    viewModel: IncomeViewModel,
+    onEditItemClick: (Income) -> Unit,
     onAddIncomeClick: () -> Unit
 ) {
-    val totalIncome = incomes.sumOf { it.amount }
-
     Box(modifier = Modifier.fillMaxSize()) {
 
         Column {
@@ -43,7 +33,7 @@ private fun Content(
                 modifier = Modifier
                     .padding(all = MaterialTheme.spacing.medium)
                     .align(Alignment.End),
-                income = totalIncome
+                income = viewModel.getTotalIncome()
             )
 
             LazyColumn(
@@ -52,8 +42,12 @@ private fun Content(
                     .weight(1f),
                 contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2)
             ) {
-                items(items = incomes) { income ->
-                    IncomeItem(income = income)
+                items(items = viewModel.incomes.value) { income ->
+                    IncomeItem(
+                        income = income,
+                        onEditClick = onEditItemClick,
+                        onDeleteClick = {}
+                    )
                     Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
                 }
             }
@@ -67,19 +61,6 @@ private fun Content(
                 .padding(all = MaterialTheme.spacing.medium)
         ) {
             Text(text = stringResource(id = R.string.add_income))
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-@ExperimentalMaterial3Api
-@ExperimentalMaterial3WindowSizeClassApi
-
-private fun IncomeScreenPreview(@PreviewParameter(IncomeItemPreviewDataProvider::class) incomes: List<IncomeDto>) {
-    BudgetPlanTheme(dynamicColor = false) {
-        Content(incomes = incomes) {
-
         }
     }
 }
