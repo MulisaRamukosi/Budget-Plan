@@ -3,19 +3,19 @@ package com.puzzle.industries.data.database.typeConverters.jsonConverter.deseria
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
-import com.puzzle.industries.domain.constants.Frequency
+import com.puzzle.industries.domain.constants.FrequencyType
 import java.lang.reflect.Type
 
-internal class FrequencyDeserializer : JsonDeserializer<Frequency>{
+internal class FrequencyDeserializer : JsonDeserializer<FrequencyType>{
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
         context: JsonDeserializationContext?
-    ): Frequency {
+    ): FrequencyType {
         json?.let{
             val stringValue = it.asString
-            return Frequency.valueOf(stringValue)
+            return FrequencyType.valueOf(stringValue)
         }
-        return Frequency.MONTHLY
+        return FrequencyType.MONTHLY
     }
 }

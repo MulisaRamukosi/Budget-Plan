@@ -1,24 +1,23 @@
 package com.puzzle.industries.data.database.typeConverters
 
 import androidx.room.TypeConverter
-import com.puzzle.industries.domain.constants.Frequency
-import java.util.*
+import com.puzzle.industries.domain.constants.FrequencyType
 
 internal class FrequencyConverter {
 
     @TypeConverter
-    fun toString(frequency: Frequency): String {
+    fun toString(frequency: FrequencyType): String {
         return frequency.name.lowercase()
     }
 
     @TypeConverter
-    fun toFrequency(frequency: String): Frequency {
+    fun toFrequency(frequency: String): FrequencyType {
         return when(frequency){
-            Frequency.YEARLY.name.lowercase() -> Frequency.YEARLY
-            Frequency.MONTHLY.name.lowercase() -> Frequency.MONTHLY
-            Frequency.WEEKLY.name.lowercase() -> Frequency.WEEKLY
-            Frequency.DAILY.name.lowercase() -> Frequency.DAILY
-            else -> Frequency.MONTHLY
+            FrequencyType.YEARLY.name.lowercase() -> FrequencyType.YEARLY
+            FrequencyType.MONTHLY.name.lowercase() -> FrequencyType.MONTHLY
+            FrequencyType.WEEKLY.name.lowercase() -> FrequencyType.WEEKLY
+            FrequencyType.DAILY.name.lowercase() -> FrequencyType.DAILY
+            else -> FrequencyType.MONTHLY
         }
     }
 

@@ -10,5 +10,6 @@ internal data class ExpenseGroupEntity(
     @PrimaryKey
     val id: UUID = UUID.randomUUID(),
     val name: String,
+    val description: String,
     val lastModifyDate: Date = Date()
 )
