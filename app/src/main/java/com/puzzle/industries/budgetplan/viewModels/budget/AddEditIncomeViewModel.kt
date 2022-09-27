@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.puzzle.industries.budgetplan.factory.FrequencyDateFactory
 import com.puzzle.industries.budgetplan.factory.viewModel.AddEditIncomeViewModelFactory
 import com.puzzle.industries.domain.constants.FrequencyType
+import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.income.Income
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -40,11 +42,22 @@ class AddEditIncomeViewModel @AssistedInject constructor(
 
     private val _frequencyType: MutableLiveData<FrequencyType> by lazy { MutableLiveData(prevIncome?.frequencyType) }
     val frequencyType: LiveData<FrequencyType> = _frequencyType
-    val onFrequencyTypeChange: (FrequencyType) -> Unit = { it -> _frequencyType.value = it }
+    val onFrequencyTypeChange: (FrequencyType) -> Unit = { it ->
+        _frequencyType.value = it
+        _frequencyWhen.value = when(it){
+            FrequencyType.ONCE_OFF -> FrequencyDateFactory.createCurrentDate().toString()
+            FrequencyType.MONTHLY -> "1"
+            FrequencyType.DAILY -> ""
+            FrequencyType.WEEKLY -> WeekDays.MONDAY.name
+            FrequencyType.YEARLY -> FrequencyDateFactory.createCurrentDate().toDayMonthString()
+        }
+    }
 
     private val _frequencyWhen: MutableLiveData<String> by lazy { MutableLiveData(prevIncome?.frequencyWhen) }
     val frequencyWhen: LiveData<String> = _frequencyWhen
-    val onFrequencyWhenChange: (String) -> Unit = {it -> _frequencyWhen.value = it }
+    val onFrequencyWhenChange: (String) -> Unit = {it ->
+        _frequencyWhen.value = it
+    }
 
     fun allRequiredInputsProvided(): Boolean =
         _title.value.isNullOrBlank().not() && (_amount.value ?: 0.0) > 0
