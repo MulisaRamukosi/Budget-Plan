@@ -5,5 +5,7 @@ enum class WeekDays {
     TUESDAY,
     WEDNESDAY,
     THURSDAY,
-    FRIDAY
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
 }
