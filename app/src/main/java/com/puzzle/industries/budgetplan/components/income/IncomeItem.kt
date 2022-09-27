@@ -23,6 +23,7 @@ import com.puzzle.industries.budgetplan.components.TitleAndDescription
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
+import com.puzzle.industries.budgetplan.util.buildFrequencyMessage
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.income.Income
 import java.util.*
@@ -49,7 +50,10 @@ fun IncomeItem(
 
             V_M_Space()
 
-            MiniCaption(imageVector = Icons.Rounded.Alarm, message = income.frequencyType.toString())
+            MiniCaption(imageVector = Icons.Rounded.Alarm, message = buildFrequencyMessage(
+                type = income.frequencyType,
+                message = income.frequencyWhen
+            ))
         }
     }
 }
