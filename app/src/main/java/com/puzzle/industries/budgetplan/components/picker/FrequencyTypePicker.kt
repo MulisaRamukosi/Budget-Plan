@@ -11,7 +11,9 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.Dp
+import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.domain.constants.FrequencyType
 
@@ -29,10 +31,12 @@ fun FrequencyTypePicker(
             .horizontalScroll(state = chipRowScrollState)
             .padding(horizontal = horizontalPadding)
     ) {
+        val frequencyTypes = stringArrayResource(id = R.array.frequency)
+
         FrequencyType.values().forEach {
             FilterChip(
                 selected = selectedFrequency == it,
-                label = { Text(text = it.name) },
+                label = { Text(text = frequencyTypes[it.ordinal]) },
                 onClick = { if (it != selectedFrequency) onFrequencySelected(it) }
             )
             H_S_Space()
