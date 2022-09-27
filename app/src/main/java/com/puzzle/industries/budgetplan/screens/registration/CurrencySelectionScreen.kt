@@ -70,9 +70,7 @@ fun CurrencySelectionScreen(
 private fun CurrencySelection(countryCurrency: CountryCurrency, onClick: () -> Unit) {
     val source = remember { MutableInteractionSource() }
     val pressedState = source.interactions.collectAsState(
-        initial = PressInteraction.Cancel(
-            PressInteraction.Press(Offset.Zero)
-        )
+        initial = PressInteraction.Cancel(PressInteraction.Press(Offset.Zero))
     )
     if (pressedState.value is PressInteraction.Release) {
         onClick()
