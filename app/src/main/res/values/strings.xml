@@ -84,4 +84,13 @@
     <string name="update_income">Update income</string>
     <string name="note_select_income_week_day">Select the week day on which you will receive this income.</string>
     <string name="note_select_income_month_day">Select the month day on which you will receive this income.</string>
+    <string name="note_select_income_date">Select the date on which you will receive this income.</string>
+    <string name="desc_date_icon">date icon</string>
+    <string name="error_frequency_date_picker">Error! The selected date cannot be before today\'s date. Select a new date.</string>
+    <string name="day">Day</string>
+    <string name="date">Date</string>
+    <string name="note_select_yearly_income_date">Select the day and month on which you will receive this income.</string>
+    <string name="month">Month</string>
+    <string name="frequency_message_format">%s on %s</string>
+    <string name="frequency_month_format">%s on the %s</string>
 </resources>
