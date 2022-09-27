@@ -2,9 +2,7 @@
 
 package com.puzzle.industries.budgetplan.screens.editing
 
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -24,19 +22,22 @@ import com.puzzle.industries.budgetplan.components.appBar.topAppBar.topAppBar
 import com.puzzle.industries.budgetplan.components.inputs.AmountInput
 import com.puzzle.industries.budgetplan.components.inputs.DescriptionInput
 import com.puzzle.industries.budgetplan.components.inputs.TitleInput
+import com.puzzle.industries.budgetplan.components.picker.DayAndMonthPicker
+import com.puzzle.industries.budgetplan.components.picker.FrequencyDatePicker
 import com.puzzle.industries.budgetplan.components.picker.FrequencyTypePicker
 import com.puzzle.industries.budgetplan.components.picker.WeekDayPicker
-import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_L_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.ext.observeAsNullSafeState
+import com.puzzle.industries.budgetplan.factory.FrequencyDateFactory
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.viewModels.budget.AddEditIncomeViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.WeekDays
+import com.puzzle.industries.domain.models.FrequencyDate
 import com.puzzle.industries.domain.models.income.Income
 
 @Composable
@@ -50,7 +51,6 @@ fun AddEditIncomeScreen(
     val amount by addEditIncomeViewModel.amount.observeAsNullSafeState(initial = 0.0)
     val description by addEditIncomeViewModel.description.observeAsNullSafeState(initial = "")
     val selectedFrequency by addEditIncomeViewModel.frequencyType.observeAsNullSafeState(initial = FrequencyType.MONTHLY)
-    val selectedFrequencyWhen by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = "1")
     val saveUpdateResponse = incomeViewModel.response.observeAsState()
 
     saveUpdateResponse.value?.let {
@@ -121,29 +121,11 @@ fun AddEditIncomeScreen(
             )
 
             when (selectedFrequency) {
-                FrequencyType.MONTHLY -> {
-                    addEditIncomeViewModel.onFrequencyWhenChange("1")
-                    MonthDayPicker(
-                        selectedDay = selectedFrequencyWhen.toInt(),
-                        onMonthDaySelected = addEditIncomeViewModel.onFrequencyWhenChange
-                    )
-                }
-
-                FrequencyType.ONCE_OFF -> {}
-
-                FrequencyType.WEEKLY -> {
-                    addEditIncomeViewModel.onFrequencyWhenChange(WeekDays.MONDAY.name)
-                    DayPicker(
-                        selectedDay = WeekDays.valueOf(selectedFrequencyWhen),
-                        onDaySelected = addEditIncomeViewModel.onFrequencyWhenChange
-                    )
-                }
-                FrequencyType.YEARLY -> {}
-
-                FrequencyType.DAILY -> {
-                    addEditIncomeViewModel.onFrequencyWhenChange("")
-                }
-
+                FrequencyType.MONTHLY -> MonthlyFrequencyPicker(addEditIncomeViewModel = addEditIncomeViewModel)
+                FrequencyType.ONCE_OFF -> OnceOffFrequencyPicker(addEditIncomeViewModel = addEditIncomeViewModel)
+                FrequencyType.WEEKLY -> WeeklyFrequencyPicker(addEditIncomeViewModel = addEditIncomeViewModel)
+                FrequencyType.YEARLY -> YearlyFrequencyPicker(addEditIncomeViewModel = addEditIncomeViewModel)
+                FrequencyType.DAILY -> addEditIncomeViewModel.onFrequencyWhenChange("")
             }
 
             V_L_Space()
@@ -161,6 +143,8 @@ fun AddEditIncomeScreen(
             ) {
                 Text(text = stringResource(id = if (addEditIncomeViewModel.isUpdating) R.string.update_income else R.string.save_income))
             }
+
+            V_M_Space()
         }
     }
 }
@@ -181,11 +165,10 @@ private fun onSaveUpdateIncome(
 }
 
 @Composable
-private fun DayPicker(
-    selectedDay: WeekDays,
-    onDaySelected: (String) -> Unit
-) {
+private fun WeeklyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
     V_M_Space()
+
+    val selectedDay by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = WeekDays.MONDAY.name)
 
     Column {
         Text(
@@ -196,16 +179,18 @@ private fun DayPicker(
         V_S_Space()
         WeekDayPicker(
             horizontalPadding = MaterialTheme.spacing.medium,
-            onDaySelected = { onDaySelected(it.toString()) },
-            selectedDay = selectedDay
+            onDaySelected = { weekDay -> addEditIncomeViewModel.onFrequencyWhenChange(weekDay.name) },
+            selectedDay = WeekDays.valueOf(selectedDay)
         )
     }
 
 }
 
 @Composable
-private fun MonthDayPicker(selectedDay: Int, onMonthDaySelected: (String) -> Unit) {
+private fun MonthlyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
     V_M_Space()
+
+    val selectedDay by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = "1")
 
     Column(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
         Text(
@@ -213,12 +198,63 @@ private fun MonthDayPicker(selectedDay: Int, onMonthDaySelected: (String) -> Uni
             style = MaterialTheme.typography.bodySmall
         )
         V_S_Space()
-        com.puzzle.industries.budgetplan.components.picker.MonthDayPicker(
-            day = selectedDay,
-            onClick = { onMonthDaySelected(it.toString()) }
+        com.puzzle.industries.budgetplan.components.picker.DayOfMonthPicker(
+            modifier = Modifier.fillMaxWidth(),
+            day = selectedDay.toInt(),
+            onClick = { day -> addEditIncomeViewModel.onFrequencyWhenChange(day.toString()) }
         )
     }
 
+}
+
+@Composable
+private fun OnceOffFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
+    V_M_Space()
+    val currDate = FrequencyDateFactory.createCurrentDate()
+    val selectedDate by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = currDate.toString())
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.spacing.medium)
+    ) {
+        Text(
+            text = stringResource(id = R.string.note_select_income_date),
+            style = MaterialTheme.typography.bodySmall
+        )
+        V_S_Space()
+        FrequencyDatePicker(
+            preselectedFrequencyDate = FrequencyDate.fromString(date = selectedDate),
+            onDateSelected = { date -> addEditIncomeViewModel.onFrequencyWhenChange(date.toString()) }
+        )
+    }
+}
+
+@Composable
+fun YearlyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
+    V_M_Space()
+    val currDate = FrequencyDateFactory.createCurrentDate()
+    val selectedDate by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = currDate.toString())
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.spacing.medium)
+    ) {
+        Text(
+            text = stringResource(id = R.string.note_select_yearly_income_date),
+            style = MaterialTheme.typography.bodySmall
+        )
+        V_S_Space()
+        DayAndMonthPicker(
+            modifier = Modifier.fillMaxWidth(),
+            preselectedFrequencyDate = FrequencyDate.fromString(date = selectedDate),
+            onDateSelected = { day, month ->
+                val date = FrequencyDate(day = day, month = month, year = 0)
+                addEditIncomeViewModel.onFrequencyWhenChange(date.toDayMonthString())
+            }
+        )
+    }
 }
 
 @Preview
