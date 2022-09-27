@@ -12,13 +12,7 @@ internal class FrequencyConverter {
 
     @TypeConverter
     fun toFrequency(frequency: String): FrequencyType {
-        return when(frequency){
-            FrequencyType.YEARLY.name.lowercase() -> FrequencyType.YEARLY
-            FrequencyType.MONTHLY.name.lowercase() -> FrequencyType.MONTHLY
-            FrequencyType.WEEKLY.name.lowercase() -> FrequencyType.WEEKLY
-            FrequencyType.DAILY.name.lowercase() -> FrequencyType.DAILY
-            else -> FrequencyType.MONTHLY
-        }
+        return FrequencyType.valueOf(frequency.uppercase())
     }
 
 }
