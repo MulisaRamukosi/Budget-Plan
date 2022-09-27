@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.picker.MonthDayPicker
+import com.puzzle.industries.budgetplan.components.picker.DayOfMonthPicker
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.BudgetPlanDayViewModel
@@ -32,7 +32,7 @@ fun BudgetPlanGenerationDayScreen(
                 note = stringResource(id = R.string.note_changeable_in_settings)
             )
 
-            MonthDayPicker(day = selectedDay){ day ->
+            DayOfMonthPicker(day = selectedDay){ day ->
                 viewModel.pub.value = day
             }
 
