@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -29,7 +30,7 @@ fun DebtScreen(
     viewModel: DebtViewModel = viewModel(),
     onContinueClick: (Boolean) -> Unit
 ) {
-    val debtEnabled by viewModel.sub.observeAsState(initial = false)
+    val debtEnabled by viewModel.sub.collectAsState()
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
@@ -43,7 +44,7 @@ fun DebtScreen(
 
             DebtCheckbox(
                 checked = debtEnabled,
-                onCheckedChange = { viewModel.pub.value = it })
+                onCheckedChange = { viewModel.publishValue(value = it) })
 
             V_M_Space()
 

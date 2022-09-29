@@ -43,7 +43,7 @@ fun CurrencySelectionScreen(
     onCurrencySelectionClick: () -> Unit = {},
     onContinueClick: (CountryCurrency) -> Unit = {}
 ) {
-    val selectedIndex by viewModel.sub.observeAsState(initial = 0)
+    val selectedIndex by viewModel.sub.collectAsState()
     val selectedCountry = viewModel.countries[selectedIndex]
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

@@ -2,6 +2,7 @@ package com.puzzle.industries.budgetplan.navigation.graphs
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -57,8 +58,8 @@ private fun NavGraphBuilder.countryPickerScreen(
     ) { navBackStackEntry ->
 
         val id = navBackStackEntry.arguments?.getInt(RouteParamKey.ID)
-        val selectedId by viewModel.pub.observeAsState(initial = id ?: 0)
-        viewModel.pub.value = selectedId
+        val selectedId by viewModel.sub.collectAsState(initial = id ?: 0)
+        viewModel.publishValue(value = selectedId)
 
         navController.SetResult(key = ValueKey.COUNTRY_CURRENCY_KEY.name, value = selectedId)
         CountryPickerScreen(viewModel = viewModel, onDoneClick = { navController.popBackStack() })
@@ -87,7 +88,7 @@ private fun NavGraphBuilder.welcomeScreen(
 ) {
     composable(route = Routes.Welcome.path) {
 
-        val currentPage by viewModel.getCurrentPage().observeAsState(initial = 0)
+        val currentPage by viewModel.currentPage.collectAsState()
 
         WelcomeScreen(
             currentPage = currentPage,

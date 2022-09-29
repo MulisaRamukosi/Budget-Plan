@@ -19,8 +19,7 @@ fun BudgetPlanGenerationDayScreen(
     viewModel: BudgetPlanDayViewModel = viewModel(),
     onContinueClick: (Int) -> Unit = {}
 ) {
-
-    val selectedDay by viewModel.sub.observeAsState(initial = 1)
+    val selectedDay by viewModel.sub.collectAsState()
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
@@ -32,9 +31,7 @@ fun BudgetPlanGenerationDayScreen(
                 note = stringResource(id = R.string.note_changeable_in_settings)
             )
 
-            DayOfMonthPicker(day = selectedDay){ day ->
-                viewModel.pub.value = day
-            }
+            DayOfMonthPicker(day = selectedDay){ day -> viewModel.publishValue(value = day) }
 
             V_M_Space()
 

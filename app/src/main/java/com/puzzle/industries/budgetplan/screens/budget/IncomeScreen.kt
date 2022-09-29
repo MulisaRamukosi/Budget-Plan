@@ -26,6 +26,9 @@ fun IncomeScreen(
     onEditItemClick: (Income) -> Unit,
     onAddIncomeClick: () -> Unit
 ) {
+
+    val currencySymbol by viewModel.currencySymbol.collectAsState()
+
     Box(modifier = Modifier.fillMaxSize()) {
 
         Column {

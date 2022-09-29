@@ -1,7 +1,3 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class
-)
-
 package com.puzzle.industries.budgetplan.screens.registration
 
 import androidx.compose.foundation.layout.Box
@@ -11,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -30,10 +27,10 @@ import com.puzzle.industries.domain.models.income.Income
 @Composable
 fun IncomeInputScreen(
     viewModel: IncomeInputViewModel = viewModel(),
-    onContinueClick: (Income) -> Unit = {}
+    onContinueClick: (Income) -> Unit
 ) {
 
-    val income by viewModel.sub.observeAsState(initial = 0.0)
+    val income by viewModel.sub.collectAsState()
     val incomeTitle = stringResource(id = R.string.base_income)
     val incomeDescription = stringResource(id = R.string.desc_base_income)
 
@@ -47,7 +44,7 @@ fun IncomeInputScreen(
                 note = stringResource(id = R.string.note_income_addition)
             )
 
-            AmountInput(income = income, onValueChange = { viewModel.pub.value = it })
+            AmountInput(income = income, onValueChange = { viewModel.publishValue(value = it) })
 
             V_M_Space()
 
@@ -68,13 +65,10 @@ fun IncomeInputScreen(
     }
 }
 
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewIncomeInputScreen() {
     BudgetPlanTheme(dynamicColor = false) {
-        IncomeInputScreen()
+        IncomeInputScreen{}
     }
 }

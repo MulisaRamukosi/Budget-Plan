@@ -44,9 +44,7 @@ private fun NavGraphBuilder.currencyScreen(
 
         navController.GetOnceResult<Int>(
             keyResult = ValueKey.COUNTRY_CURRENCY_KEY.name,
-            onResult = { currencyId ->
-                currencyViewModel.pub.value = currencyId
-            }
+            onResult = { currencyId -> currencyViewModel.publishValue(value = currencyId) }
         )
 
         CurrencySelectionScreen(

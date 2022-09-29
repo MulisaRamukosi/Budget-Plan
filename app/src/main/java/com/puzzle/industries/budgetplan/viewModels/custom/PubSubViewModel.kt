@@ -1,16 +1,20 @@
 package com.puzzle.industries.budgetplan.viewModels.custom
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 open class PubSubViewModel<T> @Inject constructor(private val initial: T) : ViewModel() {
 
-    val pub: MutableLiveData<T> by lazy {
-        MutableLiveData(initial)
+    private val pub: MutableStateFlow<T> by lazy {
+        MutableStateFlow(value = initial)
     }
 
-    val sub: LiveData<T> = pub
+    val sub: StateFlow<T> = pub.asStateFlow()
+
+    fun publishValue(value: T){
+        pub.value = value
+    }
 }

@@ -1,11 +1,15 @@
 package com.puzzle.industries.budgetplan.viewModels.intro
 
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.data.WelcomeMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -39,14 +43,11 @@ class WelcomeMessagesViewModel @Inject constructor(): ViewModel() {
         )
     )
 
-    private val currentPage: MutableLiveData<Int> by lazy { MutableLiveData(0) }
-
-    fun getCurrentPage(): LiveData<Int> {
-        return currentPage
-    }
+    private val _currentPage: MutableStateFlow<Int> by lazy { MutableStateFlow(value = 0) }
+    val currentPage: StateFlow<Int> = _currentPage.asStateFlow()
 
     fun getCurrentWelcomeMessage(): WelcomeMessage {
-        return welcomeMessages[currentPage.value!!]
+        return welcomeMessages[_currentPage.value]
     }
 
     fun getNumOfPages(): Int {
@@ -54,9 +55,9 @@ class WelcomeMessagesViewModel @Inject constructor(): ViewModel() {
     }
 
     fun navigateToNextMessage(): Boolean {
-        val index = currentPage.value ?: 0
+        val index = _currentPage.value
         if (index + 1 < welcomeMessages.size) {
-            currentPage.value = index + 1
+            _currentPage.value = index + 1
             return true
         }
         return false
