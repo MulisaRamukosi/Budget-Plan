@@ -10,6 +10,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -36,7 +38,7 @@ fun IncomeScreen(
                 modifier = Modifier
                     .padding(all = MaterialTheme.spacing.medium)
                     .align(Alignment.End),
-                income = viewModel.getTotalIncome()
+                income = viewModel.getTotalIncomeWithCurrency()
             )
 
             LazyColumn(
@@ -48,6 +50,7 @@ fun IncomeScreen(
                 items(items = viewModel.incomes.value) { income ->
                     IncomeItem(
                         income = income,
+                        currencySymbol = currencySymbol,
                         onEditClick = onEditItemClick,
                         onDeleteClick = {}
                     )
