@@ -26,7 +26,7 @@ fun buildFrequencyMessage(type: FrequencyType, message: String): String {
         )
         FrequencyType.ONCE_OFF, FrequencyType.YEARLY -> formatFrequencyDate(
             frequencyName = frequencyName,
-            date = FrequencyDate.fromString(date = message)
+            date = FrequencyDate.parse(date = message)
         )
     }
 }

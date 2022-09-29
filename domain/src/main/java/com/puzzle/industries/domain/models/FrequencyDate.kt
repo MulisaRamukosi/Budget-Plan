@@ -22,7 +22,7 @@ data class FrequencyDate(
     }
 
     companion object {
-        fun fromString(date: String): FrequencyDate {
+        fun parse(date: String): FrequencyDate {
             val dateInfo = date.split("/")
             return FrequencyDate(
                 day = dateInfo[0].toInt(),

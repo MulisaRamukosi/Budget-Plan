@@ -224,7 +224,7 @@ private fun OnceOffFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewMode
         )
         V_S_Space()
         FrequencyDatePicker(
-            preselectedFrequencyDate = FrequencyDate.fromString(date = selectedDate),
+            preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate),
             onDateSelected = { date -> addEditIncomeViewModel.onFrequencyWhenChange(date.toString()) }
         )
     }
@@ -248,7 +248,7 @@ fun YearlyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
         V_S_Space()
         DayAndMonthPicker(
             modifier = Modifier.fillMaxWidth(),
-            preselectedFrequencyDate = FrequencyDate.fromString(date = selectedDate),
+            preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate),
             onDateSelected = { day, month ->
                 val date = FrequencyDate(day = day, month = month, year = 0)
                 addEditIncomeViewModel.onFrequencyWhenChange(date.toDayMonthString())
