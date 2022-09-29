@@ -32,6 +32,7 @@ import java.util.*
 @ExperimentalMaterial3Api
 fun IncomeItem(
     income: Income,
+    currencySymbol: String,
     onEditClick: (Income) -> Unit,
     onDeleteClick: (Income) -> Unit
 ) {
@@ -46,7 +47,7 @@ fun IncomeItem(
 
             V_S_Space()
 
-            IncomeAmount(amount = income.amount)
+            IncomeAmount(amount = income.amount, currencySymbol = currencySymbol)
 
             V_M_Space()
 
@@ -59,7 +60,7 @@ fun IncomeItem(
 }
 
 @Composable
-private fun IncomeAmount(amount: Double) {
+private fun IncomeAmount(amount: Double, currencySymbol: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
             imageVector = Icons.Rounded.Add,
@@ -68,7 +69,7 @@ private fun IncomeAmount(amount: Double) {
         )
 
         Text(
-            text = stringResource(id = R.string.currency_amount, "R", amount),
+            text = stringResource(id = R.string.currency_amount, currencySymbol, amount),
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.headlineSmall
         )
@@ -90,7 +91,7 @@ fun IncomeItemPreview() {
             frequencyType = FrequencyType.MONTHLY,
             frequencyWhen = "2"
         )
-        IncomeItem(income, {}, {})
+        IncomeItem(income, currencySymbol = "R", {}, {})
     }
 
 }

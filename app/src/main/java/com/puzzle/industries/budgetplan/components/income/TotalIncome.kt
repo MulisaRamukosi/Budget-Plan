@@ -23,7 +23,7 @@ import com.puzzle.industries.budgetplan.theme.spacing
 @Composable
 fun TotalIncome(
     modifier: Modifier = Modifier,
-    income: Double
+    income: String
 ) {
     Row(
         modifier = modifier,
@@ -39,7 +39,7 @@ fun TotalIncome(
         H_S_Space()
 
         Text(
-            text = stringResource(id = R.string.currency_amount, "R", income),
+            text = income,
             color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.labelLarge
         )
@@ -51,6 +51,6 @@ fun TotalIncome(
 @ExperimentalMaterial3WindowSizeClassApi
 private fun TotalIncomePreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        TotalIncome(income = 12555.0)
+        TotalIncome(income = "R12555.0")
     }
 }

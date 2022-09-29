@@ -29,6 +29,9 @@ class IncomeViewModel @Inject constructor(
     private val _response = MutableLiveData<Response<Boolean>>()
     val response:LiveData<Response<Boolean>> = _response
 
+    private val _currencySymbol = MutableStateFlow(value = countryCurrencyPreferenceService.getCurrencySymbol())
+    val currencySymbol = _currencySymbol.asStateFlow()
+
     init {
         runCoroutine {
             val response: Response<Flow<List<Income>>> = incomeUseCase.read.read()
