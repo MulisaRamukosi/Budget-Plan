@@ -9,6 +9,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -47,18 +49,16 @@ fun AddEditIncomeScreen(
     onNavigateBackToParent: () -> Unit
 ) {
 
-    val title by addEditIncomeViewModel.title.observeAsNullSafeState(initial = "")
-    val amount by addEditIncomeViewModel.amount.observeAsNullSafeState(initial = 0.0)
-    val description by addEditIncomeViewModel.description.observeAsNullSafeState(initial = "")
-    val selectedFrequency by addEditIncomeViewModel.frequencyType.observeAsNullSafeState(initial = FrequencyType.MONTHLY)
-    val saveUpdateResponse = incomeViewModel.response.observeAsState()
-
-    saveUpdateResponse.value?.let {
-        incomeViewModel.reactToResponseOnce {
+    val title by addEditIncomeViewModel.title.collectAsState()
+    val amount by addEditIncomeViewModel.amount.collectAsState()
+    val description by addEditIncomeViewModel.description.collectAsState()
+    val selectedFrequency by addEditIncomeViewModel.frequencyType.collectAsState()
+    LaunchedEffect(key1 = true){
+        incomeViewModel.response.collect {
             if (it.response) {
                 onNavigateBackToParent()
             } else {
-                //TODO: navigate to parent
+                //TODO: show error message
             }
         }
     }
@@ -168,7 +168,7 @@ private fun onSaveUpdateIncome(
 private fun WeeklyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
     V_M_Space()
 
-    val selectedDay by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = WeekDays.MONDAY.name)
+    val selectedDay by addEditIncomeViewModel.frequencyWhen.collectAsState()
 
     Column {
         Text(
@@ -190,7 +190,7 @@ private fun WeeklyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel
 private fun MonthlyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
     V_M_Space()
 
-    val selectedDay by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = "1")
+    val selectedDay by addEditIncomeViewModel.frequencyWhen.collectAsState()
 
     Column(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
         Text(
@@ -210,8 +210,7 @@ private fun MonthlyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewMode
 @Composable
 private fun OnceOffFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
     V_M_Space()
-    val currDate = FrequencyDateFactory.createCurrentDate()
-    val selectedDate by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = currDate.toString())
+    val selectedDate by addEditIncomeViewModel.frequencyWhen.collectAsState()
 
     Column(
         modifier = Modifier
@@ -233,8 +232,8 @@ private fun OnceOffFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewMode
 @Composable
 fun YearlyFrequencyPicker(addEditIncomeViewModel: AddEditIncomeViewModel) {
     V_M_Space()
-    val currDate = FrequencyDateFactory.createCurrentDate()
-    val selectedDate by addEditIncomeViewModel.frequencyWhen.observeAsNullSafeState(initial = currDate.toString())
+
+    val selectedDate by addEditIncomeViewModel.frequencyWhen.collectAsState()
 
     Column(
         modifier = Modifier

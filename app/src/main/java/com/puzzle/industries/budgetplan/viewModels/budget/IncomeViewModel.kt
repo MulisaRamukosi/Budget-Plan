@@ -10,10 +10,7 @@ import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
 import com.puzzle.industries.domain.usescases.income.IncomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import java.util.*
 import javax.inject.Inject
 
@@ -26,8 +23,8 @@ class IncomeViewModel @Inject constructor(
     private val _incomes = MutableStateFlow<List<Income>>(value = emptyList())
     val incomes = _incomes.asStateFlow()
 
-    private val _response = MutableLiveData<Response<Boolean>>()
-    val response:LiveData<Response<Boolean>> = _response
+    private val _response = MutableSharedFlow<Response<Boolean>>()
+    val response:SharedFlow<Response<Boolean>> = _response
 
     private val _currencySymbol = MutableStateFlow(value = countryCurrencyPreferenceService.getCurrencySymbol())
     val currencySymbol = _currencySymbol.asStateFlow()
@@ -41,12 +38,6 @@ class IncomeViewModel @Inject constructor(
         }
     }
 
-    fun reactToResponseOnce(action: () -> Unit){
-        _response.value = null
-        action()
-
-    }
-
     fun getTotalIncome(): Double = incomes.value.sumOf { income -> income.amount }
 
     fun getTotalIncomeWithCurrency(): String =
@@ -58,13 +49,13 @@ class IncomeViewModel @Inject constructor(
 
     fun saveIncome(income: Income, reason: String) {
         runCoroutine {
-            _response.value = incomeUseCase.create.insert(reason = reason, entity = arrayOf(income))
+            _response.emit(value = incomeUseCase.create.insert(reason = reason, entity = arrayOf(income)))
         }
     }
 
     fun updateIncome(income: Income, reason: String) {
         runCoroutine {
-            _response.value = incomeUseCase.update.update(reason = reason, entity = arrayOf(income))
+            _response.emit(value = incomeUseCase.update.update(reason = reason, entity = arrayOf(income)))
         }
     }
 }
