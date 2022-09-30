@@ -24,9 +24,9 @@ plugins {
 project.ext{
     minSdk = 21
     targetSdk = 32
-    versionCode = 10
+    versionCode = 1
     compileSdk = 33
-    versionName = "1.0"
+    versionName = "0.0.1"
     applicationId = "com.puzzle.industries.budgetplan"
 }
 
