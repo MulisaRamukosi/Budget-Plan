@@ -39,4 +39,20 @@
         <item>rd</item>
         <item>th</item>
     </string-array>
+
+    <string name="reason_other">Other.</string>
+
+    <string-array name="income_update_reasons">
+        <item>The income amount has changed.</item>
+        <item>The values entered were not correct.</item>
+        <item>Restructuring budget plan.</item>
+        <item>@string/reason_other</item>
+    </string-array>
+
+    <string-array name="income_delete_reasons">
+        <item>No longer receive this income.</item>
+        <item>Restructuring budget plan.</item>
+        <item>@string/reason_other</item>
+    </string-array>
+
 </resources>

@@ -93,4 +93,18 @@
     <string name="month">Month</string>
     <string name="frequency_message_format">%s on %s</string>
     <string name="frequency_month_format">%s on the %s</string>
+    <string name="cancel">Cancel</string>
+    <string name="desc_close_icon">Close icon</string>
+    <string name="update_income_subtitle">Update existing income</string>
+    <string name="add_income_subtitle">Add new income</string>
+    <string name="do_not_specify">Do not specify</string>
+    <string name="update">update</string>
+    <string name="reason">Reason</string>
+    <string name="question_mark_icon">Question mark icon</string>
+    <string name="initial">Initial</string>
+    <string name="income_update_supporting_text">Provide an optional reason why your updating the income, this helps you track how your incomes change.</string>
+    <string name="income_delete_supporting_text">Provide an optional reason why your deleting the income, this helps you track how your incomes change.</string>
+    <string name="specify_optional">Specify (Optional)</string>
+    <string name="delete_income">Delete Income</string>
+    <string name="delete">delete</string>
 </resources>
