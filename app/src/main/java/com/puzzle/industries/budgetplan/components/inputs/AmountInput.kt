@@ -35,10 +35,10 @@ fun AmountInput(
     Column {
         OutlinedTextField(
             modifier = modifier,
-            value = if (income == 0.0) "" else income.toString(),
+            value = if (income == 0.0) "" else income.toBigDecimal().toPlainString(),
             onValueChange = {
                 try {
-                    onValueChange(it.toDouble())
+                    if(it.length < 15) onValueChange(it.toDouble())
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }
