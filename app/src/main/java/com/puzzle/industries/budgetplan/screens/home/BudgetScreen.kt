@@ -1,6 +1,5 @@
 @file:OptIn(
-    ExperimentalPagerApi::class,
-    ExperimentalAnimationApi::class,
+    ExperimentalPagerApi::class
 )
 
 package com.puzzle.industries.budgetplan.screens.home
@@ -55,7 +54,7 @@ fun BudgetScreen(
         ) { currentPage ->
             when (currentPage) {
                 0 -> IncomeScreen(
-                    viewModel = incomeViewModel,
+                    incomeViewModel = incomeViewModel,
                     onEditItemClick = { income ->
                         navigateToAddEditIncomeScreen(
                             navController = navController,
