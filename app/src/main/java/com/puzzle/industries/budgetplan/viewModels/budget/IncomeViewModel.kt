@@ -49,13 +49,34 @@ class IncomeViewModel @Inject constructor(
 
     fun saveIncome(income: Income, reason: String) {
         runCoroutine {
-            _response.emit(value = incomeUseCase.create.insert(reason = reason, entity = arrayOf(income)))
+            _crudResponseEventEmitter.emit(
+                value = incomeUseCase.create.insert(
+                    reason = reason,
+                    entity = arrayOf(income)
+                )
+            )
         }
     }
 
     fun updateIncome(income: Income, reason: String) {
         runCoroutine {
-            _response.emit(value = incomeUseCase.update.update(reason = reason, entity = arrayOf(income)))
+            _crudResponseEventEmitter.emit(
+                value = incomeUseCase.update.update(
+                    reason = reason,
+                    entity = arrayOf(income)
+                )
+            )
+        }
+    }
+
+    fun deleteIncome(income: Income, reason: String) {
+        runCoroutine {
+            _crudResponseEventEmitter.emit(
+                value = incomeUseCase.delete.delete(
+                    reason = reason,
+                    entity = arrayOf(income)
+                )
+            )
         }
     }
 }
