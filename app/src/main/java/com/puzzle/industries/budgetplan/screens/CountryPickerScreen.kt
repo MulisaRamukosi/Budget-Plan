@@ -1,5 +1,6 @@
 package com.puzzle.industries.budgetplan.screens
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,12 +51,15 @@ fun CountryPickerScreen(
                     modifier = Modifier.fillMaxWidth(),
                     countryCurrency = item,
                     isSelected = index == selectedIndex,
-                    onClick = { viewModel.publishValue(value = index)  }
+                    onClick = { viewModel.publishValue(value = index) }
                 )
             }
         }
 
-        Button(modifier = Modifier.padding(all = MaterialTheme.spacing.medium), onClick = onDoneClick) {
+        Button(
+            modifier = Modifier.padding(all = MaterialTheme.spacing.medium),
+            onClick = onDoneClick
+        ) {
             Text(text = stringResource(id = R.string.done))
         }
     }
@@ -99,7 +102,11 @@ private fun CountryCurrencyItem(
 
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = UI_MODE_NIGHT_YES
+)
 @Composable
 private fun PreviewCountryPickerScreen() {
     BudgetPlanTheme(dynamicColor = false) {
