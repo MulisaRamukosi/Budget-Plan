@@ -21,6 +21,7 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 fun topAppBar(
     title: String = stringResource(id = R.string.app_name),
     subTitle: String = "",
+    colors: TopAppBarColors = TopAppBarDefaults.smallTopAppBarColors(),
     isHomeEnabled: Boolean = false,
     actions: List<TopAppBarActionButton> = emptyList(),
     onHomeClick: () -> Unit = {}
@@ -44,7 +45,9 @@ fun topAppBar(
                 actions.forEach { action ->
                     ActionButton(action)
                 }
-            })
+            },
+            colors = colors
+        )
 
     }
 }
