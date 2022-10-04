@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
-    private val countryCurrencyPreferenceService: CountryCurrencyPreferenceService,
+    countryCurrencyPreferenceService: CountryCurrencyPreferenceService,
 ) : ViewModel(), CoroutineViewModel by CoroutineViewModelImpl() {
 
     private val _incomes = MutableStateFlow<List<Income>>(value = emptyList())
@@ -26,8 +26,28 @@ class IncomeViewModel @Inject constructor(
     private val _response = MutableSharedFlow<Response<Boolean>>()
     val response:SharedFlow<Response<Boolean>> = _response
 
-    private val _currencySymbol = MutableStateFlow(value = countryCurrencyPreferenceService.getCurrencySymbol())
+    private val _currencySymbol =
+        MutableStateFlow(value = countryCurrencyPreferenceService.getCurrencySymbol())
     val currencySymbol = _currencySymbol.asStateFlow()
+
+    private val _totalIncomeWithCurrency = MutableStateFlow(value = "")
+    val totalIncomeWithCurrency = _totalIncomeWithCurrency.asStateFlow()
+
+    private val _deleteIncomeEventEmitter = MutableSharedFlow<Income>()
+    val deleteIncomeEventListener: SharedFlow<Income> = _deleteIncomeEventEmitter
+    val onDeleteIncome: (Income) -> Unit = {
+        runCoroutine {
+            _deleteIncomeEventEmitter.emit(value = it)
+        }
+    }
+
+    private val _updateIncomeEventEmitter = MutableSharedFlow<Unit>()
+    val updateIncomeEventListener: SharedFlow<Unit> = _updateIncomeEventEmitter
+    val emitUpdateIncomeEvent: () -> Unit = {
+        runCoroutine {
+            _updateIncomeEventEmitter.emit(value = Unit)
+        }
+    }
 
     init {
         runCoroutine {
@@ -38,10 +58,18 @@ class IncomeViewModel @Inject constructor(
         }
     }
 
-    fun getTotalIncome(): Double = incomes.value.sumOf { income -> income.amount }
-
-    fun getTotalIncomeWithCurrency(): String =
-        "${countryCurrencyPreferenceService.getCurrencySymbol()}${getTotalIncome()}"
+    private fun initTotalIncomeWithCurrencyFlow() {
+        runCoroutine {
+            val totalIncomeWithCurrencyFlow: Flow<String> =
+                _incomes.combine(_currencySymbol) { incomes, currencySymbol ->
+                    val totalIncome = incomes.sumOf { income -> income.amount }
+                    "$currencySymbol${totalIncome.toBigDecimal().toPlainString()}"
+                }
+            totalIncomeWithCurrencyFlow.distinctUntilChanged().collect { totalIncome ->
+                _totalIncomeWithCurrency.value = totalIncome
+            }
+        }
+    }
 
     fun getIncomeById(id: String?): Income? {
         return incomes.value.find { income -> income.id == UUID.fromString(id) }
