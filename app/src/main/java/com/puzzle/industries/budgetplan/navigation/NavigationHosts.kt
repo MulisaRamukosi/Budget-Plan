@@ -25,6 +25,7 @@ fun AppScreensNavHost(modifier: Modifier = Modifier, windowSizeClass: WindowSize
 @Composable
 fun HomeScreenNestedNavHost(
     modifier: Modifier = Modifier,
+    windowSizeClass: WindowSizeClass,
     navController: NavHostController
 ){
     val incomeViewModel: IncomeViewModel  = hiltViewModel()
@@ -34,6 +35,7 @@ fun HomeScreenNestedNavHost(
         navController = navController,
         graph = homeScreenGraph(
             navController = navController,
+            windowSizeClass = windowSizeClass,
             incomeViewModel = incomeViewModel
         )
     )

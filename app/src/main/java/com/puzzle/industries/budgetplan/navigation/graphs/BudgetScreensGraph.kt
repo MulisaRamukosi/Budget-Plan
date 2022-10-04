@@ -1,12 +1,14 @@
 package com.puzzle.industries.budgetplan.navigation.graphs
 
 import android.app.Activity
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.puzzle.industries.budgetplan.MainActivity
+import com.puzzle.industries.budgetplan.ext.isInTabletLandscapeView
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.screens.editing.AddEditIncomeScreen
@@ -19,11 +21,12 @@ import java.util.*
 
 fun NavGraphBuilder.budgetScreensGraph(
     navController: NavController,
+    windowSizeClass: WindowSizeClass,
     incomeViewModel: IncomeViewModel
 ) {
     navigation(startDestination = Routes.Budget.path, route = Routes.BudgetRoute.path) {
         budgetScreen(navController = navController, incomeViewModel = incomeViewModel)
-        addEditIncomeScreen(navController = navController, incomeViewModel = incomeViewModel)
+        addEditIncomeScreen(navController = navController, windowSizeClass = windowSizeClass, incomeViewModel = incomeViewModel)
     }
 }
 
@@ -41,6 +44,7 @@ private fun NavGraphBuilder.budgetScreen(
 
 private fun NavGraphBuilder.addEditIncomeScreen(
     navController: NavController,
+    windowSizeClass: WindowSizeClass,
     incomeViewModel: IncomeViewModel
 ) {
     composable(
@@ -50,12 +54,13 @@ private fun NavGraphBuilder.addEditIncomeScreen(
         )
     ) { navBackStackEntry ->
         val income: Income? = retrieveIncomeItem(navBackStackEntry, incomeViewModel)
-
         AddEditIncomeScreen(
             incomeViewModel = incomeViewModel,
             addEditIncomeViewModel = addEditIncomeViewModel(income = income),
+            isInTabletLandscape = windowSizeClass.isInTabletLandscapeView(),
             onNavigateBackToParent = { navController.popBackStack() }
         )
+
     }
 }
 
