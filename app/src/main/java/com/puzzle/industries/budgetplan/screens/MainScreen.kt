@@ -23,7 +23,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.ScreenSizeAwareScaffold
+import com.puzzle.industries.budgetplan.components.layout.ScreenSizeAwareScaffold
 import com.puzzle.industries.budgetplan.components.appBar.bottomAppBar.BottomAppBarActionButton
 import com.puzzle.industries.budgetplan.navigation.HomeScreenNestedNavHost
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
@@ -42,7 +42,8 @@ fun MainScreen(
 
         HomeScreenNestedNavHost(
             modifier = Modifier.padding(paddingValues = paddingValues).fillMaxSize(),
-            navController = navController
+            navController = navController,
+            windowSizeClass = windowSizeClass
         )
 
     }
