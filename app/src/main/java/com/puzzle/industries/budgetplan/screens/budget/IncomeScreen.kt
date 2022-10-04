@@ -9,54 +9,47 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.income.IncomeItem
 import com.puzzle.industries.budgetplan.components.income.TotalIncome
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
 import com.puzzle.industries.domain.models.income.Income
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun IncomeScreen(
-    viewModel: IncomeViewModel,
+    incomeViewModel: IncomeViewModel,
     onEditItemClick: (Income) -> Unit,
     onAddIncomeClick: () -> Unit
 ) {
 
-    val currencySymbol by viewModel.currencySymbol.collectAsState()
+    SetupDeleteHandler(incomeViewModel = incomeViewModel)
 
     Box(modifier = Modifier.fillMaxSize()) {
 
         Column {
-            TotalIncome(
+            TotalIncomeField(
                 modifier = Modifier
                     .padding(all = MaterialTheme.spacing.medium)
                     .align(Alignment.End),
-                income = viewModel.getTotalIncomeWithCurrency()
+                incomeViewModel = incomeViewModel
             )
 
-            LazyColumn(
+            IncomeItems(
                 modifier = Modifier
                     .padding(horizontal = MaterialTheme.spacing.medium)
                     .weight(1f),
-                contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2)
-            ) {
-                items(items = viewModel.incomes.value) { income ->
-                    IncomeItem(
-                        income = income,
-                        currencySymbol = currencySymbol,
-                        onEditClick = onEditItemClick,
-                        onDeleteClick = {}
-                    )
-                    Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
-                }
-            }
+                incomeViewModel = incomeViewModel,
+                onEditItemClick = onEditItemClick
+            )
 
         }
 
@@ -68,5 +61,94 @@ fun IncomeScreen(
         ) {
             Text(text = stringResource(id = R.string.add_income))
         }
+    }
+}
+
+@Composable
+private fun IncomeItems(
+    modifier: Modifier = Modifier,
+    incomeViewModel: IncomeViewModel,
+    onEditItemClick: (Income) -> Unit
+) {
+    val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
+    val incomes by incomeViewModel.incomes.collectAsState()
+
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2)
+    ) {
+        items(items = incomes) { income ->
+            IncomeItem(
+                income = income,
+                currencySymbol = currencySymbol,
+                onEditClick = onEditItemClick,
+                onDeleteClick = incomeViewModel.onDeleteIncome
+            )
+            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
+        }
+    }
+}
+
+@Composable
+private fun TotalIncomeField(modifier: Modifier, incomeViewModel: IncomeViewModel) {
+    val totalIncomeWithCurrency by incomeViewModel.totalIncomeWithCurrency.collectAsState()
+    TotalIncome(
+        modifier = modifier,
+        income = totalIncomeWithCurrency
+    )
+}
+
+@Composable
+private fun SetupDeleteHandler(incomeViewModel: IncomeViewModel) {
+    val showDeleteReasonDialog = rememberSaveable { mutableStateOf(false) }
+
+    val deleteReasons = stringArrayResource(id = R.array.income_delete_reasons).toList()
+
+
+    val incomeToDelete = remember { MutableStateFlow<Income?>(value = null) }
+    val deleteReason = remember { mutableStateOf(value = deleteReasons[0]) }
+
+    LaunchedEffect(key1 = true) {
+        incomeViewModel.crudResponseEventListener.collect {
+            if (it.response) {
+                showDeleteReasonDialog.value = false
+            } else {
+                //TODO: show error message
+            }
+        }
+    }
+
+    LaunchedEffect(key1 = true) {
+        incomeViewModel.deleteIncomeEventListener.collect { income ->
+            incomeToDelete.value = income
+            showDeleteReasonDialog.value = true
+        }
+    }
+
+
+    val deleteIncome: () -> Unit = {
+        incomeToDelete.value?.let { income ->
+            incomeViewModel.deleteIncome(income = income, reason = deleteReason.value)
+        }
+
+    }
+
+    if (showDeleteReasonDialog.value) {
+
+        ReasonPickerDialog(
+            title = stringResource(id = R.string.delete_income),
+            reasonSupportingText = stringResource(id = R.string.income_delete_supporting_text),
+            dismissOnClickOutside = true,
+            reasons = deleteReasons,
+            preselectedReason = deleteReasons[0],
+            positiveActionText = stringResource(id = R.string.delete),
+            onPositiveActionClick = deleteIncome,
+            onDoNotSpecifyClick = {
+                deleteReason.value = ""
+                deleteIncome()
+            },
+            onReasonChange = { deleteReason.value = it },
+            onDismiss = { showDeleteReasonDialog.value = false }
+        )
     }
 }
