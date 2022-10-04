@@ -22,11 +22,13 @@ import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_XS_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.util.configs.TextFieldsConfig
 
 @Composable
 fun TitleInput(
     modifier: Modifier = Modifier,
     title: String,
+    maxCharCount: Int = TextFieldsConfig.singleLineTextMaxChar,
     imeAction: ImeAction = ImeAction.Default,
     onValueChange: (String) -> Unit
 ) {
@@ -36,7 +38,7 @@ fun TitleInput(
         OutlinedTextField(
             modifier = modifier,
             value = title,
-            onValueChange = onValueChange,
+            onValueChange = {if (it.length <= maxCharCount) onValueChange(it) },
             singleLine = true,
             label = { Text(text = stringResource(id = R.string.title)) },
             keyboardOptions = KeyboardOptions(

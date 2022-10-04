@@ -14,12 +14,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.util.configs.TextFieldsConfig
 
 @Composable
 fun DescriptionInput(
     modifier: Modifier = Modifier,
     description: String = "",
-    maxLines: Int = 2,
+    maxLines: Int = 4,
+    maxCharCount: Int = TextFieldsConfig.multiLineTextMaxChar,
     imeAction: ImeAction = ImeAction.Default,
     onValueChange: (String) -> Unit
 ) {
@@ -28,7 +30,7 @@ fun DescriptionInput(
     OutlinedTextField(
         modifier = modifier,
         value = description,
-        onValueChange = onValueChange,
+        onValueChange = { if (it.length <= maxCharCount) onValueChange(it) },
         label = { Text(text = stringResource(id = R.string.description_optional)) },
         maxLines = maxLines,
         keyboardOptions = KeyboardOptions(
