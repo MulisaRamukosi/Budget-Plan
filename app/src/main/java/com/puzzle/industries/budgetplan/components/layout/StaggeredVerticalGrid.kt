@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.components
+package com.puzzle.industries.budgetplan.components.layout
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

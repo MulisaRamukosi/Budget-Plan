@@ -18,13 +18,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.MiniCaption
-import com.puzzle.industries.budgetplan.components.ModifiableItemWrapper
+import com.puzzle.industries.budgetplan.components.layout.MiniCaption
+import com.puzzle.industries.budgetplan.components.layout.ModifiableItemWrapper
 import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_XS_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
-import com.puzzle.industries.budgetplan.theme.spacing
 
 @Composable
 fun PaymentReminderItem(
