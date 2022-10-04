@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.components.BudgetPlanHeader
-import com.puzzle.industries.budgetplan.components.StaggeredVerticalGrid
+import com.puzzle.industries.budgetplan.components.layout.StaggeredVerticalGrid
 import com.puzzle.industries.budgetplan.components.expenses.PendingExpenses
 import com.puzzle.industries.budgetplan.components.reminder.PaymentReminders
 import com.puzzle.industries.budgetplan.components.stats.BarChart
