@@ -1,7 +1,5 @@
 package com.puzzle.industries.budgetplan.viewModels.budget
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.puzzle.industries.budgetplan.viewModels.custom.CoroutineViewModel
 import com.puzzle.industries.budgetplan.viewModels.custom.implementation.CoroutineViewModelImpl
@@ -23,8 +21,8 @@ class IncomeViewModel @Inject constructor(
     private val _incomes = MutableStateFlow<List<Income>>(value = emptyList())
     val incomes = _incomes.asStateFlow()
 
-    private val _response = MutableSharedFlow<Response<Boolean>>()
-    val response:SharedFlow<Response<Boolean>> = _response
+    private val _crudResponseEventEmitter = MutableSharedFlow<Response<Boolean>>()
+    val crudResponseEventListener: SharedFlow<Response<Boolean>> = _crudResponseEventEmitter
 
     private val _currencySymbol =
         MutableStateFlow(value = countryCurrencyPreferenceService.getCurrencySymbol())
