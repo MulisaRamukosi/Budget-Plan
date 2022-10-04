@@ -48,6 +48,11 @@ class IncomeViewModel @Inject constructor(
     }
 
     init {
+        initIncomeFlow()
+        initTotalIncomeWithCurrencyFlow()
+    }
+
+    private fun initIncomeFlow() {
         runCoroutine {
             val response: Response<Flow<List<Income>>> = incomeUseCase.read.read()
             response.response.distinctUntilChanged().collect { incomeList ->
