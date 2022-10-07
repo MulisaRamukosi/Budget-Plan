@@ -56,7 +56,7 @@ class IncomeViewModel @Inject constructor(
         runCoroutine {
             val response: Response<Flow<List<Income>>> = incomeUseCase.read.read()
             response.response.distinctUntilChanged().collect { incomeList ->
-                if (incomeList.isNotEmpty()) _incomes.value = incomeList
+                _incomes.value = incomeList
             }
         }
     }
