@@ -1,10 +1,9 @@
 package com.puzzle.industries.budgetplan.viewModels.registrationFlow
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.puzzle.industries.budgetplan.data.CountryCurrency
-import com.puzzle.industries.budgetplan.viewModels.custom.CoroutineViewModel
-import com.puzzle.industries.budgetplan.viewModels.custom.implementation.CoroutineViewModelImpl
+import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
+import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.services.BPlanGenDayPreferenceService
@@ -13,7 +12,6 @@ import com.puzzle.industries.domain.services.DebtPreferenceService
 import com.puzzle.industries.domain.services.LaunchTrackingPreferenceService
 import com.puzzle.industries.domain.usescases.income.IncomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +21,7 @@ class RegistrationFlowViewModel @Inject constructor(
     private val debtPreferenceService: DebtPreferenceService,
     private val launchTrackingPreferenceService: LaunchTrackingPreferenceService,
     private val bPlanGenDayPreferenceService: BPlanGenDayPreferenceService
-) : ViewModel(), CoroutineViewModel by CoroutineViewModelImpl() {
+) : ViewModel(), CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
     private lateinit var countryCurrency: CountryCurrency
     private lateinit var income: Income
