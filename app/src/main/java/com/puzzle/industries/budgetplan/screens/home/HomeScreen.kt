@@ -22,7 +22,7 @@ import com.puzzle.industries.budgetplan.data.stats.Key
 import com.puzzle.industries.budgetplan.data.stats.StatItem
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
-import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 
 @Composable
 fun HomeScreen(incomeViewModel: IncomeViewModel) {

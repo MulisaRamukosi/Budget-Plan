@@ -4,7 +4,6 @@
 
 package com.puzzle.industries.budgetplan.screens.home
 
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,10 +22,10 @@ import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.screens.budget.ExpenseScreen
-import com.puzzle.industries.budgetplan.screens.budget.IncomeScreen
+import com.puzzle.industries.budgetplan.screens.budget.income.IncomeScreen
 import com.puzzle.industries.budgetplan.screens.budget.ReminderScreen
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
-import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
