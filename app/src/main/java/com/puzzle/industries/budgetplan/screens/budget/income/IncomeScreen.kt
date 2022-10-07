@@ -37,9 +37,7 @@ fun IncomeScreen(
 
         Column {
             TotalIncomeField(
-                modifier = Modifier
-                    .padding(all = MaterialTheme.spacing.medium)
-                    .align(Alignment.End),
+                modifier = Modifier.padding(all = MaterialTheme.spacing.medium),
                 incomeViewModel = incomeViewModel
             )
 
