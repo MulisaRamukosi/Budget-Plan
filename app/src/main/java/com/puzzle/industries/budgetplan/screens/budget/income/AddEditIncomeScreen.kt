@@ -1,8 +1,7 @@
-package com.puzzle.industries.budgetplan.screens.editing
+package com.puzzle.industries.budgetplan.screens.budget.income
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -24,8 +23,8 @@ import com.puzzle.industries.budgetplan.components.layout.OrientationAwareConten
 import com.puzzle.industries.budgetplan.components.picker.*
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
-import com.puzzle.industries.budgetplan.viewModels.budget.AddEditIncomeViewModel
-import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.FrequencyDate
@@ -49,7 +48,7 @@ fun AddEditIncomeScreen(
     OrientationAwareContentWrapper(
         title = stringResource(id = R.string.income),
         subTitle = stringResource(
-            id = if (addEditIncomeViewModel.isUpdating) R.string.update_income_subtitle
+            id = if (addEditIncomeViewModel.isUpdatingConditionHandler.getValue()) R.string.update_income_subtitle
             else R.string.add_income_subtitle
         ),
         onDismiss = onNavigateBackToParent,
@@ -112,11 +111,10 @@ private fun SetUpEventListener(
 
 @Composable
 private fun SetUpCrudActionDefaultReason(addEditIncomeViewModel: AddEditIncomeViewModel) {
-    if(!addEditIncomeViewModel.isUpdating) {
+    if (!addEditIncomeViewModel.isUpdatingConditionHandler.getValue()) {
         val defaultReason = stringResource(id = R.string.initial)
         addEditIncomeViewModel.onCrudActionReasonChange(defaultReason)
-    }
-    else if (addEditIncomeViewModel.crudActionReason.isBlank()){
+    } else if (addEditIncomeViewModel.crudActionReason.isBlank()) {
         val updateReasons = stringArrayResource(id = R.array.income_update_reasons).toList()
         val defaultUpdateReason = updateReasons[0]
         addEditIncomeViewModel.onCrudActionReasonChange(defaultUpdateReason)
@@ -176,36 +174,37 @@ private fun SetUpUpdateEventListener(
 
 @Composable
 private fun TitleTextField(addEditIncomeViewModel: AddEditIncomeViewModel) {
-    val title by addEditIncomeViewModel.title.collectAsState()
+    val title by addEditIncomeViewModel.titleStateFlowHandler.valueStateFlow.collectAsState()
+
     TitleInput(
         modifier = Modifier.fillMaxWidth(),
         imeAction = ImeAction.Next,
         title = title,
-        onValueChange = addEditIncomeViewModel.onTitleChange
+        onValueChange = addEditIncomeViewModel.titleStateFlowHandler.onValueChange
     )
 }
 
 @Composable
 private fun AmountTextField(addEditIncomeViewModel: AddEditIncomeViewModel) {
-    val amount by addEditIncomeViewModel.amount.collectAsState()
+    val amount by addEditIncomeViewModel.amountStateFlowHandler.valueStateFlow.collectAsState()
 
     AmountInput(
         modifier = Modifier.fillMaxWidth(),
         imeAction = ImeAction.Next,
         income = amount,
-        onValueChange = addEditIncomeViewModel.onAmountChange
+        onValueChange = addEditIncomeViewModel.amountStateFlowHandler.onValueChange
     )
 }
 
 @Composable
 private fun DescriptionTextField(addEditIncomeViewModel: AddEditIncomeViewModel) {
-    val description by addEditIncomeViewModel.description.collectAsState()
+    val description by addEditIncomeViewModel.descriptionStateFlowHandler.valueStateFlow.collectAsState()
 
     DescriptionInput(
         modifier = Modifier.fillMaxWidth(),
         imeAction = ImeAction.Done,
         description = description,
-        onValueChange = addEditIncomeViewModel.onDescriptionChange
+        onValueChange = addEditIncomeViewModel.descriptionStateFlowHandler.onValueChange
     )
 }
 
@@ -214,12 +213,12 @@ private fun FrequencyTypePickerField(
     addEditIncomeViewModel: AddEditIncomeViewModel,
     horizontalPadding: Dp
 ) {
-    val selectedFrequency by addEditIncomeViewModel.frequencyType.collectAsState()
+    val selectedFrequency by addEditIncomeViewModel.frequencyTypeStateFlowHandler.valueStateFlow.collectAsState()
 
     FrequencyTypePicker(
         selectedFrequency = selectedFrequency,
         horizontalPadding = horizontalPadding.value.dp,
-        onFrequencySelected = addEditIncomeViewModel.onFrequencyTypeChange
+        onFrequencySelected = addEditIncomeViewModel.frequencyTypeStateFlowHandler.onValueChange
     )
 
     FrequencyWhenPicker(
@@ -236,19 +235,19 @@ private fun getOrientationActions(
     isInLandscape: Boolean,
     onDismiss: () -> Unit
 ): @Composable RowScope.() -> Unit {
-    val saveUpdateText: String =
-        stringResource(id = if (addEditIncomeViewModel.isUpdating) R.string.update_income else R.string.save_income)
+    val isUpdating = addEditIncomeViewModel.isUpdatingConditionHandler.getValue()
+    val saveUpdateText: String = stringResource(id = if (isUpdating) R.string.update_income else R.string.save_income)
 
     val saveOrUpdateIncomeClick: () -> Unit = {
         onSaveUpdateIncome(
             incomeViewModel = incomeViewModel,
             income = addEditIncomeViewModel.income,
             reason = addEditIncomeViewModel.crudActionReason,
-            isUpdating = addEditIncomeViewModel.isUpdating
+            isUpdating = isUpdating
         )
     }
 
-    val allInputsEntered by addEditIncomeViewModel.allRequiredInputsProvided.collectAsState()
+    val allInputsEntered by addEditIncomeViewModel.requiredInputsStateFlowHandler.valueStateFlow.collectAsState()
 
     return when (isInLandscape) {
         true -> viewAlertDialogDefaultActions(
@@ -304,7 +303,7 @@ private fun FrequencyWhenPicker(
             addEditIncomeViewModel = addEditIncomeViewModel,
             horizontalPadding = horizontalPadding
         )
-        FrequencyType.DAILY -> addEditIncomeViewModel.onFrequencyWhenChange("")
+        FrequencyType.DAILY -> addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange("")
     }
 }
 
@@ -328,7 +327,7 @@ private fun WeeklyFrequencyPicker(
 ) {
     V_M_Space()
 
-    val selectedDay by addEditIncomeViewModel.frequencyWhen.collectAsState()
+    val selectedDay by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
 
     Column {
         Text(
@@ -339,7 +338,11 @@ private fun WeeklyFrequencyPicker(
         V_S_Space()
         WeekDayPicker(
             horizontalPadding = horizontalPadding,
-            onDaySelected = { weekDay -> addEditIncomeViewModel.onFrequencyWhenChange(weekDay.name) },
+            onDaySelected = { weekDay ->
+                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(
+                    weekDay.name
+                )
+            },
             selectedDay = WeekDays.valueOf(selectedDay)
         )
     }
@@ -352,7 +355,7 @@ private fun MonthlyFrequencyPicker(
 ) {
     V_M_Space()
 
-    val selectedDay by addEditIncomeViewModel.frequencyWhen.collectAsState()
+    val selectedDay by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
 
     Column(modifier = Modifier.padding(horizontal = horizontalPadding)) {
         Text(
@@ -363,7 +366,11 @@ private fun MonthlyFrequencyPicker(
 
         DayOfMonthPicker(modifier = Modifier.fillMaxWidth(),
             day = selectedDay.toInt(),
-            onClick = { day -> addEditIncomeViewModel.onFrequencyWhenChange(day.toString()) })
+            onClick = { day ->
+                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(
+                    day.toString()
+                )
+            })
     }
 
 }
@@ -374,7 +381,7 @@ private fun OnceOffFrequencyPicker(
     horizontalPadding: Dp
 ) {
     V_M_Space()
-    val selectedDate by addEditIncomeViewModel.frequencyWhen.collectAsState()
+    val selectedDate by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
 
     Column(
         modifier = Modifier
@@ -387,7 +394,11 @@ private fun OnceOffFrequencyPicker(
         )
         V_S_Space()
         FrequencyDatePicker(preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate),
-            onDateSelected = { date -> addEditIncomeViewModel.onFrequencyWhenChange(date.toString()) })
+            onDateSelected = { date ->
+                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(
+                    date.toString()
+                )
+            })
     }
 }
 
@@ -398,7 +409,7 @@ private fun YearlyFrequencyPicker(
 ) {
     V_M_Space()
 
-    val selectedDate by addEditIncomeViewModel.frequencyWhen.collectAsState()
+    val selectedDate by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
 
     Column(
         modifier = Modifier
@@ -414,7 +425,7 @@ private fun YearlyFrequencyPicker(
             preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate),
             onDateSelected = { day, month ->
                 val date = FrequencyDate(day = day, month = month, year = 0)
-                addEditIncomeViewModel.onFrequencyWhenChange(date.toDayMonthString())
+                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(date.toDayMonthString())
             })
     }
 }

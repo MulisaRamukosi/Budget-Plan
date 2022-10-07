@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.puzzle.industries.budgetplan.screens.budget
+package com.puzzle.industries.budgetplan.screens.budget.income
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +20,7 @@ import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.income.IncomeItem
 import com.puzzle.industries.budgetplan.components.income.TotalIncome
 import com.puzzle.industries.budgetplan.theme.spacing
-import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.models.income.Income
 import kotlinx.coroutines.flow.MutableStateFlow
 

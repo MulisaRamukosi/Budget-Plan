@@ -1,8 +1,8 @@
-package com.puzzle.industries.budgetplan.viewModels.budget
+package com.puzzle.industries.budgetplan.viewModels.budget.income
 
 import androidx.lifecycle.ViewModel
-import com.puzzle.industries.budgetplan.viewModels.custom.CoroutineViewModel
-import com.puzzle.industries.budgetplan.viewModels.custom.implementation.CoroutineViewModelImpl
+import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
+import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
     countryCurrencyPreferenceService: CountryCurrencyPreferenceService,
-) : ViewModel(), CoroutineViewModel by CoroutineViewModelImpl() {
+) : ViewModel(), CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
     private val _incomes = MutableStateFlow<List<Income>>(value = emptyList())
     val incomes = _incomes.asStateFlow()
