@@ -90,7 +90,7 @@ fun OtherReasonTextField(onReasonChange: (String) -> Unit){
         modifier = Modifier.fillMaxWidth(),
         value = otherReason.value,
         onValueChange = {
-            if (it.length <= TextFieldsConfig.singleLineTextMaxChar) {
+            if (it.length <= TextFieldsConfig.SINGLE_LINE_TEXT_MAX_CHAR) {
                 otherReason.value = it
                 onReasonChange(otherReason.value)
             }

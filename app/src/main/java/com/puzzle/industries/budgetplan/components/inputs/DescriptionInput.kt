@@ -21,7 +21,7 @@ fun DescriptionInput(
     modifier: Modifier = Modifier,
     description: String = "",
     maxLines: Int = 4,
-    maxCharCount: Int = TextFieldsConfig.multiLineTextMaxChar,
+    maxCharCount: Int = TextFieldsConfig.MULTI_LINE_TEXT_MAX_CHAR,
     imeAction: ImeAction = ImeAction.Default,
     onValueChange: (String) -> Unit
 ) {

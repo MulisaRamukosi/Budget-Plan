@@ -10,7 +10,7 @@ import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.screens.home.HomeScreen
 import com.puzzle.industries.budgetplan.screens.home.SearchScreen
 import com.puzzle.industries.budgetplan.screens.home.SettingsScreen
-import com.puzzle.industries.budgetplan.viewModels.budget.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 
 @Composable
 fun homeScreenGraph(

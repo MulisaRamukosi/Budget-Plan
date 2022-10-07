@@ -18,7 +18,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_XS_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -28,7 +27,7 @@ import com.puzzle.industries.budgetplan.util.configs.TextFieldsConfig
 fun TitleInput(
     modifier: Modifier = Modifier,
     title: String,
-    maxCharCount: Int = TextFieldsConfig.singleLineTextMaxChar,
+    maxCharCount: Int = TextFieldsConfig.SINGLE_LINE_TEXT_MAX_CHAR,
     imeAction: ImeAction = ImeAction.Default,
     onValueChange: (String) -> Unit
 ) {
