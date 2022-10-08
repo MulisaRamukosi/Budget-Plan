@@ -149,8 +149,8 @@ private fun SetUpUpdateEventListener(
 
     val updateIncome: () -> Unit = {
         incomeViewModel.updateIncome(
-            income = addEditIncomeViewModel.income,
-            reason = addEditIncomeViewModel.crudActionReason
+            reason = addEditIncomeViewModel.crudActionReason,
+            addEditIncomeViewModel.income
         )
     }
 
@@ -316,7 +316,7 @@ private fun onSaveUpdateIncome(
     if (isUpdating) {
         incomeViewModel.emitUpdateIncomeEvent()
     } else {
-        incomeViewModel.saveIncome(income = income, reason = reason)
+        incomeViewModel.saveIncome(reason = reason, income)
     }
 }
 

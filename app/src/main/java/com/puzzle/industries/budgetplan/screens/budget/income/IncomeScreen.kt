@@ -127,7 +127,7 @@ private fun SetupDeleteHandler(incomeViewModel: IncomeViewModel) {
 
     val deleteIncome: () -> Unit = {
         incomeToDelete.value?.let { income ->
-            incomeViewModel.deleteIncome(income = income, reason = deleteReason.value)
+            incomeViewModel.deleteIncome(reason = deleteReason.value, income)
         }
 
     }
