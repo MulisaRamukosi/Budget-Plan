@@ -58,29 +58,29 @@ class IncomeViewModel @Inject constructor(
         income.id == UUID.fromString(id)
     }
 
-    fun saveIncome(income: Income, reason: String) = runCoroutine {
+    fun saveIncome(reason: String, vararg incomes: Income) = runCoroutine {
         crudResponseEventEmitter.emit(
             value = incomeUseCase.create.insert(
                 reason = reason,
-                entity = arrayOf(income)
+                entity = incomes
             )
         )
     }
 
-    fun updateIncome(income: Income, reason: String) = runCoroutine {
+    fun updateIncome(reason: String, vararg incomes: Income) = runCoroutine {
         crudResponseEventEmitter.emit(
             value = incomeUseCase.update.update(
                 reason = reason,
-                entity = arrayOf(income)
+                entity = incomes
             )
         )
     }
 
-    fun deleteIncome(income: Income, reason: String) = runCoroutine {
+    fun deleteIncome(reason: String, vararg incomes: Income) = runCoroutine {
         crudResponseEventEmitter.emit(
             value = incomeUseCase.delete.delete(
                 reason = reason,
-                entity = arrayOf(income)
+                entity = incomes
             )
         )
     }
