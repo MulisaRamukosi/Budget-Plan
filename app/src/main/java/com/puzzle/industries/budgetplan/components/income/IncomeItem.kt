@@ -31,8 +31,8 @@ import java.util.*
 @Composable
 @ExperimentalMaterial3Api
 fun IncomeItem(
-    income: Income,
     currencySymbol: String,
+    income: Income,
     onEditClick: (Income) -> Unit,
     onDeleteClick: (Income) -> Unit
 ) {
@@ -47,7 +47,7 @@ fun IncomeItem(
 
             V_S_Space()
 
-            IncomeAmount(amount = income.amount, currencySymbol = currencySymbol)
+            IncomeAmount(currencySymbol = currencySymbol, amount = income.amount)
 
             V_M_Space()
 
@@ -60,7 +60,7 @@ fun IncomeItem(
 }
 
 @Composable
-private fun IncomeAmount(amount: Double, currencySymbol: String) {
+private fun IncomeAmount(currencySymbol: String, amount: Double) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
             imageVector = Icons.Rounded.Add,
@@ -91,7 +91,7 @@ fun IncomeItemPreview() {
             frequencyType = FrequencyType.MONTHLY,
             frequencyWhen = "2"
         )
-        IncomeItem(income, currencySymbol = "R", {}, {})
+        IncomeItem("R", income, {}, {})
     }
 
 }

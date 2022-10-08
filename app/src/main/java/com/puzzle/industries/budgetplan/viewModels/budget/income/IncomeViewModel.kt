@@ -2,7 +2,9 @@ package com.puzzle.industries.budgetplan.viewModels.budget.income
 
 import androidx.lifecycle.ViewModel
 import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
+import com.puzzle.industries.budgetplan.delegates.CrudViewModelHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
+import com.puzzle.industries.budgetplan.delegates.implementation.CrudViewModelHandlerDelegateImpl
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
@@ -15,99 +17,71 @@ import javax.inject.Inject
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
-    countryCurrencyPreferenceService: CountryCurrencyPreferenceService,
-) : ViewModel(), CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
+    currencyPreferenceService: CountryCurrencyPreferenceService
+) : ViewModel(),
+    CrudViewModelHandlerDelegate<Boolean, Income> by CrudViewModelHandlerDelegateImpl(),
+    CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
-    private val _incomes = MutableStateFlow<List<Income>>(value = emptyList())
-    val incomes = _incomes.asStateFlow()
+    val incomes = items.asStateFlow()
+    val crudResponseEventListener: SharedFlow<Response<Boolean>> = crudResponseEventEmitter
 
-    private val _crudResponseEventEmitter = MutableSharedFlow<Response<Boolean>>()
-    val crudResponseEventListener: SharedFlow<Response<Boolean>> = _crudResponseEventEmitter
+    val deleteIncomeEventListener: SharedFlow<Income> = deleteValueEventEmitter
+    val onDeleteIncome: (Income) -> Unit = onDeleteValue
 
-    private val _currencySymbol =
-        MutableStateFlow(value = countryCurrencyPreferenceService.getCurrencySymbol())
-    val currencySymbol = _currencySymbol.asStateFlow()
+    val updateIncomeEventListener: SharedFlow<Unit> = updateValueEventEmitter
+    val emitUpdateIncomeEvent: () -> Unit = onUpdateValue
 
-    private val _totalIncomeWithCurrency = MutableStateFlow(value = "")
-    val totalIncomeWithCurrency = _totalIncomeWithCurrency.asStateFlow()
+    val currencySymbol = currencyPreferenceService.getCurrencySymbol()
 
-    private val _deleteIncomeEventEmitter = MutableSharedFlow<Income>()
-    val deleteIncomeEventListener: SharedFlow<Income> = _deleteIncomeEventEmitter
-    val onDeleteIncome: (Income) -> Unit = {
-        runCoroutine {
-            _deleteIncomeEventEmitter.emit(value = it)
-        }
-    }
-
-    private val _updateIncomeEventEmitter = MutableSharedFlow<Unit>()
-    val updateIncomeEventListener: SharedFlow<Unit> = _updateIncomeEventEmitter
-    val emitUpdateIncomeEvent: () -> Unit = {
-        runCoroutine {
-            _updateIncomeEventEmitter.emit(value = Unit)
-        }
-    }
+    private val _totalIncome = MutableStateFlow(value = 0.0)
+    val totalIncome = _totalIncome
 
     init {
-        initIncomeFlow()
-        initTotalIncomeWithCurrencyFlow()
+        initIncomes()
+        initTotalIncome()
     }
 
-    private fun initIncomeFlow() {
-        runCoroutine {
-            val response: Response<Flow<List<Income>>> = incomeUseCase.read.read()
-            response.response.distinctUntilChanged().collect { incomeList ->
-                _incomes.value = incomeList
-            }
+    private fun initIncomes() = runCoroutine {
+        val response: Response<Flow<List<Income>>> = incomeUseCase.read.read()
+        response.response.distinctUntilChanged().collect { incomeList ->
+            items.value = incomeList
         }
     }
 
-    private fun initTotalIncomeWithCurrencyFlow() {
-        runCoroutine {
-            val totalIncomeWithCurrencyFlow: Flow<String> =
-                _incomes.combine(_currencySymbol) { incomes, currencySymbol ->
-                    val totalIncome = incomes.sumOf { income -> income.amount }
-                    "$currencySymbol${totalIncome.toBigDecimal().toPlainString()}"
-                }
-            totalIncomeWithCurrencyFlow.distinctUntilChanged().collect { totalIncome ->
-                _totalIncomeWithCurrency.value = totalIncome
-            }
+    private fun initTotalIncome() = runCoroutine {
+        incomes.collect { incomes ->
+            _totalIncome.value = incomes.sumOf { income -> income.amount }
         }
     }
 
-    fun getIncomeById(id: String?): Income? {
-        return incomes.value.find { income -> income.id == UUID.fromString(id) }
+    fun getIncomeById(id: String?): Income? = incomes.value.find { income ->
+        income.id == UUID.fromString(id)
     }
 
-    fun saveIncome(income: Income, reason: String) {
-        runCoroutine {
-            _crudResponseEventEmitter.emit(
-                value = incomeUseCase.create.insert(
-                    reason = reason,
-                    entity = arrayOf(income)
-                )
+    fun saveIncome(income: Income, reason: String) = runCoroutine {
+        crudResponseEventEmitter.emit(
+            value = incomeUseCase.create.insert(
+                reason = reason,
+                entity = arrayOf(income)
             )
-        }
+        )
     }
 
-    fun updateIncome(income: Income, reason: String) {
-        runCoroutine {
-            _crudResponseEventEmitter.emit(
-                value = incomeUseCase.update.update(
-                    reason = reason,
-                    entity = arrayOf(income)
-                )
+    fun updateIncome(income: Income, reason: String) = runCoroutine {
+        crudResponseEventEmitter.emit(
+            value = incomeUseCase.update.update(
+                reason = reason,
+                entity = arrayOf(income)
             )
-        }
+        )
     }
 
-    fun deleteIncome(income: Income, reason: String) {
-        runCoroutine {
-            _crudResponseEventEmitter.emit(
-                value = incomeUseCase.delete.delete(
-                    reason = reason,
-                    entity = arrayOf(income)
-                )
+    fun deleteIncome(income: Income, reason: String) = runCoroutine {
+        crudResponseEventEmitter.emit(
+            value = incomeUseCase.delete.delete(
+                reason = reason,
+                entity = arrayOf(income)
             )
-        }
+        )
     }
 }
