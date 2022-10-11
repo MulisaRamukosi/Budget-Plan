@@ -17,7 +17,8 @@ import com.puzzle.industries.budgetplan.theme.spacing.updateSpacing
 fun BaseTheme(
     colorScheme: ColorScheme,
     typography: Typography,
-    spacing: BaseSpacing,
+    spacing: ComposeSpacing,
+    colorPickerColors: ComposeColorPickerColors,
     content: @Composable () -> Unit
 ){
     val rememberSpacing = remember {
@@ -41,7 +42,7 @@ fun BaseTheme(
     }
 }
 
-val MaterialTheme.spacing: BaseSpacing
+val MaterialTheme.spacing: ComposeSpacing
     @Composable
     @ReadOnlyComposable
     get() = LocalSpacing.current

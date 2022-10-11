@@ -1,15 +1,14 @@
 package com.puzzle.industries.budgetplan.theme.factory
 
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import com.puzzle.industries.budgetplan.theme.spacing.BaseSpacing
+import com.puzzle.industries.budgetplan.theme.spacing.ComposeSpacing
 import com.puzzle.industries.budgetplan.theme.spacing.CompactSpacing
 
 object SpacingFactory {
 
-    fun getSpacing() : BaseSpacing {
+    fun getSpacing() : ComposeSpacing {
         val spacing =  CompactSpacing()
 
-        return BaseSpacing(
+        return ComposeSpacing(
             default = spacing.default,
             extraSmall = spacing.extraSmall,
             small = spacing.small,

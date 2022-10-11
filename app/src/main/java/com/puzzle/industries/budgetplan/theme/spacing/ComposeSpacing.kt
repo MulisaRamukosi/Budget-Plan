@@ -5,7 +5,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Stable
-class BaseSpacing(
+class ComposeSpacing(
     default: Dp,
     extraSmall: Dp,
     small: Dp,
@@ -30,7 +30,7 @@ class BaseSpacing(
         small: Dp = this.small,
         medium: Dp = this.medium,
         large: Dp = this.large
-    ): BaseSpacing = BaseSpacing(
+    ): ComposeSpacing = ComposeSpacing(
         default = default,
         extraSmall = extraSmall,
         small = small,
@@ -49,7 +49,7 @@ class BaseSpacing(
     }
 }
 
-internal fun BaseSpacing.updateSpacing(other: BaseSpacing) {
+internal fun ComposeSpacing.updateSpacing(other: ComposeSpacing) {
     default = other.default
     extraSmall = other.extraSmall
     small = other.small
@@ -63,7 +63,7 @@ internal fun defaultSpacing(
     small: Dp = 4.dp,
     medium: Dp = 8.dp,
     large: Dp = 16.dp
-): BaseSpacing = BaseSpacing(
+): ComposeSpacing = ComposeSpacing(
     default = default,
     extraSmall = extraSmall,
     small = small,
