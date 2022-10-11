@@ -28,7 +28,10 @@ class SavedStateHandlerDelegateImpl constructor(private val savedStateHandle: Sa
                 initialValue = initialValue
             ),
             onValueChange = { newValue ->
-                if (validationRule(newValue)) setStateFlowValue(key = key, value = newValue)
+                if (validationRule(newValue) && newValue != savedStateHandle[key]) setStateFlowValue(
+                    key = key,
+                    value = newValue
+                )
             }
         )
     }
