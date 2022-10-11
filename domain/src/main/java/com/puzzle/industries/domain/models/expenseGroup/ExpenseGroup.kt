@@ -6,5 +6,6 @@ data class ExpenseGroup(
     val id: UUID = UUID.randomUUID(),
     val name: String,
     val description: String,
+    val colorId: String,
     val lastModifyDate: Date = Date()
 )

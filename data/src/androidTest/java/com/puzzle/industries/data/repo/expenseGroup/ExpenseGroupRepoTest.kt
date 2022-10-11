@@ -24,11 +24,13 @@ import org.junit.runners.Suite
 private val testEntities = arrayOf(
     ExpenseGroup(
         name = "group 1",
-        description = ""
+        description = "",
+        colorId = "color1"
     ),
     ExpenseGroup(
         name = "group 2",
-        description = ""
+        description = "",
+        colorId = "color1"
     )
 )
 

@@ -12,7 +12,8 @@ internal class ExpenseGroupMapper {
         return ExpenseGroupEntity(
             id = expenseGroup.id,
             name = expenseGroup.name,
-            description = expenseGroup.description
+            description = expenseGroup.description,
+            colorId = expenseGroup.colorId
         )
     }
 
@@ -38,6 +39,7 @@ internal class ExpenseGroupMapper {
             id = expenseGroup.id,
             name = expenseGroup.name,
             description = expenseGroup.description,
+            colorId = expenseGroup.colorId,
             lastModifyDate = expenseGroup.lastModifyDate
         )
     }

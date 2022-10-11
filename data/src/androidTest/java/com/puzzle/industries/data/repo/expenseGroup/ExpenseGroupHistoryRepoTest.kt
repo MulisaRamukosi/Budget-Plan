@@ -18,14 +18,18 @@ import org.junit.runners.Suite
 private val testEntities = arrayOf(
     ExpenseGroupHistory(
         expenseGroup = ExpenseGroup(
-            name = "group 1"
+            name = "group 1",
+            description = "some desc",
+            colorId = ""
         ),
         action = Action.CREATE,
         reason = "some reason"
     ),
     ExpenseGroupHistory(
         expenseGroup = ExpenseGroup(
-            name = "group 2"
+            name = "group 2",
+            description = "some desc",
+            colorId = "color1"
         ),
         action = Action.CREATE,
         reason = "some reason"
