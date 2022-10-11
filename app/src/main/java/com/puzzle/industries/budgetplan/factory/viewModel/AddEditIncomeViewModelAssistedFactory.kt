@@ -1,6 +1,7 @@
 package com.puzzle.industries.budgetplan.factory.viewModel
 
 import androidx.savedstate.SavedStateRegistryOwner
+import com.puzzle.industries.budgetplan.factory.viewModel.implementation.AddEditIncomeViewModelFactory
 import com.puzzle.industries.domain.models.income.Income
 import dagger.assisted.AssistedFactory
 

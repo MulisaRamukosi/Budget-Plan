@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.factory.viewModel
+package com.puzzle.industries.budgetplan.factory.viewModel.implementation
 
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
