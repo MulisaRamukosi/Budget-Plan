@@ -9,8 +9,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BulletPoint(color: Color, size: Dp = 4.dp) {
-    Canvas(modifier = Modifier.size(size = size)) {
+fun BulletPoint(modifier: Modifier = Modifier, color: Color, size: Dp = 4.dp) {
+    Canvas(modifier = modifier.size(size = size)) {
         drawCircle(color = color)
     }
 }
