@@ -48,6 +48,7 @@ fun ModifiableItemWrapper(
             content = {
                 content(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(all = defaultMargin)
                 )
             }
