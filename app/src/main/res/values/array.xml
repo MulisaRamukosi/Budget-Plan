@@ -55,4 +55,22 @@
         <item>@string/reason_other</item>
     </string-array>
 
+    <string-array name="expense_update_reasons">
+        <item>The expense amount has changed.</item>
+        <item>The values entered were not correct.</item>
+        <item>Restructuring budget plan.</item>
+        <item>@string/reason_other</item>
+    </string-array>
+
+    <string-array name="expense_delete_reasons">
+        <item>No longer paying this expense.</item>
+        <item>Restructuring budget plan.</item>
+        <item>@string/reason_other</item>
+    </string-array>
+
+    <string-array name="expense_group_delete_reasons">
+        <item>No longer paying these expenses.</item>
+        <item>Restructuring budget plan.</item>
+        <item>@string/reason_other</item>
+    </string-array>
 </resources>
