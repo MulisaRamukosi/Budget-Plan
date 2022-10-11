@@ -19,6 +19,7 @@ import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.income.IncomeItem
 import com.puzzle.industries.budgetplan.components.income.TotalIncome
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.models.income.Income
@@ -35,16 +36,15 @@ fun IncomeScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        Column {
-            TotalIncomeField(
-                modifier = Modifier.padding(all = MaterialTheme.spacing.medium),
-                incomeViewModel = incomeViewModel
-            )
+        Column(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
+            V_M_Space()
+
+            TotalIncomeField(incomeViewModel = incomeViewModel)
+
+            V_M_Space()
 
             IncomeItems(
-                modifier = Modifier
-                    .padding(horizontal = MaterialTheme.spacing.medium)
-                    .weight(1f),
+                modifier = Modifier.weight(weight = 1f),
                 incomeViewModel = incomeViewModel,
                 onEditItemClick = onEditItemClick
             )
@@ -55,10 +55,9 @@ fun IncomeScreen(
             onClick = onAddIncomeClick,
             modifier = Modifier
                 .align(alignment = Alignment.BottomCenter)
-                .padding(all = MaterialTheme.spacing.medium)
-        ) {
-            Text(text = stringResource(id = R.string.add_income))
-        }
+                .padding(all = MaterialTheme.spacing.medium),
+            content = { Text(text = stringResource(id = R.string.add_income)) }
+        )
     }
 }
 
@@ -72,26 +71,26 @@ private fun IncomeItems(
 
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2)
+        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
+        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium)
     ) {
         items(items = incomes) { income ->
             IncomeItem(
+                modifier = Modifier.fillMaxWidth(),
                 currencySymbol = incomeViewModel.currencySymbol,
                 income = income,
                 onEditClick = onEditItemClick,
                 onDeleteClick = incomeViewModel.onDeleteIncome
             )
-            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.medium))
         }
     }
 }
 
 @Composable
-private fun TotalIncomeField(modifier: Modifier, incomeViewModel: IncomeViewModel) {
+private fun TotalIncomeField(incomeViewModel: IncomeViewModel) {
     val totalIncome by incomeViewModel.totalIncome.collectAsState()
 
     TotalIncome(
-        modifier = modifier,
         currencySymbol = incomeViewModel.currencySymbol,
         totalIncome = totalIncome
     )
@@ -102,7 +101,6 @@ private fun SetupDeleteHandler(incomeViewModel: IncomeViewModel) {
     val showDeleteReasonDialog = rememberSaveable { mutableStateOf(false) }
 
     val deleteReasons = stringArrayResource(id = R.array.income_delete_reasons).toList()
-
 
     val incomeToDelete = remember { MutableStateFlow<Income?>(value = null) }
     val deleteReason = remember { mutableStateOf(value = deleteReasons[0]) }
