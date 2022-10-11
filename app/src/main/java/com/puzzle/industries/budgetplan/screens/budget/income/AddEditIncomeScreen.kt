@@ -1,7 +1,6 @@
 package com.puzzle.industries.budgetplan.screens.budget.income
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -15,7 +14,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
-import com.puzzle.industries.budgetplan.components.dialog.viewAlertDialogDefaultActions
 import com.puzzle.industries.budgetplan.components.inputs.AmountInput
 import com.puzzle.industries.budgetplan.components.inputs.DescriptionInput
 import com.puzzle.industries.budgetplan.components.inputs.TitleInput
@@ -23,12 +21,14 @@ import com.puzzle.industries.budgetplan.components.layout.OrientationAwareConten
 import com.puzzle.industries.budgetplan.components.picker.*
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
+import com.puzzle.industries.budgetplan.factory.FrequencyDateFactory
+import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
+import com.puzzle.industries.budgetplan.util.layout.buildOrientationAwareActions
 import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.FrequencyDate
-import com.puzzle.industries.domain.models.income.Income
 
 @Composable
 fun AddEditIncomeScreen(
@@ -82,6 +82,7 @@ fun AddEditIncomeScreen(
                     text = stringResource(id = R.string.income_frequency),
                     style = MaterialTheme.typography.bodyLarge
                 )
+
                 Text(
                     text = stringResource(id = R.string.note_income_frequency),
                     style = MaterialTheme.typography.bodySmall
@@ -113,11 +114,12 @@ private fun SetUpEventListener(
 private fun SetUpCrudActionDefaultReason(addEditIncomeViewModel: AddEditIncomeViewModel) {
     if (!addEditIncomeViewModel.isUpdatingConditionHandler.getValue()) {
         val defaultReason = stringResource(id = R.string.initial)
-        addEditIncomeViewModel.onCrudActionReasonChange(defaultReason)
-    } else if (addEditIncomeViewModel.crudActionReason.isBlank()) {
+        addEditIncomeViewModel.crudActionReasonHandler.onValueChange(defaultReason)
+    }
+    else if (addEditIncomeViewModel.crudActionReasonHandler.getValue().isBlank()) {
         val updateReasons = stringArrayResource(id = R.array.income_update_reasons).toList()
         val defaultUpdateReason = updateReasons[0]
-        addEditIncomeViewModel.onCrudActionReasonChange(defaultUpdateReason)
+        addEditIncomeViewModel.crudActionReasonHandler.onValueChange(defaultUpdateReason)
     }
 }
 
@@ -149,7 +151,7 @@ private fun SetUpUpdateEventListener(
 
     val updateIncome: () -> Unit = {
         incomeViewModel.updateIncome(
-            reason = addEditIncomeViewModel.crudActionReason,
+            reason = addEditIncomeViewModel.crudActionReasonHandler.getValue(),
             addEditIncomeViewModel.income
         )
     }
@@ -159,14 +161,14 @@ private fun SetUpUpdateEventListener(
             title = stringResource(id = R.string.update_income),
             reasonSupportingText = stringResource(id = R.string.income_update_supporting_text),
             reasons = stringArrayResource(id = R.array.income_update_reasons).toList(),
-            preselectedReason = addEditIncomeViewModel.crudActionReason,
+            preselectedReason = addEditIncomeViewModel.crudActionReasonHandler.getValue(),
             positiveActionText = stringResource(id = R.string.update),
             onPositiveActionClick = updateIncome,
             onDoNotSpecifyClick = {
-                addEditIncomeViewModel.onCrudActionReasonChange("")
+                addEditIncomeViewModel.crudActionReasonHandler.onValueChange("")
                 updateIncome()
             },
-            onReasonChange = addEditIncomeViewModel.onCrudActionReasonChange,
+            onReasonChange = addEditIncomeViewModel.crudActionReasonHandler.onValueChange,
             onDismiss = { showUpdateReasonDialog.value = false }
         )
     }
@@ -214,6 +216,13 @@ private fun FrequencyTypePickerField(
     horizontalPadding: Dp
 ) {
     val selectedFrequency by addEditIncomeViewModel.frequencyTypeStateFlowHandler.valueStateFlow.collectAsState()
+    val selectedFrequencyNote = stringResource(id = when(selectedFrequency) {
+        FrequencyType.ONCE_OFF -> R.string.note_select_income_date
+        FrequencyType.DAILY -> R.string.empty
+        FrequencyType.WEEKLY -> R.string.note_select_income_week_day
+        FrequencyType.MONTHLY -> R.string.note_select_income_month_day
+        FrequencyType.YEARLY -> R.string.note_select_yearly_income_date
+    })
 
     FrequencyTypePicker(
         selectedFrequency = selectedFrequency,
@@ -236,8 +245,10 @@ private fun FrequencyTypePickerField(
 
     FrequencyWhenPicker(
         selectedFrequency = selectedFrequency,
-        addEditIncomeViewModel = addEditIncomeViewModel,
-        horizontalPadding = horizontalPadding.value.dp
+        selectedValue = addEditIncomeViewModel.frequencyWhenStateFlowHandler.getValue(),
+        frequencyNote = selectedFrequencyNote,
+        horizontalPadding = horizontalPadding.value.dp,
+        onValueChange = addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange
     )
 }
 
@@ -249,196 +260,27 @@ private fun getOrientationActions(
     onDismiss: () -> Unit
 ): @Composable RowScope.() -> Unit {
     val isUpdating = addEditIncomeViewModel.isUpdatingConditionHandler.getValue()
-    val saveUpdateText: String = stringResource(id = if (isUpdating) R.string.update_income else R.string.save_income)
+    val saveUpdateText: String =
+        stringResource(id = if (isUpdating) R.string.update_income else R.string.save_income)
 
     val saveOrUpdateIncomeClick: () -> Unit = {
-        onSaveUpdateIncome(
-            incomeViewModel = incomeViewModel,
-            income = addEditIncomeViewModel.income,
-            reason = addEditIncomeViewModel.crudActionReason,
-            isUpdating = isUpdating
-        )
+        if (isUpdating) {
+            incomeViewModel.emitUpdateIncomeEvent()
+        } else {
+            incomeViewModel.saveIncome(
+                reason = addEditIncomeViewModel.crudActionReasonHandler.getValue(),
+                addEditIncomeViewModel.income
+            )
+        }
     }
 
     val allInputsEntered by addEditIncomeViewModel.requiredInputsStateFlowHandler.valueStateFlow.collectAsState()
 
-    return when (isInLandscape) {
-        true -> viewAlertDialogDefaultActions(
-            onCancelClick = onDismiss,
-            positiveActionText = saveUpdateText,
-            positiveActionEnabled = allInputsEntered,
-            onPositiveActionClick = saveOrUpdateIncomeClick
-        )
-        else -> normalViewActions(
-            allInputsEntered = allInputsEntered,
-            saveUpdateText = saveUpdateText,
-            saveUpdateClickListener = saveOrUpdateIncomeClick
-        )
-    }
-}
-
-@Composable
-private fun normalViewActions(
-    allInputsEntered: Boolean,
-    saveUpdateText: String,
-    saveUpdateClickListener: () -> Unit
-): @Composable RowScope.() -> Unit {
-    return {
-
-        Button(
-            enabled = allInputsEntered,
-            onClick = saveUpdateClickListener,
-            content = { Text(text = saveUpdateText) }
-        )
-    }
-}
-
-@Composable
-private fun FrequencyWhenPicker(
-    selectedFrequency: FrequencyType,
-    addEditIncomeViewModel: AddEditIncomeViewModel,
-    horizontalPadding: Dp
-) {
-    when (selectedFrequency) {
-        FrequencyType.MONTHLY -> MonthlyFrequencyPicker(
-            addEditIncomeViewModel = addEditIncomeViewModel,
-            horizontalPadding = horizontalPadding
-        )
-        FrequencyType.ONCE_OFF -> OnceOffFrequencyPicker(
-            addEditIncomeViewModel = addEditIncomeViewModel,
-            horizontalPadding = horizontalPadding
-        )
-        FrequencyType.WEEKLY -> WeeklyFrequencyPicker(
-            addEditIncomeViewModel = addEditIncomeViewModel,
-            horizontalPadding = horizontalPadding
-        )
-        FrequencyType.YEARLY -> YearlyFrequencyPicker(
-            addEditIncomeViewModel = addEditIncomeViewModel,
-            horizontalPadding = horizontalPadding
-        )
-        FrequencyType.DAILY -> addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange("")
-    }
-}
-
-private fun onSaveUpdateIncome(
-    incomeViewModel: IncomeViewModel,
-    income: Income,
-    reason: String,
-    isUpdating: Boolean
-) {
-    if (isUpdating) {
-        incomeViewModel.emitUpdateIncomeEvent()
-    } else {
-        incomeViewModel.saveIncome(reason = reason, income)
-    }
-}
-
-@Composable
-private fun WeeklyFrequencyPicker(
-    addEditIncomeViewModel: AddEditIncomeViewModel,
-    horizontalPadding: Dp
-) {
-    V_M_Space()
-
-    val selectedDay by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
-
-    Column {
-        Text(
-            modifier = Modifier.padding(horizontal = horizontalPadding),
-            text = stringResource(id = R.string.note_select_income_week_day),
-            style = MaterialTheme.typography.bodySmall
-        )
-        V_S_Space()
-        WeekDayPicker(
-            horizontalPadding = horizontalPadding,
-            onDaySelected = { weekDay ->
-                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(
-                    weekDay.name
-                )
-            },
-            selectedDay = WeekDays.valueOf(selectedDay)
-        )
-    }
-}
-
-@Composable
-private fun MonthlyFrequencyPicker(
-    addEditIncomeViewModel: AddEditIncomeViewModel,
-    horizontalPadding: Dp
-) {
-    V_M_Space()
-
-    val selectedDay by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
-
-    Column(modifier = Modifier.padding(horizontal = horizontalPadding)) {
-        Text(
-            text = stringResource(id = R.string.note_select_income_month_day),
-            style = MaterialTheme.typography.bodySmall
-        )
-        V_S_Space()
-
-        DayOfMonthPicker(modifier = Modifier.fillMaxWidth(),
-            day = selectedDay.toInt(),
-            onClick = { day ->
-                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(
-                    day.toString()
-                )
-            })
-    }
-
-}
-
-@Composable
-private fun OnceOffFrequencyPicker(
-    addEditIncomeViewModel: AddEditIncomeViewModel,
-    horizontalPadding: Dp
-) {
-    V_M_Space()
-    val selectedDate by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = horizontalPadding)
-    ) {
-        Text(
-            text = stringResource(id = R.string.note_select_income_date),
-            style = MaterialTheme.typography.bodySmall
-        )
-        V_S_Space()
-        FrequencyDatePicker(preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate),
-            onDateSelected = { date ->
-                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(
-                    date.toString()
-                )
-            })
-    }
-}
-
-@Composable
-private fun YearlyFrequencyPicker(
-    addEditIncomeViewModel: AddEditIncomeViewModel,
-    horizontalPadding: Dp
-) {
-    V_M_Space()
-
-    val selectedDate by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = horizontalPadding)
-    ) {
-        Text(
-            text = stringResource(id = R.string.note_select_yearly_income_date),
-            style = MaterialTheme.typography.bodySmall
-        )
-        V_S_Space()
-        DayAndMonthPicker(modifier = Modifier.fillMaxWidth(),
-            preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate),
-            onDateSelected = { day, month ->
-                val date = FrequencyDate(day = day, month = month, year = 0)
-                addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(date.toDayMonthString())
-            })
-    }
+    return buildOrientationAwareActions(
+        isInLandscape = isInLandscape,
+        saveUpdateText = saveUpdateText,
+        allInputsEntered = allInputsEntered,
+        onSaveOrUpdateClickListener = saveOrUpdateIncomeClick,
+        onDismiss = onDismiss
+    )
 }
