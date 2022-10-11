@@ -10,13 +10,15 @@ import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.screens.home.HomeScreen
 import com.puzzle.industries.budgetplan.screens.home.SearchScreen
 import com.puzzle.industries.budgetplan.screens.home.SettingsScreen
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 
 @Composable
 fun homeScreenGraph(
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
-    incomeViewModel: IncomeViewModel
+    incomeViewModel: IncomeViewModel,
+    expenseViewModel: ExpenseViewModel
 ): NavGraph {
     return navController.createGraph(startDestination = Routes.Home.path) {
         composable(route = Routes.Home.path) {
@@ -26,9 +28,9 @@ fun homeScreenGraph(
         budgetScreensGraph(
             navController = navController,
             windowSizeClass = windowSizeClass,
-            incomeViewModel = incomeViewModel
+            incomeViewModel = incomeViewModel,
+            expenseViewModel = expenseViewModel
         )
-
 
         composable(route = Routes.Search.path) {
             SearchScreen()

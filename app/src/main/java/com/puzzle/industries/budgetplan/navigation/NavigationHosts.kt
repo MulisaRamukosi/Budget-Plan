@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.puzzle.industries.budgetplan.navigation.graphs.appScreensGraph
 import com.puzzle.industries.budgetplan.navigation.graphs.homeScreenGraph
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 
 @Composable
@@ -29,6 +30,7 @@ fun HomeScreenNestedNavHost(
     navController: NavHostController
 ){
     val incomeViewModel: IncomeViewModel = hiltViewModel()
+    val expenseViewModel: ExpenseViewModel = hiltViewModel()
 
     NavHost(
         modifier = modifier,
@@ -36,7 +38,8 @@ fun HomeScreenNestedNavHost(
         graph = homeScreenGraph(
             navController = navController,
             windowSizeClass = windowSizeClass,
-            incomeViewModel = incomeViewModel
+            incomeViewModel = incomeViewModel,
+            expenseViewModel = expenseViewModel
         )
     )
 }

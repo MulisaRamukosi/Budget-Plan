@@ -12,10 +12,16 @@ import com.puzzle.industries.budgetplan.MainActivity
 import com.puzzle.industries.budgetplan.ext.isInTabletLandscapeView
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
+import com.puzzle.industries.budgetplan.screens.budget.expense.AddEditExpenseGroupScreen
+import com.puzzle.industries.budgetplan.screens.budget.expense.AddEditExpenseScreen
 import com.puzzle.industries.budgetplan.screens.budget.income.AddEditIncomeScreen
 import com.puzzle.industries.budgetplan.screens.home.BudgetScreen
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpenseGroupViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpenseViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
+import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.income.Income
 import dagger.hilt.android.EntryPointAccessors
 import java.util.*
@@ -23,26 +29,47 @@ import java.util.*
 fun NavGraphBuilder.budgetScreensGraph(
     navController: NavController,
     windowSizeClass: WindowSizeClass,
-    incomeViewModel: IncomeViewModel
+    incomeViewModel: IncomeViewModel,
+    expenseViewModel: ExpenseViewModel
 ) {
     navigation(startDestination = Routes.Budget.path, route = Routes.BudgetRoute.path) {
-        budgetScreen(navController = navController, incomeViewModel = incomeViewModel)
+        budgetScreen(
+            navController = navController,
+            incomeViewModel = incomeViewModel,
+            expenseViewModel = expenseViewModel
+        )
+
         addEditIncomeScreen(
             navController = navController,
             windowSizeClass = windowSizeClass,
             incomeViewModel = incomeViewModel
         )
+
+        addEditExpenseGroupScreen(
+            navController = navController,
+            windowSizeClass = windowSizeClass,
+            expenseViewModel = expenseViewModel
+        )
+
+        addEditExpenseScreen(
+            navController = navController,
+            windowSizeClass = windowSizeClass,
+            expenseViewModel = expenseViewModel
+        )
     }
 }
 
+
 private fun NavGraphBuilder.budgetScreen(
     navController: NavController,
-    incomeViewModel: IncomeViewModel
+    incomeViewModel: IncomeViewModel,
+    expenseViewModel: ExpenseViewModel
 ) {
     composable(route = Routes.Budget.path) {
         BudgetScreen(
+            navController = navController,
             incomeViewModel = incomeViewModel,
-            navController = navController
+            expenseViewModel = expenseViewModel
         )
     }
 }
@@ -61,7 +88,7 @@ private fun NavGraphBuilder.addEditIncomeScreen(
 
         AddEditIncomeScreen(
             incomeViewModel = incomeViewModel,
-            addEditIncomeViewModel = addEditIncomeViewModel(
+            addEditIncomeViewModel = buildAddEditIncomeViewModel(
                 owner = navBackStackEntry,
                 incomeViewModel = incomeViewModel
             ),
@@ -71,24 +98,71 @@ private fun NavGraphBuilder.addEditIncomeScreen(
     }
 }
 
+fun NavGraphBuilder.addEditExpenseGroupScreen(
+    navController: NavController,
+    windowSizeClass: WindowSizeClass,
+    expenseViewModel: ExpenseViewModel
+) {
+    composable(
+        route = Routes.AddEditExpenseGroup.path,
+        arguments = listOf(
+            navArgument(name = RouteParamKey.ID) { type = NavType.StringType }
+        )
+    ) { navBackStackEntry ->
+        AddEditExpenseGroupScreen(
+            expenseViewModel = expenseViewModel,
+            addEditExpenseGroupViewModel = buildAddEditExpenseGroupViewModel(
+                owner = navBackStackEntry,
+                expenseViewModel = expenseViewModel
+            ),
+            isInTabletLandscape = windowSizeClass.isInTabletLandscapeView(),
+            onNavigateBackToParent = { navController.popBackStack() }
+        )
+    }
+}
+
+fun NavGraphBuilder.addEditExpenseScreen(
+    navController: NavController,
+    windowSizeClass: WindowSizeClass,
+    expenseViewModel: ExpenseViewModel
+) {
+    composable(
+        route = Routes.AddEditExpense.path,
+        arguments = listOf(
+            navArgument(name = RouteParamKey.EXPENSE_GROUP_ID) { type = NavType.StringType },
+            navArgument(name = RouteParamKey.ID) { type = NavType.StringType }
+        )
+    ) { navBackStackEntry ->
+        AddEditExpenseScreen(
+            expenseViewModel = expenseViewModel,
+            addEditExpenseViewModel = buildAddEditExpenseViewModel(
+                owner = navBackStackEntry,
+                expenseViewModel = expenseViewModel
+            ),
+            isInTabletLandscape = windowSizeClass.isInTabletLandscapeView(),
+            onNavigateBackToParent = { navController.popBackStack() }
+        )
+    }
+}
 
 @Composable
-private fun addEditIncomeViewModel(
+private fun buildAddEditIncomeViewModel(
     owner: NavBackStackEntry,
     incomeViewModel: IncomeViewModel
 ): AddEditIncomeViewModel {
-    val income: Income? = retrieveIncomeItem(
-        navBackStackEntry = owner,
-        incomeViewModel = incomeViewModel
-    )
 
-    val addEditIncomeViewModelFactory = EntryPointAccessors.fromActivity(
+    val incomeId: String =
+        owner.arguments?.getString(RouteParamKey.ID) ?: UUID.randomUUID().toString()
+
+    val income: Income? = incomeViewModel.getIncomeById(id = UUID.fromString(incomeId))
+
+    val addEditIncomeViewModelAssistedFactory = EntryPointAccessors.fromActivity(
         activity = LocalContext.current as Activity,
         entryPoint = MainActivity.ViewModelFactoryProvider::class.java
     ).addEditIncomeViewModelFactory()
 
     return viewModel(
-        factory = addEditIncomeViewModelFactory.create(
+        factory = addEditIncomeViewModelAssistedFactory.create(
             owner = owner as SavedStateRegistryOwner,
             prevIncome = income
         )
@@ -96,13 +170,51 @@ private fun addEditIncomeViewModel(
 }
 
 @Composable
-private fun retrieveIncomeItem(
-    navBackStackEntry: NavBackStackEntry,
-    incomeViewModel: IncomeViewModel
-): Income? {
-    val incomeId: String =
-        navBackStackEntry.arguments?.getString(RouteParamKey.ID) ?: UUID.randomUUID().toString()
-    return incomeViewModel.getIncomeById(id = incomeId)
+private fun buildAddEditExpenseGroupViewModel(
+    owner: NavBackStackEntry,
+    expenseViewModel: ExpenseViewModel
+): AddEditExpenseGroupViewModel {
+    val expenseGroupId: String =
+        owner.arguments?.getString(RouteParamKey.ID) ?: UUID.randomUUID().toString()
+    val expenseGroup: ExpenseGroup? =
+        expenseViewModel.getExpenseGroupById(expenseGroupId = UUID.fromString(expenseGroupId))
+
+    val addEditExpenseGroupViewModelAssistedFactory = EntryPointAccessors.fromActivity(
+        activity = LocalContext.current as Activity,
+        entryPoint = MainActivity.ViewModelFactoryProvider::class.java
+    ).addEditExpenseGroupViewModelFactory()
+
+    return viewModel(
+        factory = addEditExpenseGroupViewModelAssistedFactory.create(
+            owner = owner as SavedStateRegistryOwner,
+            prevExpenseGroup = expenseGroup
+        )
+    )
+}
+
+@Composable
+private fun buildAddEditExpenseViewModel(
+    owner: NavBackStackEntry,
+    expenseViewModel: ExpenseViewModel
+): AddEditExpenseViewModel {
+    val expenseGroupId: String =
+        owner.arguments?.getString(RouteParamKey.EXPENSE_GROUP_ID) ?: UUID.randomUUID().toString()
+    val expenseId: String =
+        owner.arguments?.getString(RouteParamKey.ID) ?: UUID.randomUUID().toString()
+    val expense = expenseViewModel.getExpenseById(expenseId = UUID.fromString(expenseId))
+
+    val addEditExpenseViewModelAssistedFactory = EntryPointAccessors.fromActivity(
+        activity = LocalContext.current as Activity,
+        entryPoint = MainActivity.ViewModelFactoryProvider::class.java
+    ).addEditExpenseViewModelFactory()
+
+    return viewModel(
+        factory = addEditExpenseViewModelAssistedFactory.create(
+            owner = owner as SavedStateRegistryOwner,
+            expenseGroupId = UUID.fromString(expenseGroupId),
+            prevExpense = expense
+        )
+    )
 }
 
 
