@@ -17,7 +17,7 @@ internal class UpdateExpenseUseCaseImpl constructor(
     HistoryGeneratorDelegate<Expense, ExpenseHistory> by ExpenseHistoryGenerator() {
 
     override suspend fun update(reason: String, vararg entity: Expense): Response<Boolean> {
-        val result = expenseRepository.insert(entity = entity)
+        val result = expenseRepository.update(entity = entity)
 
         if(result.response){
             val expenseHistory =
