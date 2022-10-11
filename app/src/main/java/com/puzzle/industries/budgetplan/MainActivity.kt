@@ -31,7 +31,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(activity = this)
             BudgetPlanTheme {
-                AppScreensNavHost(windowSizeClass = windowSizeClass)
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppScreensNavHost(windowSizeClass = windowSizeClass)
+                }
+
             }
         }
     }
