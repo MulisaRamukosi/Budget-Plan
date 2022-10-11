@@ -5,8 +5,12 @@
 package com.puzzle.industries.budgetplan.screens.home
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,20 +25,21 @@ import com.google.accompanist.pager.rememberPagerState
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.screens.budget.ExpenseScreen
-import com.puzzle.industries.budgetplan.screens.budget.income.IncomeScreen
 import com.puzzle.industries.budgetplan.screens.budget.ReminderScreen
+import com.puzzle.industries.budgetplan.screens.budget.expense.ExpenseScreen
+import com.puzzle.industries.budgetplan.screens.budget.income.IncomeScreen
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
 fun BudgetScreen(
-    incomeViewModel: IncomeViewModel,
     navController: NavController,
-
-    ) {
+    incomeViewModel: IncomeViewModel,
+    expenseViewModel: ExpenseViewModel
+) {
     val tabs = listOf(
         stringResource(id = R.string.income),
         stringResource(id = R.string.expenses),
@@ -52,22 +57,8 @@ fun BudgetScreen(
             modifier = Modifier.weight(1f)
         ) { currentPage ->
             when (currentPage) {
-                0 -> IncomeScreen(
-                    incomeViewModel = incomeViewModel,
-                    onEditItemClick = { income ->
-                        navigateToAddEditIncomeScreen(
-                            navController = navController,
-                            incomeId = income.id.toString()
-                        )
-                    },
-                    onAddIncomeClick = {
-                        navigateToAddEditIncomeScreen(
-                            navController = navController,
-                            incomeId = UUID.randomUUID().toString()
-                        )
-                    }
-                )
-                1 -> ExpenseScreen()
+                0 -> IncomeScreenTab(incomeViewModel, navController)
+                1 -> ExpenseScreenTab(expenseViewModel, navController)
                 2 -> ReminderScreen()
             }
         }
@@ -75,11 +66,97 @@ fun BudgetScreen(
 
 }
 
+@Composable
+private fun ExpenseScreenTab(
+    expenseViewModel: ExpenseViewModel,
+    navController: NavController
+) {
+    ExpenseScreen(
+        expenseViewModel = expenseViewModel,
+        onEditExpenseGroup = { expenseGroup ->
+            navigateToAddEditExpenseGroupScreen(
+                navController = navController,
+                expenseGroupId = expenseGroup.id.toString()
+            )
+        },
+        onEditExpense = { expense ->
+            navigateToAddEditExpenseScreen(
+                navController = navController,
+                expenseGroupId = expense.expenseGroupId.toString(),
+                expenseId = expense.id.toString()
+            )
+        },
+        onAddExpenseGroup = {
+            navigateToAddEditExpenseGroupScreen(
+                navController = navController,
+                expenseGroupId = UUID.randomUUID().toString()
+            )
+        },
+        onAddExpense = { expenseGroup ->
+            navigateToAddEditExpenseScreen(
+                navController = navController,
+                expenseGroupId = expenseGroup.id.toString(),
+                expenseId = UUID.randomUUID().toString()
+            )
+        }
+    )
+}
+
+@Composable
+private fun IncomeScreenTab(
+    incomeViewModel: IncomeViewModel,
+    navController: NavController
+) {
+    IncomeScreen(
+        incomeViewModel = incomeViewModel,
+        onEditItemClick = { income ->
+            navigateToAddEditIncomeScreen(
+                navController = navController,
+                incomeId = income.id.toString()
+            )
+        },
+        onAddIncomeClick = {
+            navigateToAddEditIncomeScreen(
+                navController = navController,
+                incomeId = UUID.randomUUID().toString()
+            )
+        }
+    )
+}
+
+private fun navigateToAddEditExpenseScreen(
+    navController: NavController,
+    expenseGroupId: String,
+    expenseId: String
+) {
+    navController.navigate(
+        route = Routes.AddEditExpense
+            .addParam(
+                key = RouteParamKey.EXPENSE_GROUP_ID,
+                value = expenseGroupId
+            )
+            .addParam(key = RouteParamKey.ID, value = expenseId)
+            .path
+    )
+}
+
 private fun navigateToAddEditIncomeScreen(navController: NavController, incomeId: String) {
     navController.navigate(
         route = Routes.AddEditIncome.addParam(
             key = RouteParamKey.ID,
             value = incomeId
+        ).path
+    )
+}
+
+private fun navigateToAddEditExpenseGroupScreen(
+    navController: NavController,
+    expenseGroupId: String
+) {
+    navController.navigate(
+        route = Routes.AddEditExpenseGroup.addParam(
+            key = RouteParamKey.ID,
+            value = expenseGroupId
         ).path
     )
 }
@@ -117,7 +194,7 @@ private fun TabLayout(
 @Preview(showBackground = true)
 private fun BudgetScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        BudgetScreen(viewModel(), rememberNavController())
+        BudgetScreen(rememberNavController(), viewModel(), viewModel())
     }
 }
 
