@@ -14,8 +14,9 @@ import com.puzzle.industries.budgetplan.R
 
 @Composable
 fun OutcomeAmount(
-    amount: Double,
-    textStyle: TextStyle = MaterialTheme.typography.headlineSmall
+    currencySymbol: String,
+    amountTextStyle: TextStyle = MaterialTheme.typography.headlineSmall,
+    amount: Double
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
@@ -25,9 +26,9 @@ fun OutcomeAmount(
         )
 
         Text(
-            text = stringResource(id = R.string.currency_amount, "R", amount),
+            text = stringResource(id = R.string.currency_amount, currencySymbol, amount),
             color = MaterialTheme.colorScheme.primary,
-            style = textStyle
+            style = amountTextStyle
         )
     }
 }
