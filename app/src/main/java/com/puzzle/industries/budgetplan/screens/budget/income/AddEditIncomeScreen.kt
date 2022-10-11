@@ -218,7 +218,20 @@ private fun FrequencyTypePickerField(
     FrequencyTypePicker(
         selectedFrequency = selectedFrequency,
         horizontalPadding = horizontalPadding.value.dp,
-        onFrequencySelected = addEditIncomeViewModel.frequencyTypeStateFlowHandler.onValueChange
+        onFrequencySelected = { type ->
+            addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange(
+                when (type) {
+                    FrequencyType.ONCE_OFF -> FrequencyDateFactory.createCurrentDate()
+                        .toString()
+                    FrequencyType.MONTHLY -> FrequencyConfig.DEFAULT_WHEN
+                    FrequencyType.DAILY -> ""
+                    FrequencyType.WEEKLY -> WeekDays.MONDAY.name
+                    FrequencyType.YEARLY -> FrequencyDateFactory.createCurrentDate()
+                        .toDayMonthString()
+                }
+            )
+            addEditIncomeViewModel.frequencyTypeStateFlowHandler.onValueChange(type)
+        }
     )
 
     FrequencyWhenPicker(
