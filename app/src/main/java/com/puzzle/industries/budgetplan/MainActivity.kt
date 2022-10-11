@@ -5,9 +5,15 @@ package com.puzzle.industries.budgetplan
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.ui.Modifier
+import com.puzzle.industries.budgetplan.factory.viewModel.AddEditExpenseGroupViewModelAssistedFactory
+import com.puzzle.industries.budgetplan.factory.viewModel.AddEditExpenseViewModelAssistedFactory
 import com.puzzle.industries.budgetplan.factory.viewModel.AddEditIncomeViewModelAssistedFactory
 import com.puzzle.industries.budgetplan.navigation.AppScreensNavHost
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
@@ -24,6 +30,8 @@ class MainActivity : ComponentActivity() {
     @InstallIn(ActivityComponent::class)
     interface ViewModelFactoryProvider {
         fun addEditIncomeViewModelFactory(): AddEditIncomeViewModelAssistedFactory
+        fun addEditExpenseGroupViewModelFactory(): AddEditExpenseGroupViewModelAssistedFactory
+        fun addEditExpenseViewModelFactory(): AddEditExpenseViewModelAssistedFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
