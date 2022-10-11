@@ -31,13 +31,14 @@ import java.util.*
 @Composable
 @ExperimentalMaterial3Api
 fun IncomeItem(
+    modifier: Modifier,
     currencySymbol: String,
     income: Income,
     onEditClick: (Income) -> Unit,
     onDeleteClick: (Income) -> Unit
 ) {
     ModifiableItemWrapper(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
         onEditClick = { onEditClick(income) },
         onDeleteClick = { onDeleteClick(income) }
     ) {
@@ -91,7 +92,7 @@ fun IncomeItemPreview() {
             frequencyType = FrequencyType.MONTHLY,
             frequencyWhen = "2"
         )
-        IncomeItem("R", income, {}, {})
+        IncomeItem(Modifier.fillMaxWidth(),"R", income, {}, {})
     }
 
 }
