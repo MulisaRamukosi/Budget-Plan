@@ -1,6 +1,8 @@
 package com.puzzle.industries.domain.services
 
+import kotlinx.coroutines.flow.Flow
+
 interface BPlanGenDayPreferenceService {
-    fun saveDay(day: Int)
-    fun getDay(): Int
+    suspend fun saveDay(day: Int)
+    fun getDay(): Flow<Int>
 }

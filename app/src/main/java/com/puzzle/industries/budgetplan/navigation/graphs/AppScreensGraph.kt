@@ -73,7 +73,7 @@ private fun NavGraphBuilder.splashScreen(
     composable(route = Routes.Splash.path) {
         SplashScreen {
             val destinationPath: String =
-                if (viewModel.isFirstTimeLaunch()) Routes.Welcome.path
+                if (viewModel.isFirstTimeLaunch) Routes.Welcome.path
                 else Routes.Main.path
 
             navController.navigateAndClearStack(route = destinationPath)

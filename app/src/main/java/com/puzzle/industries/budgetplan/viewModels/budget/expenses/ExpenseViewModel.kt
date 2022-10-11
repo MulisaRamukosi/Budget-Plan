@@ -22,7 +22,7 @@ import javax.inject.Inject
 class ExpenseViewModel @Inject constructor(
     private val expenseGroupUseCase: ExpenseGroupUseCase,
     private val expenseUseCase: ExpenseUseCase,
-    currencyPreferenceService: CountryCurrencyPreferenceService
+    private val currencyPreferenceService: CountryCurrencyPreferenceService
 ) : ViewModel(),
     CrudViewModelHandlerDelegate<Boolean, ExpenseGroupWithExpenses> by CrudViewModelHandlerDelegateImpl(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
@@ -42,7 +42,8 @@ class ExpenseViewModel @Inject constructor(
     val updateExpenseEventListener: SharedFlow<Unit> = updateValueEventEmitter
     val emitUpdateExpenseEvent: () -> Unit = onUpdateValue
 
-    val currencySymbol = currencyPreferenceService.getCurrencySymbol()
+    private val _currencySymbol = MutableStateFlow(value = "")
+    val currencySymbol: StateFlow<String> = _currencySymbol
 
     val crudResponseEventListener: SharedFlow<Response<Boolean>> = crudResponseEventEmitter
 
@@ -52,6 +53,7 @@ class ExpenseViewModel @Inject constructor(
     init {
         initExpenseGroupWithExpenses()
         initTotalExpenses()
+        initCurrencySymbolFlow()
     }
 
     private fun initExpenseGroupWithExpenses() = runCoroutine {
@@ -68,6 +70,12 @@ class ExpenseViewModel @Inject constructor(
             _totalExpenses.value = expenseGroupsWithExpenses.sumOf { expenseGroupWithExpenses ->
                 expenseGroupWithExpenses.expenses.sumOf { expense -> expense.amount }
             }
+        }
+    }
+
+    private fun initCurrencySymbolFlow() = runCoroutine {
+        currencyPreferenceService.getCurrencySymbol().collect { symbol ->
+            _currencySymbol.value = symbol
         }
     }
 

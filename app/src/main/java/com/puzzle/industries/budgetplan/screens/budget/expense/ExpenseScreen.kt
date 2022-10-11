@@ -208,6 +208,7 @@ private fun ExpenseGroupWithExpensesItems(
     onAddExpense: (ExpenseGroup) -> Unit
 ) {
     val expenseGroupsWithExpenses by expenseViewModel.expenseGroupsWithExpenses.collectAsState()
+    val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
 
     LazyColumn(
         modifier = modifier,
@@ -216,7 +217,7 @@ private fun ExpenseGroupWithExpensesItems(
     ) {
         items(items = expenseGroupsWithExpenses) { expenseGroupWithExpenses ->
             ExpenseGroupItem(
-                currencySymbol = expenseViewModel.currencySymbol,
+                currencySymbol = currencySymbol,
                 expenseGroupWithExpenses = expenseGroupWithExpenses,
                 onAddExpenseClick = { onAddExpense(expenseGroupWithExpenses.expenseGroup) },
                 onEditExpenseGroupClick = onEditExpenseGroup,
@@ -231,9 +232,10 @@ private fun ExpenseGroupWithExpensesItems(
 @Composable
 private fun TotalIncomeField(expenseViewModel: ExpenseViewModel) {
     val totalExpenses by expenseViewModel.totalExpenses.collectAsState()
+    val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
 
     TotalIncome(
-        currencySymbol = expenseViewModel.currencySymbol,
+        currencySymbol = currencySymbol,
         totalIncome = totalExpenses
     )
 }

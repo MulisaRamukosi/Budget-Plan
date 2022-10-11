@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
-    currencyPreferenceService: CountryCurrencyPreferenceService
+    private val currencyPreferenceService: CountryCurrencyPreferenceService
 ) : ViewModel(),
     CrudViewModelHandlerDelegate<Boolean, Income> by CrudViewModelHandlerDelegateImpl(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
@@ -31,7 +31,8 @@ class IncomeViewModel @Inject constructor(
     val updateIncomeEventListener: SharedFlow<Unit> = updateValueEventEmitter
     val emitUpdateIncomeEvent: () -> Unit = onUpdateValue
 
-    val currencySymbol = currencyPreferenceService.getCurrencySymbol()
+    private val _currencySymbol = MutableStateFlow(value = "")
+    val currencySymbol: StateFlow<String> = _currencySymbol
 
     private val _totalIncome = MutableStateFlow(value = 0.0)
     val totalIncome = _totalIncome
@@ -39,6 +40,13 @@ class IncomeViewModel @Inject constructor(
     init {
         initIncomes()
         initTotalIncome()
+        initCurrencySymbolFlow()
+    }
+
+    private fun initCurrencySymbolFlow() = runCoroutine {
+        currencyPreferenceService.getCurrencySymbol().collect { symbol ->
+            _currencySymbol.value = symbol
+        }
     }
 
     private fun initIncomes() = runCoroutine {

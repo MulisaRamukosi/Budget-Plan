@@ -32,12 +32,11 @@ class RegistrationFlowViewModel @Inject constructor(
     fun register(){
         runCoroutine {
             incomeUseCase.create.insert(reason = "", income)
+            countryCurrencyPreferenceService.saveCurrencySymbol(symbol = countryCurrency.symbol)
+            bPlanGenDayPreferenceService.saveDay(day = day)
+            debtPreferenceService.saveAllowDebtOption(option = debtAllowed)
+            launchTrackingPreferenceService.updateToNotFirstTimeLaunch()
         }
-        
-        countryCurrencyPreferenceService.saveCurrencySymbol(symbol = countryCurrency.symbol)
-        bPlanGenDayPreferenceService.saveDay(day = day)
-        debtPreferenceService.saveAllowDebtOption(option = debtAllowed)
-        launchTrackingPreferenceService.updateToNotFirstTimeLaunch()
     }
 
     fun setCurrency(countryCurrency: CountryCurrency){

@@ -1,18 +1,24 @@
 package com.puzzle.industries.data.services
 
 import android.content.Context
+import androidx.datastore.preferences.core.booleanPreferencesKey
+import androidx.datastore.preferences.core.edit
 import com.puzzle.industries.domain.services.DebtPreferenceService
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-internal class DebtPreferenceServiceImpl(context: Context) :
-    PreferenceService(prefName = "Debt", context = context), DebtPreferenceService {
+internal class DebtPreferenceServiceImpl(private val context: Context) :
+    PreferenceService(prefName = "Debt"), DebtPreferenceService {
 
-    private val debtKey = "dk"
+    private val debtKey = booleanPreferencesKey("dk")
 
-    override fun saveAllowDebtOption(option: Boolean) {
-        editor.putBoolean(debtKey, option).commit()
+    override suspend fun saveAllowDebtOption(option: Boolean) {
+        context.preference.edit { settings ->
+            settings[debtKey] = option
+        }
     }
 
-    override fun getSavedDebtOption(): Boolean {
-        return preference.getBoolean(debtKey, false)
+    override fun getSavedDebtOption(): Flow<Boolean> = context.preference.data.map { preferences ->
+        preferences[debtKey] ?: false
     }
 }

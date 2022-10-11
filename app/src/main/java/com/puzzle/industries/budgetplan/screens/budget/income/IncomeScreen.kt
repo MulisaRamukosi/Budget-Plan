@@ -68,6 +68,7 @@ private fun IncomeItems(
     onEditItemClick: (Income) -> Unit
 ) {
     val incomes by incomeViewModel.incomes.collectAsState()
+    val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
 
     LazyColumn(
         modifier = modifier,
@@ -77,7 +78,7 @@ private fun IncomeItems(
         items(items = incomes) { income ->
             IncomeItem(
                 modifier = Modifier.fillMaxWidth(),
-                currencySymbol = incomeViewModel.currencySymbol,
+                currencySymbol = currencySymbol,
                 income = income,
                 onEditClick = onEditItemClick,
                 onDeleteClick = incomeViewModel.onDeleteIncome
@@ -89,9 +90,10 @@ private fun IncomeItems(
 @Composable
 private fun TotalIncomeField(incomeViewModel: IncomeViewModel) {
     val totalIncome by incomeViewModel.totalIncome.collectAsState()
+    val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
 
     TotalIncome(
-        currencySymbol = incomeViewModel.currencySymbol,
+        currencySymbol = currencySymbol,
         totalIncome = totalIncome
     )
 }

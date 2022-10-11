@@ -1,8 +1,10 @@
 package com.puzzle.industries.domain.services
 
+import kotlinx.coroutines.flow.Flow
+
 interface CountryCurrencyPreferenceService {
 
-    fun saveCurrencySymbol(symbol: String)
-    fun getCurrencySymbol(): String
+    suspend fun saveCurrencySymbol(symbol: String)
+    fun getCurrencySymbol(): Flow<String>
 
 }
