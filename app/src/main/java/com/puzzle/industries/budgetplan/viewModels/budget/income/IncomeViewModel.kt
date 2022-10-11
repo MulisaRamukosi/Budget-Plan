@@ -54,8 +54,8 @@ class IncomeViewModel @Inject constructor(
         }
     }
 
-    fun getIncomeById(id: String?): Income? = incomes.value.find { income ->
-        income.id == UUID.fromString(id)
+    fun getIncomeById(id: UUID): Income? = incomes.value.find { income ->
+        income.id == id
     }
 
     fun saveIncome(reason: String, vararg incomes: Income) = runCoroutine {
