@@ -19,6 +19,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.inputs.DescriptionInput
@@ -77,7 +79,10 @@ fun AddEditExpenseGroupScreen(
                 )
             }
 
-            ColorPickerField(addEditExpenseGroupViewModel = addEditExpenseGroupViewModel)
+            ColorPickerField(
+                addEditExpenseGroupViewModel = addEditExpenseGroupViewModel,
+                horizontalPadding = paddingValues.calculateStartPadding(layoutDirection = LayoutDirection.Ltr)
+            )
         }
 
     }
@@ -85,14 +90,18 @@ fun AddEditExpenseGroupScreen(
 
 @Composable
 private fun ColorPickerField(
-    addEditExpenseGroupViewModel: AddEditExpenseGroupViewModel
+    addEditExpenseGroupViewModel: AddEditExpenseGroupViewModel,
+    horizontalPadding: Dp
 ) {
     val colorSets = ColorPickerColorsFactory.getColorPickerSet()
     val selectedColorId by addEditExpenseGroupViewModel.colorIdStateFlowHandler.valueStateFlow.collectAsState()
 
     LazyRow(
         modifier = Modifier.fillMaxWidth(),
-        contentPadding = PaddingValues(all = MaterialTheme.spacing.medium),
+        contentPadding = PaddingValues(
+            vertical = MaterialTheme.spacing.medium,
+            horizontal = horizontalPadding
+        ),
         horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium)
     ) {
         items(colorSets) { colorSet ->
