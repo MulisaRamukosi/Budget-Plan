@@ -30,10 +30,7 @@ fun ReasonPicker(
     reasons: List<String>,
     onReasonChange: (String) -> Unit
 ) {
-    val scrollState = rememberScrollState()
-
-
-    Column(modifier = modifier.verticalScroll(state = scrollState)) {
+    Column(modifier = modifier) {
 
         Text(text = supportingText)
 
