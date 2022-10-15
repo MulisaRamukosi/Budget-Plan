@@ -174,12 +174,11 @@ private fun OnceOffFrequencyPicker(
         )
         V_S_Space()
         FrequencyDatePicker(
-            preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate.value),
-            onDateSelected = { date ->
-                onValueChange(date.toString())
-                selectedDate.value = date.toString()
-            }
-        )
+            preselectedFrequencyDate = FrequencyDate.parse(date = selectedDate.value)
+        ) { date ->
+            onValueChange(date.toString())
+            selectedDate.value = date.toString()
+        }
     }
 }
 
