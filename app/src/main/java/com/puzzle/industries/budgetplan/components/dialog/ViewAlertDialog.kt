@@ -4,6 +4,8 @@ package com.puzzle.industries.budgetplan.components.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.*
@@ -167,7 +169,9 @@ private fun contentSection(content: @Composable ColumnScope.() -> Unit): @Compos
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .weight(weight = 1f, fill = false),
+                .weight(weight = 1f, fill = false)
+                .verticalScroll(state = rememberScrollState())
+            ,
             content = content
         )
     }
