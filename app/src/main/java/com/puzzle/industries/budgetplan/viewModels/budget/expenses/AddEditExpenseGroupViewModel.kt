@@ -11,6 +11,9 @@ import com.puzzle.industries.budgetplan.util.configs.EditConfig
 import com.puzzle.industries.budgetplan.util.configs.ValidationConfig
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import java.util.*
 
 class AddEditExpenseGroupViewModel @AssistedInject constructor(
@@ -78,8 +81,26 @@ class AddEditExpenseGroupViewModel @AssistedInject constructor(
     }
 
     private fun initAllInputsValidFlow() = runCoroutine {
-        titleStateFlowHandler.valueStateFlow.collect { newTitle ->
-            requiredInputsStateFlowHandler.onValueChange(newTitle.isNotBlank())
+        val requiredInputsCheckFlow: Flow<Boolean> = combine(
+            titleStateFlowHandler.valueStateFlow,
+            descriptionStateFlowHandler.valueStateFlow,
+            colorIdStateFlowHandler.valueStateFlow
+        ) { title, description, colorId ->
+            var valueChangedCondition = true
+
+            if (isUpdatingConditionHandler.getValue()) {
+                valueChangedCondition =
+                    title != prevExpenseGroup?.name
+                            || description != prevExpenseGroup.description
+                            || colorId != prevExpenseGroup.colorId
+            }
+
+            valueChangedCondition && title.isNotBlank()
+        }
+
+        requiredInputsCheckFlow.distinctUntilChanged()
+        .collect { allInputsMeetCondition ->
+            requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
         }
     }
 

@@ -8,10 +8,7 @@ import com.puzzle.industries.budgetplan.delegates.SavedStateHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.implementation.AddEditItemStateHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.SavedStateHandlerDelegateImpl
-import com.puzzle.industries.budgetplan.factory.FrequencyDateFactory
 import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
-import com.puzzle.industries.domain.constants.FrequencyType
-import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.income.Income
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
@@ -100,12 +97,27 @@ class AddEditIncomeViewModel @AssistedInject constructor(
 
     private fun initAllInputsValidFlow() {
         runCoroutine {
-            val requiredInputsCheckFlow: Flow<Boolean> =
-                titleStateFlowHandler.valueStateFlow.combine(amountStateFlowHandler.valueStateFlow) { title, amount ->
-                    title.isBlank().not() && amount > 0
+            val requiredInputsCheckFlow: Flow<Boolean> = combine(
+                titleStateFlowHandler.valueStateFlow,
+                amountStateFlowHandler.valueStateFlow,
+                descriptionStateFlowHandler.valueStateFlow,
+                frequencyTypeStateFlowHandler.valueStateFlow,
+                frequencyWhenStateFlowHandler.valueStateFlow
+            ) { title, amount, desc, type, _when ->
+                var valueChangedCondition = true
+
+                if (isUpdatingConditionHandler.getValue()) {
+                    valueChangedCondition = title != prevIncome?.title
+                            || amount != prevIncome.amount
+                            || desc != prevIncome.description
+                            || type != prevIncome.frequencyType
+                            || _when != prevIncome.frequencyWhen
                 }
-            requiredInputsCheckFlow.distinctUntilChanged().collect { allInputsProvided ->
-                requiredInputsStateFlowHandler.onValueChange(allInputsProvided)
+
+                valueChangedCondition && title.isBlank().not() && amount > 0
+            }
+            requiredInputsCheckFlow.distinctUntilChanged().collect { allInputsMeetCondition ->
+                requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
             }
         }
     }

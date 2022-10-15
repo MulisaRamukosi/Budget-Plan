@@ -108,12 +108,27 @@ class AddEditExpenseViewModel @AssistedInject constructor(
 
     private fun initAllInputsValidFlow() {
         runCoroutine {
-            val requiredInputsCheckFlow: Flow<Boolean> =
-                titleStateFlowHandler.valueStateFlow.combine(amountStateFlowHandler.valueStateFlow) { title, amount ->
-                    title.isBlank().not() && amount > 0
+            val requiredInputsCheckFlow: Flow<Boolean> = combine(
+                titleStateFlowHandler.valueStateFlow,
+                amountStateFlowHandler.valueStateFlow,
+                descriptionStateFlowHandler.valueStateFlow,
+                frequencyTypeStateFlowHandler.valueStateFlow,
+                frequencyWhenStateFlowHandler.valueStateFlow
+            ) { title, amount, desc, type, _when ->
+                var valueChangedCondition = true
+
+                if (isUpdatingConditionHandler.getValue()) {
+                    valueChangedCondition = title != prevExpense?.name
+                            || amount != prevExpense.amount
+                            || desc != prevExpense.description
+                            || type != prevExpense.frequencyType
+                            || _when != prevExpense.frequencyWhen
                 }
-            requiredInputsCheckFlow.distinctUntilChanged().collect { allInputsProvided ->
-                requiredInputsStateFlowHandler.onValueChange(allInputsProvided)
+
+                valueChangedCondition && title.isBlank().not() && amount > 0
+            }
+            requiredInputsCheckFlow.distinctUntilChanged().collect { allInputsMeetCondition ->
+                requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
             }
         }
     }
