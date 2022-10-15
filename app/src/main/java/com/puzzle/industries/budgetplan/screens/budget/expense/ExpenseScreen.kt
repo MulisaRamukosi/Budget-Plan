@@ -23,6 +23,7 @@ import com.puzzle.industries.budgetplan.components.expenses.ExpenseGroupItem
 import com.puzzle.industries.budgetplan.components.income.TotalIncome
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.util.configs.ViewConfig
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
@@ -220,7 +221,7 @@ private fun ExpenseGroupWithExpensesItems(
         contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
         verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
         horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
-        columns = StaggeredGridCells.Adaptive(minSize = 300.dp)
+        columns = StaggeredGridCells.Adaptive(minSize = ViewConfig.staggeredGridItemMinWidth)
     ){
         items(items = expenseGroupsWithExpenses) { expenseGroupWithExpenses ->
             ExpenseGroupItem(
