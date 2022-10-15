@@ -1,10 +1,18 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 
 package com.puzzle.industries.budgetplan.screens.budget.income
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.income.IncomeItem
@@ -70,11 +79,13 @@ private fun IncomeItems(
     val incomes by incomeViewModel.incomes.collectAsState()
     val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
 
-    LazyColumn(
+    LazyVerticalStaggeredGrid(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
-        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium)
-    ) {
+        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+        horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+        columns = StaggeredGridCells.Adaptive(minSize = 300.dp),
+    ){
         items(items = incomes) { income ->
             IncomeItem(
                 modifier = Modifier.fillMaxWidth(),

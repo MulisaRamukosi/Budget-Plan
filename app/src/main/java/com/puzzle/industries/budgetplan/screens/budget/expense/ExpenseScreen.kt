@@ -1,8 +1,12 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.puzzle.industries.budgetplan.screens.budget.expense
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.expenses.ExpenseGroupItem
@@ -210,11 +215,13 @@ private fun ExpenseGroupWithExpensesItems(
     val expenseGroupsWithExpenses by expenseViewModel.expenseGroupsWithExpenses.collectAsState()
     val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
 
-    LazyColumn(
+    LazyVerticalStaggeredGrid(
         modifier = modifier,
         contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
-        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium)
-    ) {
+        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+        horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+        columns = StaggeredGridCells.Adaptive(minSize = 300.dp)
+    ){
         items(items = expenseGroupsWithExpenses) { expenseGroupWithExpenses ->
             ExpenseGroupItem(
                 currencySymbol = currencySymbol,
