@@ -124,7 +124,7 @@ private fun ColorSetItem(colorSet: ColorPickerSet, isSelected: Boolean, onClick:
             .clip(shape = roundedShape)
             .rotate(degrees = 45f)
             .border(
-                width = if (isSelected) 2.dp else 0.dp,
+                width = if (isSelected) 3.dp else 0.dp,
                 color = if (isSelected) MaterialTheme.colorScheme.tertiary else Color.Transparent,
                 shape = roundedShape
             )
