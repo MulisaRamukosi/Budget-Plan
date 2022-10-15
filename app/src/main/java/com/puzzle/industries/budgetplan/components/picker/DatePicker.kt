@@ -1,21 +1,31 @@
 package com.puzzle.industries.budgetplan.components.picker
 
 import android.app.DatePickerDialog
+import android.provider.CalendarContract.Calendars
 import android.widget.DatePicker
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import java.util.*
 
 @Composable
 fun datePickerDialog(
     day: Int,
     month: Int,
     year: Int,
+    disablePreviousDays: Boolean,
     onDateSelected: (day: Int, month: Int, year: Int) -> Unit
 ): DatePickerDialog {
-    return DatePickerDialog(
+    val calendar: Calendar = Calendar.getInstance()
+    calendar.set(year, month, day)
+
+    val datePickerDialog = DatePickerDialog(
         LocalContext.current,
         { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
             onDateSelected(selectedDay, selectedMonth, selectedYear)
         }, year, month, day
     )
+
+    if (disablePreviousDays) datePickerDialog.datePicker.minDate = calendar.timeInMillis
+
+    return datePickerDialog
 }
