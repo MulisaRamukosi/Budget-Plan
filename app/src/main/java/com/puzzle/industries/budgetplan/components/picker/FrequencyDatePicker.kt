@@ -4,7 +4,6 @@ package com.puzzle.industries.budgetplan.components.picker
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.domain.models.FrequencyDate
-import java.util.*
 
 @Composable
 fun FrequencyDatePicker(
@@ -35,26 +33,18 @@ fun FrequencyDatePicker(
         initial = PressInteraction.Cancel(PressInteraction.Press(Offset.Zero))
     )
 
-    val context: Context = LocalContext.current
-    val datePickerError: String = stringResource(id = R.string.error_frequency_date_picker)
     val datePickerDialog: DatePickerDialog = datePickerDialog(
         day = preselectedFrequencyDate.day,
         month = preselectedFrequencyDate.month,
         year = preselectedFrequencyDate.year,
+        disablePreviousDays = true,
         onDateSelected = { selectedDay, selectedMonth, selectedYear ->
             val newDate = FrequencyDate(
                 day = selectedDay,
                 month = selectedMonth,
                 year = selectedYear
             )
-            if (newDate.year >= preselectedFrequencyDate.year && newDate.month >= preselectedFrequencyDate.month
-                && (newDate.day >= preselectedFrequencyDate.day || (newDate.month > preselectedFrequencyDate.month))
-            ) {
-                onDateSelected(newDate)
-            }
-            else {
-                Toast.makeText(context, datePickerError, Toast.LENGTH_LONG).show()
-            }
+            onDateSelected(newDate)
         }
     )
 
