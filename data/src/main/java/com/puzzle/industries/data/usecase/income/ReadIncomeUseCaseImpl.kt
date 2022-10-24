@@ -10,5 +10,5 @@ import javax.inject.Inject
 internal class ReadIncomeUseCaseImpl constructor(
     private val incomeRepository: IncomeRepository
 ) : ReadIncomeUseCase {
-    override fun read(): Response<Flow<List<Income>>> = incomeRepository.read()
+    override fun readAll(): Response<Flow<List<Income>>> = incomeRepository.read()
 }

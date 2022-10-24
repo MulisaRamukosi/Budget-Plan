@@ -1,8 +1,8 @@
 package com.puzzle.industries.data.dao
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.puzzle.industries.data.database.dao.base.Insert
-import com.puzzle.industries.data.database.dao.base.Update
+import com.puzzle.industries.data.storage.database.dao.base.Insert
+import com.puzzle.industries.data.storage.database.dao.base.Update
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 class ReadExpenseGroupUseCaseImpl constructor(private val expenseGroupRepository: ExpenseGroupRepository) :
     ReadExpenseGroupUseCase {
-    override fun read(): Response<Flow<List<ExpenseGroupWithExpenses>>> =
+    override fun readAll(): Response<Flow<List<ExpenseGroupWithExpenses>>> =
         expenseGroupRepository.read()
 }

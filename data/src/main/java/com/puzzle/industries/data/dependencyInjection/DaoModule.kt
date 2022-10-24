@@ -1,12 +1,13 @@
 package com.puzzle.industries.data.dependencyInjection
 
-import com.puzzle.industries.data.database.AppDatabase
-import com.puzzle.industries.data.database.dao.expense.ExpenseDao
-import com.puzzle.industries.data.database.dao.expense.ExpenseHistoryDao
-import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupDao
-import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupHistoryDao
-import com.puzzle.industries.data.database.dao.income.IncomeDao
-import com.puzzle.industries.data.database.dao.income.IncomeHistoryDao
+import com.puzzle.industries.data.storage.database.AppDatabase
+import com.puzzle.industries.data.storage.database.dao.expense.ExpenseDao
+import com.puzzle.industries.data.storage.database.dao.expense.ExpenseHistoryDao
+import com.puzzle.industries.data.storage.database.dao.expenseGroup.ExpenseGroupDao
+import com.puzzle.industries.data.storage.database.dao.expenseGroup.ExpenseGroupHistoryDao
+import com.puzzle.industries.data.storage.database.dao.income.IncomeDao
+import com.puzzle.industries.data.storage.database.dao.income.IncomeHistoryDao
+import com.puzzle.industries.data.storage.database.dao.reminder.ReminderDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

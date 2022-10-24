@@ -5,9 +5,9 @@ import com.puzzle.industries.data.dao.BaseDaoTest
 import com.puzzle.industries.data.dao.BaseDaoDeleteTest
 import com.puzzle.industries.data.dao.BaseDaoInsertTest
 import com.puzzle.industries.data.dao.BaseDaoUpdateTest
-import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupDao
-import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
-import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupEntity
+import com.puzzle.industries.data.storage.database.dao.expenseGroup.ExpenseGroupDao
+import com.puzzle.industries.data.storage.database.entity.expense.ExpenseEntity
+import com.puzzle.industries.data.storage.database.entity.expenseGroup.ExpenseGroupEntity
 import com.puzzle.industries.domain.constants.FrequencyType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -19,8 +19,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
 private val testEntities = arrayOf(
-    ExpenseGroupEntity(name = "some name", description = "some desc"),
-    ExpenseGroupEntity(name = "some other name", description = "some desc")
+    ExpenseGroupEntity(name = "some name", description = "some desc", colorId = "1"),
+    ExpenseGroupEntity(name = "some other name", description = "some desc", colorId = "2")
 )
 
 @RunWith(Suite::class)

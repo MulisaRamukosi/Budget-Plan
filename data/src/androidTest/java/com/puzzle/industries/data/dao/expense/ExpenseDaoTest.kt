@@ -5,8 +5,8 @@ import com.puzzle.industries.data.dao.BaseDaoDeleteTest
 import com.puzzle.industries.data.dao.BaseDaoInsertTest
 import com.puzzle.industries.data.dao.BaseDaoReadTest
 import com.puzzle.industries.data.dao.BaseDaoUpdateTest
-import com.puzzle.industries.data.database.dao.expense.ExpenseDao
-import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
+import com.puzzle.industries.data.storage.database.dao.expense.ExpenseDao
+import com.puzzle.industries.data.storage.database.entity.expense.ExpenseEntity
 import com.puzzle.industries.domain.constants.FrequencyType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.runner.RunWith

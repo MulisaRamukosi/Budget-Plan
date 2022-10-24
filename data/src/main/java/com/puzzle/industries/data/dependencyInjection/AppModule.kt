@@ -1,7 +1,9 @@
 package com.puzzle.industries.data.dependencyInjection
 
 import android.content.Context
-import com.puzzle.industries.data.database.AppDatabase
+import com.puzzle.industries.data.storage.database.AppDatabase
+import com.puzzle.industries.data.notification.NotificationChannelService
+import com.puzzle.industries.data.notification.implementation.NotificationChannelServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

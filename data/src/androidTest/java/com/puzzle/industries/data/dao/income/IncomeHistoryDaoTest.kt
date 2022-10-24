@@ -4,9 +4,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.puzzle.industries.data.dao.BaseDaoDeleteTest
 import com.puzzle.industries.data.dao.BaseDaoInsertTest
 import com.puzzle.industries.data.dao.BaseDaoReadTest
-import com.puzzle.industries.data.database.dao.income.IncomeHistoryDao
-import com.puzzle.industries.data.database.entity.income.IncomeEntity
-import com.puzzle.industries.data.database.entity.income.IncomeHistoryEntity
+import com.puzzle.industries.data.storage.database.dao.income.IncomeHistoryDao
+import com.puzzle.industries.data.storage.database.entity.income.IncomeEntity
+import com.puzzle.industries.data.storage.database.entity.income.IncomeHistoryEntity
 import com.puzzle.industries.domain.constants.Action
 import com.puzzle.industries.domain.constants.FrequencyType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
