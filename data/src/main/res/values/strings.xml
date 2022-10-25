@@ -8,4 +8,8 @@
     <string name="delete_success">Successfully deleted item(s).</string>
     <string name="delete_failed">Failed to delete item(s) because they don\'t exist.</string>
     <string name="delete_partial">Some items were not deleted because they don\'t exist in the database.</string>
+    <string name="channel_payment_reminders">Payment Reminders</string>
+    <string name="channel_payment_reminders_desc">Notifications for expense that you enabled reminders for.</string>
+    <string name="format_payment_reminder">Payment Reminder for %s</string>
+    <string name="format_payment_reminder_desc">You have a payment of %s%.2f for %s due today.</string>
 </resources>
