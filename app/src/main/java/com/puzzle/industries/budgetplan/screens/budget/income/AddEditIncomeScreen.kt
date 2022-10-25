@@ -20,7 +20,6 @@ import com.puzzle.industries.budgetplan.components.inputs.TitleInput
 import com.puzzle.industries.budgetplan.components.layout.OrientationAwareContentWrapper
 import com.puzzle.industries.budgetplan.components.picker.*
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
-import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.factory.FrequencyDateFactory
 import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
 import com.puzzle.industries.budgetplan.util.layout.buildOrientationAwareActions
@@ -28,7 +27,6 @@ import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeVi
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.WeekDays
-import com.puzzle.industries.domain.models.FrequencyDate
 
 @Composable
 fun AddEditIncomeScreen(
@@ -188,12 +186,10 @@ private fun TitleTextField(addEditIncomeViewModel: AddEditIncomeViewModel) {
 
 @Composable
 private fun AmountTextField(addEditIncomeViewModel: AddEditIncomeViewModel) {
-    val amount by addEditIncomeViewModel.amountStateFlowHandler.valueStateFlow.collectAsState()
-
     AmountInput(
         modifier = Modifier.fillMaxWidth(),
         imeAction = ImeAction.Next,
-        income = amount,
+        income = addEditIncomeViewModel.amountStateFlowHandler.getValue(),
         onValueChange = addEditIncomeViewModel.amountStateFlowHandler.onValueChange
     )
 }
@@ -236,7 +232,7 @@ private fun FrequencyTypePickerField(
                     FrequencyType.DAILY -> ""
                     FrequencyType.WEEKLY -> WeekDays.MONDAY.name
                     FrequencyType.YEARLY -> FrequencyDateFactory.createCurrentDate()
-                        .toDayMonthString()
+                        .formatToDayMonth()
                 }
             )
             addEditIncomeViewModel.frequencyTypeStateFlowHandler.onValueChange(type)

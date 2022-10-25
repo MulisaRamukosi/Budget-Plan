@@ -1,16 +1,17 @@
 package com.puzzle.industries.budgetplan.viewModels.budget.expenses
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.CrudViewModelHandlerDelegate
+import com.puzzle.industries.budgetplan.delegates.CurrencySymbolObserverDelegate
 import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.CrudViewModelHandlerDelegateImpl
+import com.puzzle.industries.budgetplan.delegates.implementation.CurrencySymbolObserverDelegateImpl
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupWithExpenses
-import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
+import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.usescases.expense.ExpenseUseCase
 import com.puzzle.industries.domain.usescases.expenseGroup.ExpenseGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +23,9 @@ import javax.inject.Inject
 class ExpenseViewModel @Inject constructor(
     private val expenseGroupUseCase: ExpenseGroupUseCase,
     private val expenseUseCase: ExpenseUseCase,
-    private val currencyPreferenceService: CountryCurrencyPreferenceService
+    private val currencyPreferenceService: CountryCurrencyDataStore
 ) : ViewModel(),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
     CrudViewModelHandlerDelegate<Boolean, ExpenseGroupWithExpenses> by CrudViewModelHandlerDelegateImpl(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
@@ -42,8 +44,7 @@ class ExpenseViewModel @Inject constructor(
     val updateExpenseEventListener: SharedFlow<Unit> = updateValueEventEmitter
     val emitUpdateExpenseEvent: () -> Unit = onUpdateValue
 
-    private val _currencySymbol = MutableStateFlow(value = "")
-    val currencySymbol: StateFlow<String> = _currencySymbol
+    val currencySymbol: StateFlow<String> = currencySymbolFlow
 
     val crudResponseEventListener: SharedFlow<Response<Boolean>> = crudResponseEventEmitter
 
@@ -53,12 +54,11 @@ class ExpenseViewModel @Inject constructor(
     init {
         initExpenseGroupWithExpenses()
         initTotalExpenses()
-        initCurrencySymbolFlow()
     }
 
     private fun initExpenseGroupWithExpenses() = runCoroutine {
         val response: Response<Flow<List<ExpenseGroupWithExpenses>>> =
-            expenseGroupUseCase.read.read()
+            expenseGroupUseCase.read.readAll()
 
         response.response.distinctUntilChanged().collect { expenseGroupWithExpenses ->
             items.value = expenseGroupWithExpenses
@@ -70,12 +70,6 @@ class ExpenseViewModel @Inject constructor(
             _totalExpenses.value = expenseGroupsWithExpenses.sumOf { expenseGroupWithExpenses ->
                 expenseGroupWithExpenses.expenses.sumOf { expense -> expense.amount }
             }
-        }
-    }
-
-    private fun initCurrencySymbolFlow() = runCoroutine {
-        currencyPreferenceService.getCurrencySymbol().collect { symbol ->
-            _currencySymbol.value = symbol
         }
     }
 
@@ -171,4 +165,5 @@ class ExpenseViewModel @Inject constructor(
 
         crudResponseEventEmitter.emit(expenseGroupUseCase.delete.delete(reason = reason, expenseGroup))
     }
+
 }

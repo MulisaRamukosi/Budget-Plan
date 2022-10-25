@@ -99,9 +99,9 @@ class AddEditExpenseGroupViewModel @AssistedInject constructor(
         }
 
         requiredInputsCheckFlow.distinctUntilChanged()
-        .collect { allInputsMeetCondition ->
-            requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
-        }
+            .collect { allInputsMeetCondition ->
+                requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
+            }
     }
 
 }

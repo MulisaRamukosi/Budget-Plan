@@ -8,10 +8,7 @@ import com.puzzle.industries.budgetplan.delegates.SavedStateHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.implementation.AddEditItemStateHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.SavedStateHandlerDelegateImpl
-import com.puzzle.industries.budgetplan.factory.FrequencyDateFactory
 import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
-import com.puzzle.industries.domain.constants.FrequencyType
-import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.expense.Expense
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
@@ -81,7 +78,10 @@ class AddEditExpenseViewModel @AssistedInject constructor(
     val expense: Expense
         get() = Expense(
             id = getStateFlow(key = Expense::id.name, initialValue = UUID.randomUUID()).value,
-            expenseGroupId = getStateFlow(key = Expense::expenseGroupId.name, initialValue = expenseGroupId).value,
+            expenseGroupId = getStateFlow(
+                key = Expense::expenseGroupId.name,
+                initialValue = expenseGroupId
+            ).value,
             name = titleStateFlowHandler.getValue(),
             amount = amountStateFlowHandler.getValue(),
             description = descriptionStateFlowHandler.getValue(),
@@ -94,8 +94,8 @@ class AddEditExpenseViewModel @AssistedInject constructor(
         initAllInputsValidFlow()
     }
 
-    private fun cacheExpense(){
-        prevExpense?.let{
+    private fun cacheExpense() {
+        prevExpense?.let {
             setStateFlowValue(key = Expense::id.name, value = it.id)
             setStateFlowValue(key = Expense::expenseGroupId.name, value = it.expenseGroupId)
             setStateFlowValue(key = Expense::name.name, value = it.name)
@@ -106,30 +106,29 @@ class AddEditExpenseViewModel @AssistedInject constructor(
         }
     }
 
-    private fun initAllInputsValidFlow() {
-        runCoroutine {
-            val requiredInputsCheckFlow: Flow<Boolean> = combine(
-                titleStateFlowHandler.valueStateFlow,
-                amountStateFlowHandler.valueStateFlow,
-                descriptionStateFlowHandler.valueStateFlow,
-                frequencyTypeStateFlowHandler.valueStateFlow,
-                frequencyWhenStateFlowHandler.valueStateFlow
-            ) { title, amount, desc, type, _when ->
-                var valueChangedCondition = true
+    private fun initAllInputsValidFlow() = runCoroutine {
+        val allConditions = combine(
+            titleStateFlowHandler.valueStateFlow,
+            amountStateFlowHandler.valueStateFlow,
+            descriptionStateFlowHandler.valueStateFlow,
+            frequencyTypeStateFlowHandler.valueStateFlow,
+            frequencyWhenStateFlowHandler.valueStateFlow
+        ) { title, amount, desc, type, _when ->
+            var valueChangedCondition = true
 
-                if (isUpdatingConditionHandler.getValue()) {
-                    valueChangedCondition = title != prevExpense?.name
-                            || amount != prevExpense.amount
-                            || desc != prevExpense.description
-                            || type != prevExpense.frequencyType
-                            || _when != prevExpense.frequencyWhen
-                }
+            if(isUpdatingConditionHandler.getValue()){
+                valueChangedCondition = title != prevExpense?.name
+                        || amount != prevExpense.amount
+                        || desc != prevExpense.description
+                        || type != prevExpense.frequencyType
+                        || _when != prevExpense.frequencyWhen
+            }
 
-                valueChangedCondition && title.isBlank().not() && amount > 0
-            }
-            requiredInputsCheckFlow.distinctUntilChanged().collect { allInputsMeetCondition ->
-                requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
-            }
+            valueChangedCondition && title.isBlank().not() && amount > 0
+        }
+
+        allConditions.distinctUntilChanged().collect { allInputsMeetCondition ->
+            requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
         }
     }
 }

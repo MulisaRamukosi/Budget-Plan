@@ -3,11 +3,13 @@ package com.puzzle.industries.budgetplan.viewModels.budget.income
 import androidx.lifecycle.ViewModel
 import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.CrudViewModelHandlerDelegate
+import com.puzzle.industries.budgetplan.delegates.CurrencySymbolObserverDelegate
 import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.CrudViewModelHandlerDelegateImpl
+import com.puzzle.industries.budgetplan.delegates.implementation.CurrencySymbolObserverDelegateImpl
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.models.income.Income
-import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
+import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.usescases.income.IncomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -17,8 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
-    private val currencyPreferenceService: CountryCurrencyPreferenceService
+    private val currencyPreferenceService: CountryCurrencyDataStore
 ) : ViewModel(),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
     CrudViewModelHandlerDelegate<Boolean, Income> by CrudViewModelHandlerDelegateImpl(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
@@ -31,8 +34,7 @@ class IncomeViewModel @Inject constructor(
     val updateIncomeEventListener: SharedFlow<Unit> = updateValueEventEmitter
     val emitUpdateIncomeEvent: () -> Unit = onUpdateValue
 
-    private val _currencySymbol = MutableStateFlow(value = "")
-    val currencySymbol: StateFlow<String> = _currencySymbol
+    val currencySymbol: StateFlow<String> = currencySymbolFlow
 
     private val _totalIncome = MutableStateFlow(value = 0.0)
     val totalIncome = _totalIncome
@@ -40,17 +42,10 @@ class IncomeViewModel @Inject constructor(
     init {
         initIncomes()
         initTotalIncome()
-        initCurrencySymbolFlow()
-    }
-
-    private fun initCurrencySymbolFlow() = runCoroutine {
-        currencyPreferenceService.getCurrencySymbol().collect { symbol ->
-            _currencySymbol.value = symbol
-        }
     }
 
     private fun initIncomes() = runCoroutine {
-        val response: Response<Flow<List<Income>>> = incomeUseCase.read.read()
+        val response: Response<Flow<List<Income>>> = incomeUseCase.read.readAll()
         response.response.distinctUntilChanged().collect { incomeList ->
             items.value = incomeList
         }

@@ -6,10 +6,10 @@ import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 
 import com.puzzle.industries.domain.models.income.Income
-import com.puzzle.industries.domain.services.BPlanGenDayPreferenceService
-import com.puzzle.industries.domain.services.CountryCurrencyPreferenceService
-import com.puzzle.industries.domain.services.DebtPreferenceService
-import com.puzzle.industries.domain.services.LaunchTrackingPreferenceService
+import com.puzzle.industries.domain.datastores.BPlanGenDayDataStore
+import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
+import com.puzzle.industries.domain.datastores.DebtDataStore
+import com.puzzle.industries.domain.datastores.LaunchTrackingDataStore
 import com.puzzle.industries.domain.usescases.income.IncomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,10 +17,10 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationFlowViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
-    private val countryCurrencyPreferenceService: CountryCurrencyPreferenceService,
-    private val debtPreferenceService: DebtPreferenceService,
-    private val launchTrackingPreferenceService: LaunchTrackingPreferenceService,
-    private val bPlanGenDayPreferenceService: BPlanGenDayPreferenceService
+    private val countryCurrencyDataStore: CountryCurrencyDataStore,
+    private val debtDataStore: DebtDataStore,
+    private val launchTrackingDataStore: LaunchTrackingDataStore,
+    private val bPlanGenDayDataStore: BPlanGenDayDataStore
 ) : ViewModel(), CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
     private lateinit var countryCurrency: CountryCurrency
@@ -32,10 +32,10 @@ class RegistrationFlowViewModel @Inject constructor(
     fun register(){
         runCoroutine {
             incomeUseCase.create.insert(reason = "", income)
-            countryCurrencyPreferenceService.saveCurrencySymbol(symbol = countryCurrency.symbol)
-            bPlanGenDayPreferenceService.saveDay(day = day)
-            debtPreferenceService.saveAllowDebtOption(option = debtAllowed)
-            launchTrackingPreferenceService.updateToNotFirstTimeLaunch()
+            countryCurrencyDataStore.saveCurrencySymbol(symbol = countryCurrency.symbol)
+            bPlanGenDayDataStore.saveDay(day = day)
+            debtDataStore.saveAllowDebtOption(option = debtAllowed)
+            launchTrackingDataStore.updateToNotFirstTimeLaunch()
         }
     }
 

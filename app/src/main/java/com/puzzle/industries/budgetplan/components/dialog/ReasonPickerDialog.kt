@@ -22,6 +22,7 @@ fun ReasonPickerDialog(
     onDismiss: () -> Unit
 ) {
     ViewAlertDialog(
+        dismissOnClickOutside = dismissOnClickOutside,
         onDismiss = onDismiss,
         titleSection = viewAlertDialogDefaultTitle(
             title = title,
@@ -32,14 +33,14 @@ fun ReasonPickerDialog(
             positiveActionText = positiveActionText,
             onPositiveActionClick = onPositiveActionClick
         ),
-        dismissOnClickOutside = dismissOnClickOutside
-    ) {
-        ReasonPicker(
-            modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
-            supportingText = reasonSupportingText,
-            reason = preselectedReason.ifBlank { reasons[0] },
-            reasons = reasons,
-            onReasonChange = onReasonChange
-        )
-    }
+        content = {
+            ReasonPicker(
+                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium),
+                supportingText = reasonSupportingText,
+                reason = preselectedReason.ifBlank { reasons[0] },
+                reasons = reasons,
+                onReasonChange = onReasonChange
+            )
+        }
+    )
 }

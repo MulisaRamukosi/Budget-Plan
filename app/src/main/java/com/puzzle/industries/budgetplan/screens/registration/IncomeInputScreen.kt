@@ -18,6 +18,7 @@ import com.puzzle.industries.budgetplan.components.inputs.AmountInput
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.IncomeInputViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.income.Income
@@ -27,10 +28,6 @@ fun IncomeInputScreen(
     viewModel: IncomeInputViewModel = viewModel(),
     onContinueClick: (Income) -> Unit
 ) {
-
-    val income by viewModel.sub.collectAsState()
-    val incomeTitle = stringResource(id = R.string.base_income)
-    val incomeDescription = stringResource(id = R.string.desc_base_income)
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
@@ -42,30 +39,39 @@ fun IncomeInputScreen(
                 note = stringResource(id = R.string.note_income_addition)
             )
 
-            AmountInput(income = income, onValueChange = { viewModel.publishValue(value = it) })
+            AmountInput(income = 0.0, onValueChange = { viewModel.publishValue(value = it) })
 
             V_M_Space()
 
-            GuideFlowComponents.Continue(
-                enabled = income > 0,
-                onContinueClick = {
-                    val incomeModel = Income(
-                        frequencyType = FrequencyType.MONTHLY,
-                        frequencyWhen = "1",
-                        amount = income,
-                        title = incomeTitle,
-                        description = incomeDescription
-                    )
-                    onContinueClick(incomeModel)
-                }
-            )
+            ContinueButton(viewModel = viewModel, onContinueClick = onContinueClick)
         }
     }
 }
 
+@Composable
+private fun ContinueButton(viewModel: IncomeInputViewModel, onContinueClick: (Income) -> Unit){
+    val income by viewModel.sub.collectAsState()
+    val incomeTitle = stringResource(id = R.string.base_income)
+    val incomeDescription = stringResource(id = R.string.desc_base_income)
+
+    GuideFlowComponents.Continue(
+        enabled = income > 0,
+        onContinueClick = {
+            val incomeModel = Income(
+                frequencyType = FrequencyConfig.DEFAULT_TYPE,
+                frequencyWhen = FrequencyConfig.DEFAULT_WHEN,
+                amount = income,
+                title = incomeTitle,
+                description = incomeDescription
+            )
+            onContinueClick(incomeModel)
+        }
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
-fun PreviewIncomeInputScreen() {
+private fun PreviewIncomeInputScreen() {
     BudgetPlanTheme(dynamicColor = false) {
         IncomeInputScreen{}
     }
