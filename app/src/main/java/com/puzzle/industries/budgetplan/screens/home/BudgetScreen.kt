@@ -25,12 +25,13 @@ import com.google.accompanist.pager.rememberPagerState
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
 import com.puzzle.industries.budgetplan.navigation.constants.Routes
-import com.puzzle.industries.budgetplan.screens.budget.ReminderScreen
 import com.puzzle.industries.budgetplan.screens.budget.expense.ExpenseScreen
 import com.puzzle.industries.budgetplan.screens.budget.income.IncomeScreen
+import com.puzzle.industries.budgetplan.screens.budget.reminder.ReminderScreens
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -38,7 +39,8 @@ import java.util.*
 fun BudgetScreen(
     navController: NavController,
     incomeViewModel: IncomeViewModel,
-    expenseViewModel: ExpenseViewModel
+    expenseViewModel: ExpenseViewModel,
+    reminderViewModel: ReminderViewModel
 ) {
     val tabs = listOf(
         stringResource(id = R.string.income),
@@ -57,9 +59,18 @@ fun BudgetScreen(
             modifier = Modifier.weight(1f)
         ) { currentPage ->
             when (currentPage) {
-                0 -> IncomeScreenTab(incomeViewModel, navController)
-                1 -> ExpenseScreenTab(expenseViewModel, navController)
-                2 -> ReminderScreen()
+                0 -> IncomeScreenTab(
+                    incomeViewModel = incomeViewModel,
+                    navController = navController
+                )
+                1 -> ExpenseScreenTab(
+                    expenseViewModel = expenseViewModel,
+                    navController = navController
+                )
+                2 -> ReminderScreenTab(
+                    reminderViewModel = reminderViewModel,
+                    navController = navController
+                )
             }
         }
     }
@@ -120,6 +131,16 @@ private fun IncomeScreenTab(
                 navController = navController,
                 incomeId = UUID.randomUUID().toString()
             )
+        }
+    )
+}
+
+@Composable
+fun ReminderScreenTab(reminderViewModel: ReminderViewModel, navController: NavController) {
+    ReminderScreens(
+        reminderViewModel = reminderViewModel,
+        onAddReminder = {
+            navController.navigate(route = Routes.AddReminder.path)
         }
     )
 }
@@ -194,7 +215,7 @@ private fun TabLayout(
 @Preview(showBackground = true)
 private fun BudgetScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
-        BudgetScreen(rememberNavController(), viewModel(), viewModel())
+        BudgetScreen(rememberNavController(), viewModel(), viewModel(), viewModel())
     }
 }
 
