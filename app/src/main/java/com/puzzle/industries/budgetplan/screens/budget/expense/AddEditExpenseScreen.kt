@@ -195,12 +195,10 @@ private fun TitleTextField(addEditExpenseViewModel: AddEditExpenseViewModel) {
 
 @Composable
 private fun AmountTextField(addEditExpenseViewModel: AddEditExpenseViewModel) {
-    val amount by addEditExpenseViewModel.amountStateFlowHandler.valueStateFlow.collectAsState()
-
     AmountInput(
         modifier = Modifier.fillMaxWidth(),
         imeAction = ImeAction.Next,
-        income = amount,
+        income = addEditExpenseViewModel.amountStateFlowHandler.getValue(),
         onValueChange = addEditExpenseViewModel.amountStateFlowHandler.onValueChange
     )
 }
@@ -278,7 +276,7 @@ private fun FrequencyTypePickerField(
                     FrequencyType.DAILY -> ""
                     FrequencyType.WEEKLY -> WeekDays.MONDAY.name
                     FrequencyType.YEARLY -> FrequencyDateFactory.createCurrentDate()
-                        .toDayMonthString()
+                        .formatToDayMonth()
                 }
             )
             addEditExpenseViewModel.frequencyTypeStateFlowHandler.onValueChange(type)
