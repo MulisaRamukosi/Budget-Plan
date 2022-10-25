@@ -3,7 +3,7 @@ package com.puzzle.industries.data.repo
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import com.puzzle.industries.data.database.AppDatabase
+import com.puzzle.industries.data.storage.database.AppDatabase
 import com.puzzle.industries.data.util.ResponseMessageFactory
 import org.junit.After
 import org.junit.Before

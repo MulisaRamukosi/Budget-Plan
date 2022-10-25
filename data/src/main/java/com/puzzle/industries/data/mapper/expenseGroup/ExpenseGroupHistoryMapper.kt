@@ -1,6 +1,6 @@
 package com.puzzle.industries.data.mapper.expenseGroup
 
-import com.puzzle.industries.data.database.entity.expenseGroup.ExpenseGroupHistoryEntity
+import com.puzzle.industries.data.storage.database.entity.expenseGroup.ExpenseGroupHistoryEntity
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupHistory
 import javax.inject.Inject
 

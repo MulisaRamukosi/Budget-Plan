@@ -1,6 +1,6 @@
 package com.puzzle.industries.data.mapper.income
 
-import com.puzzle.industries.data.database.entity.income.IncomeHistoryEntity
+import com.puzzle.industries.data.storage.database.entity.income.IncomeHistoryEntity
 import com.puzzle.industries.domain.models.income.IncomeHistory
 import javax.inject.Inject
 

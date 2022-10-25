@@ -1,6 +1,6 @@
 package com.puzzle.industries.data.mapper.expense
 
-import com.puzzle.industries.data.database.entity.expense.ExpenseEntity
+import com.puzzle.industries.data.storage.database.entity.expense.ExpenseEntity
 import com.puzzle.industries.domain.models.expense.Expense
 
 

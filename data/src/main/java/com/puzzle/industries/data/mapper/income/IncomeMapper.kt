@@ -1,6 +1,6 @@
 package com.puzzle.industries.data.mapper.income
 
-import com.puzzle.industries.data.database.entity.income.IncomeEntity
+import com.puzzle.industries.data.storage.database.entity.income.IncomeEntity
 import com.puzzle.industries.domain.models.income.Income
 
 internal class IncomeMapper {
