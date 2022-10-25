@@ -48,11 +48,11 @@ fun AddEditExpenseGroupScreen(
     )
 
     OrientationAwareContentWrapper(
-        title = stringResource(id = R.string.expense_group),
+        title = stringResource(id = R.string.expense_category),
         subTitle = stringResource(
             id = if (addEditExpenseGroupViewModel.isUpdatingConditionHandler.getValue())
-                R.string.update_expense_group_subtitle
-            else R.string.add_expense_group_subtitle
+                R.string.update_expense_category_subtitle
+            else R.string.add_expense_category_subtitle
         ),
         onDismiss = onNavigateBackToParent,
         isInTabletLandscape = isInTabletLandscape,
@@ -174,7 +174,7 @@ private fun getOrientationActions(
 ): @Composable RowScope.() -> Unit {
     val isUpdating = addEditExpenseGroupViewModel.isUpdatingConditionHandler.getValue()
     val saveUpdateText: String = stringResource(
-        id = if (isUpdating) R.string.update_expense_group else R.string.save_expense_group
+        id = if (isUpdating) R.string.update_expense_category else R.string.save_expense_category
     )
     val saveOrUpdateReason =
         stringResource(id = if (isUpdating) R.string.update else R.string.initial)

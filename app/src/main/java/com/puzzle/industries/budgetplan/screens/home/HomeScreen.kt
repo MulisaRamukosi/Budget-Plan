@@ -5,15 +5,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.BudgetPlanHeader
-import com.puzzle.industries.budgetplan.components.layout.StaggeredVerticalGrid
 import com.puzzle.industries.budgetplan.components.expenses.PendingExpenses
+import com.puzzle.industries.budgetplan.components.layout.StaggeredVerticalGrid
 import com.puzzle.industries.budgetplan.components.reminder.PaymentReminders
 import com.puzzle.industries.budgetplan.components.stats.BarChart
 import com.puzzle.industries.budgetplan.components.stats.BarGroup
@@ -21,12 +27,21 @@ import com.puzzle.industries.budgetplan.components.stats.DonutChart
 import com.puzzle.industries.budgetplan.data.stats.Key
 import com.puzzle.industries.budgetplan.data.stats.StatItem
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
+import com.puzzle.industries.budgetplan.theme.colorPickerColors
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
 
 @Composable
-fun HomeScreen(incomeViewModel: IncomeViewModel) {
-    val itemModifier = Modifier.fillMaxWidth().padding(all = MaterialTheme.spacing.small)
+fun HomeScreen(
+    incomeViewModel: IncomeViewModel,
+    reminderViewModel: ReminderViewModel,
+    expenseViewModel: ExpenseViewModel
+) {
+    val itemModifier = Modifier
+        .fillMaxWidth()
+        .padding(all = MaterialTheme.spacing.small)
 
     StaggeredVerticalGrid(
         modifier = Modifier
@@ -36,12 +51,9 @@ fun HomeScreen(incomeViewModel: IncomeViewModel) {
     ) {
         BudgetPlanHeader(modifier = itemModifier)
         PendingExpenses(modifier = itemModifier)
-        PaymentReminders(modifier = itemModifier)
-        DonutChart(
-            modifier = itemModifier,
-            title = "Dummy",
-            values = dummyDonut()
-        )
+        PaymentReminders(modifier = itemModifier, reminderViewModel = reminderViewModel)
+        ExpenseGroupDonutChart(modifier = itemModifier, expenseViewModel = expenseViewModel)
+
         BarChart(
             modifier = itemModifier,
             title = "dummy",
@@ -50,6 +62,28 @@ fun HomeScreen(incomeViewModel: IncomeViewModel) {
     }
 
 
+}
+
+@Composable
+fun ExpenseGroupDonutChart(modifier: Modifier, expenseViewModel: ExpenseViewModel) {
+    val expenseGroupsWithExpenses by expenseViewModel.expenseGroupsWithExpenses.collectAsState()
+    val donutStats = expenseGroupsWithExpenses.map {
+        StatItem(
+            key = Key(
+                title = it.expenseGroup.name,
+                color = MaterialTheme.colorPickerColors.getColor(it.expenseGroup.colorId)
+            ),
+            value = it.expenses.sumOf { expense -> expense.amount }
+        )
+    }.toList()
+
+    if (expenseGroupsWithExpenses.isNotEmpty()){
+        DonutChart(
+            modifier = modifier,
+            title = stringResource(id = R.string.expense_group_share),
+            values = donutStats
+        )
+    }
 }
 
 @Composable
@@ -166,30 +200,10 @@ private fun dummyGroup() = listOf(
     ),
 )
 
-@Composable
-private fun dummyDonut() = listOf(
-    StatItem(
-        key = Key(title = "Entertainment", color = Color(color = 0xFF103D61)),
-        value = 70.0
-    ),
-    StatItem(
-        key = Key(title = "Groceries", color = Color(color = 0xFF1F7947)),
-        value = 20.0
-    ),
-    StatItem(
-        key = Key(title = "HouseHold", color = Color(color = 0xFF9E9333)),
-        value = 40.0
-    ),
-    StatItem(
-        key = Key(title = "Family", color = Color(color = 0xFFA74343)),
-        value = 40.0
-    ),
-)
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewHome() {
     BudgetPlanTheme(dynamicColor = false) {
-        HomeScreen(viewModel())
+        HomeScreen(hiltViewModel(), hiltViewModel(), hiltViewModel())
     }
 }

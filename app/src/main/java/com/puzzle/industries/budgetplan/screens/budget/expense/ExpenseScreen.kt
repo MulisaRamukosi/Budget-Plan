@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.expenses.ExpenseGroupItem
@@ -65,7 +64,7 @@ fun ExpenseScreen(
             modifier = Modifier
                 .align(alignment = Alignment.BottomCenter)
                 .padding(all = MaterialTheme.spacing.medium),
-            content = { Text(text = stringResource(id = R.string.add_expense_group)) }
+            content = { Text(text = stringResource(id = R.string.add_expense_category)) }
         )
     }
 }
@@ -138,8 +137,8 @@ private fun DeleteExpenseGroupHandler(
 
     if (showDialog) {
         ReasonPickerDialog(
-            title = stringResource(id = R.string.delete_expense_group),
-            reasonSupportingText = stringResource(id = R.string.expense_group_delete_supporting_text),
+            title = stringResource(id = R.string.delete_expense_category),
+            reasonSupportingText = stringResource(id = R.string.expense_category_delete_supporting_text),
             dismissOnClickOutside = true,
             reasons = deleteExpenseGroupWithExpensesReasons,
             preselectedReason = deleteExpenseGroupWithExpensesReasons[0],
