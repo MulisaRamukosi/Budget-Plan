@@ -10,7 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -31,14 +31,20 @@ fun AmountInput(
     onValueChange: (Double) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
+    var amount by remember {
+        mutableStateOf(if (income == 0.0) "" else income.toBigDecimal().toPlainString())
+    }
 
     Column {
         OutlinedTextField(
             modifier = modifier,
-            value = if (income == 0.0) "" else income.toBigDecimal().toPlainString(),
+            value = amount,
             onValueChange = {
                 try {
-                    if(it.length < 15) onValueChange(it.toDouble())
+                    if(it.length < 15 && hasAMaxOfTwoDecimals(it)) {
+                        amount = it
+                        onValueChange(it.toDouble())
+                    }
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }
@@ -58,6 +64,14 @@ fun AmountInput(
             style = MaterialTheme.typography.labelSmall
         )
     }
+}
+
+private fun hasAMaxOfTwoDecimals(amount: String): Boolean{
+    if (amount.contains(".")){
+        val dotIndex = amount.indexOf(".")
+        return amount.substring(dotIndex).length <= 3
+    }
+    return true
 }
 
 @Preview(showBackground = true)
