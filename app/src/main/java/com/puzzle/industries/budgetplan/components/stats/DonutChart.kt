@@ -86,10 +86,12 @@ private fun DrawDonutChart(
         val gap = if(colors.size == 1) 0 else (8 * 2)/colors.size
 
         angles.forEachIndexed { index, angle ->
+            val sweepAngle = if (angle == 0f) 0f else angle - gap
+
             drawArc(
                 color = colors[index],
                 startAngle = startAngle,
-                sweepAngle = angle - gap,
+                sweepAngle = sweepAngle,
                 useCenter = false,
                 size = Size(width = donutRadius, height = donutRadius),
                 topLeft = Offset(
