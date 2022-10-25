@@ -16,6 +16,8 @@ fun datePickerDialog(
     onDateSelected: (day: Int, month: Int, year: Int) -> Unit
 ): DatePickerDialog {
     val calendar: Calendar = Calendar.getInstance()
+    val currentDayInMillis = calendar.timeInMillis
+
     calendar.set(year, month, day)
 
     val datePickerDialog = DatePickerDialog(
@@ -25,7 +27,7 @@ fun datePickerDialog(
         }, year, month, day
     )
 
-    if (disablePreviousDays) datePickerDialog.datePicker.minDate = calendar.timeInMillis
+    if (disablePreviousDays) datePickerDialog.datePicker.minDate = currentDayInMillis
 
     return datePickerDialog
 }
