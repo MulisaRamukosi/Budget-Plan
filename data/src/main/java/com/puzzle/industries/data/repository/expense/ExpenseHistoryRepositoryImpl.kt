@@ -1,7 +1,7 @@
 package com.puzzle.industries.data.repository.expense
 
-import com.puzzle.industries.data.database.dao.expense.ExpenseHistoryDao
 import com.puzzle.industries.data.mapper.expense.ExpenseHistoryMapper
+import com.puzzle.industries.data.storage.database.dao.expense.ExpenseHistoryDao
 import com.puzzle.industries.data.util.ResponseMessageFactory
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.models.expense.ExpenseHistory
@@ -43,11 +43,11 @@ internal class ExpenseHistoryRepositoryImpl constructor(
     override fun read(): Response<Flow<List<ExpenseHistory>>> {
         return Response(
             response = expenseHistoryDao.read().flowOn(context = Dispatchers.IO).map {
-                val entities = mutableListOf<ExpenseHistory>()
-                it.forEach { expenseHistoryEntity ->
-                    entities.add(expenseHistoryMapper.toExpenseHistory(expenseHistoryEntity))
+                return@map it.map { expenseHistoryEntity ->
+                    expenseHistoryMapper.toExpenseHistory(
+                        expenseHistoryEntity
+                    )
                 }
-                return@map entities
             }.conflate()
         )
     }

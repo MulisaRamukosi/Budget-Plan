@@ -1,7 +1,7 @@
 package com.puzzle.industries.data.repository.income
 
-import com.puzzle.industries.data.database.dao.income.IncomeHistoryDao
 import com.puzzle.industries.data.mapper.income.IncomeHistoryMapper
+import com.puzzle.industries.data.storage.database.dao.income.IncomeHistoryDao
 import com.puzzle.industries.data.util.ResponseMessageFactory
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.models.income.IncomeHistory
@@ -32,11 +32,11 @@ internal class IncomeHistoryRepositoryImpl constructor(
     override fun read(): Response<Flow<List<IncomeHistory>>> {
         return Response(
             response = incomeHistoryDao.read().flowOn(context = Dispatchers.IO).map {
-                val entities = mutableListOf<IncomeHistory>()
-                it.forEach { incomeHistoryEntity ->
-                    entities.add(incomeHistoryMapper.toIncomeHistory(incomeHistory = incomeHistoryEntity))
+                return@map it.map { incomeHistoryEntity ->
+                    incomeHistoryMapper.toIncomeHistory(
+                        incomeHistory = incomeHistoryEntity
+                    )
                 }
-                return@map entities
             }.conflate()
         )
     }
