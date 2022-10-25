@@ -18,7 +18,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_XS_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
@@ -40,13 +39,9 @@ fun AmountInput(
             modifier = modifier,
             value = amount,
             onValueChange = {
-                try {
-                    if(it.length < 15 && hasAMaxOfTwoDecimals(it)) {
-                        amount = it
-                        onValueChange(it.toDouble())
-                    }
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
+                if (it.toDoubleOrNull() != null && it.length < 15 && hasAMaxOfTwoDecimals(it)) {
+                    amount = it
+                    onValueChange(it.toDouble())
                 }
             },
             singleLine = true,
@@ -66,8 +61,8 @@ fun AmountInput(
     }
 }
 
-private fun hasAMaxOfTwoDecimals(amount: String): Boolean{
-    if (amount.contains(".")){
+private fun hasAMaxOfTwoDecimals(amount: String): Boolean {
+    if (amount.contains(".")) {
         val dotIndex = amount.indexOf(".")
         return amount.substring(dotIndex).length <= 3
     }

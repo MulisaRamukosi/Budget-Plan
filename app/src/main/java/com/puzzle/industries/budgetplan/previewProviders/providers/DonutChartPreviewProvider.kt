@@ -20,6 +20,9 @@ class DonutChartPreviewProvider : PreviewParameterProvider<List<StatItem>> {
             ),
             listOf(
                 StatItem(key = Key(title = "Entertainment", color = Color(color = 0xFF103D61)), value = 70.0)
+            ),
+            listOf(
+                StatItem(key = Key(title = "Empty", color = Color(color = 0xFF000000)), value = 0.0)
             )
         )
 }

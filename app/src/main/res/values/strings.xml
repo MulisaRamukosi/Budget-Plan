@@ -141,7 +141,7 @@
     <string name="note_payment_reminder">Get payment reminder notifications for this expense on payment time.</string>
     <string name="view_less_reminders">view less reminders</string>
     <string name="view_more_reminders">view more reminders</string>
-    <string name="expense_group_share">Expense Groups Shares</string>
+    <string name="expense_categories_share">Expense Categories Shares</string>
     <string name="add_reminder">Add Reminder</string>
     <string name="select_expenses_for_reminders">Select expenses to enable reminders</string>
     <string name="set_reminders">Set Reminder(s)</string>

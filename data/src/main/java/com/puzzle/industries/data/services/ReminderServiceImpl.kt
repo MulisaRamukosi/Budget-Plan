@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.puzzle.industries.data.broadcastReceivers.ReminderBroadcastReceiver
 import com.puzzle.industries.data.util.config.ReminderConfig
 import com.puzzle.industries.domain.constants.FrequencyType
@@ -47,7 +48,19 @@ internal class ReminderServiceImpl(private val context: Context) : ReminderServi
     }
 
     private fun getWeekDay(day: String): Int {
-        return WeekDays.valueOf(day).ordinal + 1
+        return weekDayToCalendarDay(weekDay = WeekDays.valueOf(day))
+    }
+
+    private fun weekDayToCalendarDay(weekDay: WeekDays): Int{
+        return when(weekDay){
+            WeekDays.SUNDAY -> Calendar.SUNDAY
+            WeekDays.MONDAY -> Calendar.MONDAY
+            WeekDays.TUESDAY -> Calendar.TUESDAY
+            WeekDays.WEDNESDAY -> Calendar.WEDNESDAY
+            WeekDays.THURSDAY -> Calendar.THURSDAY
+            WeekDays.FRIDAY -> Calendar.FRIDAY
+            WeekDays.SATURDAY -> Calendar.SATURDAY
+        }
     }
 
     private fun setOnceOffReminder(reminderId: Int, expense: Expense) {
@@ -136,7 +149,7 @@ internal class ReminderServiceImpl(private val context: Context) : ReminderServi
                 intent.putExtra(ReminderConfig.KEY_TITLE, expense.name)
                 intent.putExtra(ReminderConfig.KEY_AMOUNT, expense.amount)
             }
-            PendingIntent.getBroadcast(context, requestId, intent, 0)
+            PendingIntent.getBroadcast(context, requestId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
     }
 }

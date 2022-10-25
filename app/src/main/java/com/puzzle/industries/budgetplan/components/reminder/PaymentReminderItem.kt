@@ -64,9 +64,9 @@ fun PaymentReminderItem(
             Row {
                 if (expense.frequencyType != FrequencyType.DAILY) {
                     MiniCaption(imageVector = Icons.Rounded.Alarm, message = expense.frequencyWhen)
-                }
 
-                H_M_Space()
+                    H_M_Space()
+                }
 
                 MiniCaption(
                     imageVector = Icons.Rounded.Repeat,

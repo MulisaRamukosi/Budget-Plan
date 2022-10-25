@@ -5,17 +5,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.BudgetPlanHeader
 import com.puzzle.industries.budgetplan.components.expenses.PendingExpenses
@@ -32,6 +28,8 @@ import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
+import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
+import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupWithExpenses
 
 @Composable
 fun HomeScreen(
@@ -52,7 +50,7 @@ fun HomeScreen(
         BudgetPlanHeader(modifier = itemModifier)
         PendingExpenses(modifier = itemModifier)
         PaymentReminders(modifier = itemModifier, reminderViewModel = reminderViewModel)
-        ExpenseGroupDonutChart(modifier = itemModifier, expenseViewModel = expenseViewModel)
+        ExpenseGroupDonutChartField(modifier = itemModifier, expenseViewModel = expenseViewModel)
 
         BarChart(
             modifier = itemModifier,
@@ -65,25 +63,40 @@ fun HomeScreen(
 }
 
 @Composable
-fun ExpenseGroupDonutChart(modifier: Modifier, expenseViewModel: ExpenseViewModel) {
+fun ExpenseGroupDonutChartField(modifier: Modifier, expenseViewModel: ExpenseViewModel) {
     val expenseGroupsWithExpenses by expenseViewModel.expenseGroupsWithExpenses.collectAsState()
-    val donutStats = expenseGroupsWithExpenses.map {
-        StatItem(
-            key = Key(
-                title = it.expenseGroup.name,
-                color = MaterialTheme.colorPickerColors.getColor(it.expenseGroup.colorId)
-            ),
-            value = it.expenses.sumOf { expense -> expense.amount }
-        )
-    }.toList()
 
-    if (expenseGroupsWithExpenses.isNotEmpty()){
+    ExpenseGroupDonutChartItem(
+        modifier = modifier,
+        expenseGroupsWithExpenses = expenseGroupsWithExpenses
+    )
+}
+
+@Composable
+private fun ExpenseGroupDonutChartItem(
+    modifier: Modifier,
+    expenseGroupsWithExpenses: List<ExpenseGroupWithExpenses>
+) {
+
+
+    if (expenseGroupsWithExpenses.isNotEmpty()) {
+        val donutStats = expenseGroupsWithExpenses.map {
+            StatItem(
+                key = Key(
+                    title = it.expenseGroup.name,
+                    color = MaterialTheme.colorPickerColors.getColor(it.expenseGroup.colorId)
+                ),
+                value = it.expenses.sumOf { expense -> expense.amount }
+            )
+        }.toList()
+
         DonutChart(
             modifier = modifier,
-            title = stringResource(id = R.string.expense_group_share),
+            title = stringResource(id = R.string.expense_categories_share),
             values = donutStats
         )
     }
+
 }
 
 @Composable
@@ -200,10 +213,15 @@ private fun dummyGroup() = listOf(
     ),
 )
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-fun PreviewHome() {
-    BudgetPlanTheme(dynamicColor = false) {
-        HomeScreen(hiltViewModel(), hiltViewModel(), hiltViewModel())
+fun ExpenseGroupDonutChartField() {
+    BudgetPlanTheme {
+        ExpenseGroupDonutChartItem(modifier = Modifier.fillMaxWidth(), expenseGroupsWithExpenses = listOf(
+            ExpenseGroupWithExpenses(
+                expenseGroup = ExpenseGroup(name = "test", description = "", colorId = "color0"),
+                expenses = emptyList()
+            )
+        ))
     }
 }

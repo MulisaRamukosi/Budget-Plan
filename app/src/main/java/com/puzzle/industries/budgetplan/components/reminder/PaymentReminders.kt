@@ -97,6 +97,9 @@ private fun AlarmItems(currencySymbol: String, reminders: List<ReminderWithExpen
             reminders.take(3).forEach { reminder ->
                 AlarmItem(currencySymbol = currencySymbol, reminder = reminder)
             }
+        }
+
+        if (reminders.size > ViewConfig.maxReminderItemsToDisplayInHome) {
 
             AnimatedVisibility(
                 visible = showAllAlarms,
@@ -109,15 +112,16 @@ private fun AlarmItems(currencySymbol: String, reminders: List<ReminderWithExpen
                         + fadeOut()
                         + scaleOut(targetScale = 1.2f)
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)) {
+                Column(
+                    modifier = Modifier.padding(top = MaterialTheme.spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
+                ) {
                     for (i in ViewConfig.maxReminderItemsToDisplayInHome until reminders.size) {
                         AlarmItem(currencySymbol = currencySymbol, reminder = reminders[i])
                     }
                 }
             }
-        }
 
-        if (reminders.size > ViewConfig.maxReminderItemsToDisplayInHome) {
             ViewMoreReminders(showAllAlarms = showAllAlarms) {
                 showAllAlarms = it
             }
