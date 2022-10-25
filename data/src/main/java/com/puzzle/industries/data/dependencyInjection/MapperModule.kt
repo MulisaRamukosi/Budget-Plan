@@ -6,6 +6,7 @@ import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupHistoryMapper
 import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupMapper
 import com.puzzle.industries.data.mapper.income.IncomeHistoryMapper
 import com.puzzle.industries.data.mapper.income.IncomeMapper
+import com.puzzle.industries.data.mapper.reminder.ReminderMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,7 +19,7 @@ internal class MapperModule {
 
     private val incomeMapper: IncomeMapper = IncomeMapper()
     private val expenseMapper: ExpenseMapper = ExpenseMapper()
-    private val expenseGroupMapper: ExpenseGroupMapper = ExpenseGroupMapper()
+    private val expenseGroupMapper: ExpenseGroupMapper = ExpenseGroupMapper(expenseMapper = expenseMapper)
 
     @Singleton
     @Provides
@@ -47,4 +48,7 @@ internal class MapperModule {
     fun provideExpenseGroupHistoryMapper(): ExpenseGroupHistoryMapper =
         ExpenseGroupHistoryMapper(expenseGroupMapper = expenseGroupMapper)
 
+    @Singleton
+    @Provides
+    fun provideReminderMapper(): ReminderMapper = ReminderMapper(expenseMapper = expenseMapper)
 }

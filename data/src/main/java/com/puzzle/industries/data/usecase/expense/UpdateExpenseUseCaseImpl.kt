@@ -8,11 +8,13 @@ import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expense.ExpenseHistory
 import com.puzzle.industries.domain.repository.expense.ExpenseHistoryRepository
 import com.puzzle.industries.domain.repository.expense.ExpenseRepository
+import com.puzzle.industries.domain.repository.reminder.ReminderRepository
 import com.puzzle.industries.domain.usescases.expense.UpdateExpenseUseCase
 
-internal class UpdateExpenseUseCaseImpl constructor(
+internal class UpdateExpenseUseCaseImpl(
     private val expenseRepository: ExpenseRepository,
-    private val expenseHistoryRepository: ExpenseHistoryRepository
+    private val expenseHistoryRepository: ExpenseHistoryRepository,
+    private val reminderRepository: ReminderRepository
 ) : UpdateExpenseUseCase,
     HistoryGeneratorDelegate<Expense, ExpenseHistory> by ExpenseHistoryGenerator() {
 
@@ -20,6 +22,8 @@ internal class UpdateExpenseUseCaseImpl constructor(
         val result = expenseRepository.update(entity = entity)
 
         if(result.response){
+            reminderRepository.updateReminderForExpenses(expense = entity)
+
             val expenseHistory =
                 generateHistory(reason = reason, action = Action.UPDATE, entity = entity)
             expenseHistoryRepository.insert(entity = expenseHistory)

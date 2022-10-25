@@ -1,23 +1,26 @@
 package com.puzzle.industries.data.dependencyInjection
 
-import com.puzzle.industries.data.database.dao.expense.ExpenseDao
-import com.puzzle.industries.data.database.dao.expense.ExpenseHistoryDao
-import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupDao
-import com.puzzle.industries.data.database.dao.expenseGroup.ExpenseGroupHistoryDao
-import com.puzzle.industries.data.database.dao.income.IncomeDao
-import com.puzzle.industries.data.database.dao.income.IncomeHistoryDao
+import com.puzzle.industries.data.storage.database.dao.expense.ExpenseDao
+import com.puzzle.industries.data.storage.database.dao.expense.ExpenseHistoryDao
+import com.puzzle.industries.data.storage.database.dao.expenseGroup.ExpenseGroupDao
+import com.puzzle.industries.data.storage.database.dao.expenseGroup.ExpenseGroupHistoryDao
+import com.puzzle.industries.data.storage.database.dao.income.IncomeDao
+import com.puzzle.industries.data.storage.database.dao.income.IncomeHistoryDao
+import com.puzzle.industries.data.storage.database.dao.reminder.ReminderDao
 import com.puzzle.industries.data.mapper.expense.ExpenseHistoryMapper
 import com.puzzle.industries.data.mapper.expense.ExpenseMapper
 import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupHistoryMapper
 import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupMapper
 import com.puzzle.industries.data.mapper.income.IncomeHistoryMapper
 import com.puzzle.industries.data.mapper.income.IncomeMapper
+import com.puzzle.industries.data.mapper.reminder.ReminderMapper
 import com.puzzle.industries.data.repository.expense.ExpenseHistoryRepositoryImpl
 import com.puzzle.industries.data.repository.expense.ExpenseRepositoryImpl
 import com.puzzle.industries.data.repository.expenseGroup.ExpenseGroupHistoryRepositoryImpl
 import com.puzzle.industries.data.repository.expenseGroup.ExpenseGroupRepositoryImpl
 import com.puzzle.industries.data.repository.income.IncomeHistoryRepositoryImpl
 import com.puzzle.industries.data.repository.income.IncomeRepositoryImpl
+import com.puzzle.industries.data.repository.reminder.ReminderRepositoryImpl
 import com.puzzle.industries.data.util.ResponseMessageFactory
 import com.puzzle.industries.domain.repository.expense.ExpenseHistoryRepository
 import com.puzzle.industries.domain.repository.expense.ExpenseRepository
@@ -25,6 +28,8 @@ import com.puzzle.industries.domain.repository.expenseGroup.ExpenseGroupHistoryR
 import com.puzzle.industries.domain.repository.expenseGroup.ExpenseGroupRepository
 import com.puzzle.industries.domain.repository.income.IncomeHistoryRepository
 import com.puzzle.industries.domain.repository.income.IncomeRepository
+import com.puzzle.industries.domain.repository.reminder.ReminderRepository
+import com.puzzle.industries.domain.services.ReminderService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -106,5 +111,17 @@ internal class RepoModule {
         expenseHistoryMapper = expenseHistoryMapper,
         expenseHistoryDao = expenseHistoryDao,
         responseMessageFactory = responseMessageFactory
+    )
+
+    @Singleton
+    @Provides
+    fun provideReminderRepo(
+        reminderMapper: ReminderMapper,
+        reminderDao: ReminderDao,
+        reminderService: ReminderService
+    ): ReminderRepository = ReminderRepositoryImpl(
+        reminderMapper = reminderMapper,
+        reminderDao = reminderDao,
+        reminderService = reminderService
     )
 }

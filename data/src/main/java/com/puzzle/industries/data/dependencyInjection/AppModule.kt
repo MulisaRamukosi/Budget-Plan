@@ -19,4 +19,9 @@ internal class AppModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
         AppDatabase.buildDatabase(context = context)
+
+    @Singleton
+    @Provides
+    fun provideNotificationChannelService(@ApplicationContext context: Context): NotificationChannelService =
+        NotificationChannelServiceImpl(context = context)
 }

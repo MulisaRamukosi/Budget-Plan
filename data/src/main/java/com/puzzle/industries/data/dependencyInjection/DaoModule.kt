@@ -44,4 +44,8 @@ internal class DaoModule {
     @Provides
     fun provideExpenseGroupHistoryDao(database: AppDatabase): ExpenseGroupHistoryDao =
         database.expenseGroupHistoryDao()
+
+    @Singleton
+    @Provides
+    fun provideReminderDao(database: AppDatabase): ReminderDao = database.reminderDao()
 }
