@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.composable
@@ -15,12 +16,14 @@ import com.puzzle.industries.budgetplan.navigation.constants.Routes
 import com.puzzle.industries.budgetplan.screens.budget.expense.AddEditExpenseGroupScreen
 import com.puzzle.industries.budgetplan.screens.budget.expense.AddEditExpenseScreen
 import com.puzzle.industries.budgetplan.screens.budget.income.AddEditIncomeScreen
+import com.puzzle.industries.budgetplan.screens.budget.reminder.AddReminderScreen
 import com.puzzle.industries.budgetplan.screens.home.BudgetScreen
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpenseGroupViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.income.Income
 import dagger.hilt.android.EntryPointAccessors
@@ -30,13 +33,15 @@ fun NavGraphBuilder.budgetScreensGraph(
     navController: NavController,
     windowSizeClass: WindowSizeClass,
     incomeViewModel: IncomeViewModel,
-    expenseViewModel: ExpenseViewModel
+    expenseViewModel: ExpenseViewModel,
+    reminderViewModel: ReminderViewModel
 ) {
     navigation(startDestination = Routes.Budget.path, route = Routes.BudgetRoute.path) {
         budgetScreen(
             navController = navController,
             incomeViewModel = incomeViewModel,
-            expenseViewModel = expenseViewModel
+            expenseViewModel = expenseViewModel,
+            reminderViewModel = reminderViewModel
         )
 
         addEditIncomeScreen(
@@ -56,6 +61,12 @@ fun NavGraphBuilder.budgetScreensGraph(
             windowSizeClass = windowSizeClass,
             expenseViewModel = expenseViewModel
         )
+
+        addReminderScreen(
+            navController = navController,
+            windowSizeClass = windowSizeClass,
+            reminderViewModel = reminderViewModel
+        )
     }
 }
 
@@ -63,13 +74,15 @@ fun NavGraphBuilder.budgetScreensGraph(
 private fun NavGraphBuilder.budgetScreen(
     navController: NavController,
     incomeViewModel: IncomeViewModel,
-    expenseViewModel: ExpenseViewModel
+    expenseViewModel: ExpenseViewModel,
+    reminderViewModel: ReminderViewModel
 ) {
     composable(route = Routes.Budget.path) {
         BudgetScreen(
             navController = navController,
             incomeViewModel = incomeViewModel,
-            expenseViewModel = expenseViewModel
+            expenseViewModel = expenseViewModel,
+            reminderViewModel = reminderViewModel
         )
     }
 }
@@ -139,6 +152,23 @@ fun NavGraphBuilder.addEditExpenseScreen(
                 owner = navBackStackEntry,
                 expenseViewModel = expenseViewModel
             ),
+            isInTabletLandscape = windowSizeClass.isInTabletLandscapeView(),
+            onNavigateBackToParent = { navController.popBackStack() }
+        )
+    }
+}
+
+fun NavGraphBuilder.addReminderScreen(
+    navController: NavController,
+    windowSizeClass: WindowSizeClass,
+    reminderViewModel: ReminderViewModel
+) {
+    composable(
+        route = Routes.AddReminder.path
+    ) {
+        AddReminderScreen(
+            reminderViewModel = reminderViewModel,
+            addReminderViewModel = hiltViewModel(),
             isInTabletLandscape = windowSizeClass.isInTabletLandscapeView(),
             onNavigateBackToParent = { navController.popBackStack() }
         )
@@ -216,5 +246,7 @@ private fun buildAddEditExpenseViewModel(
         )
     )
 }
+
+
 
 

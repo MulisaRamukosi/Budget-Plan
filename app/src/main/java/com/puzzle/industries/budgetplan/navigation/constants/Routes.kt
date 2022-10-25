@@ -15,9 +15,9 @@ open class Routes(val path: String) {
     //budget
     object BudgetRoute: Routes(path = "$mainScreenPath/${HomeScreens.BUDGET}")
     object AddEditIncome: Routes(path = "$budgetPath/${BudgetScreens.INCOME}/{${RouteParamKey.ID}}")
-    object AddEditReminder: Routes(path = "$budgetPath/${BudgetScreens.REMINDER}/{${RouteParamKey.ID}}")
     object AddEditExpense: Routes(path = "$budgetPath/${BudgetScreens.EXPENSE}/{${RouteParamKey.EXPENSE_GROUP_ID}}/{${RouteParamKey.ID}}")
     object AddEditExpenseGroup: Routes(path = "$budgetPath/${BudgetScreens.EXPENSE_GROUP}/{${RouteParamKey.ID}}")
+    object AddReminder: Routes(path = "$budgetPath/${BudgetScreens.REMINDER}")
 
     //main nested screens
     object Home: Routes(path = HomeScreens.HOME)

@@ -13,7 +13,7 @@ object RegistrationScreens {
     const val CURRENCY: String = "currency"
     const val INCOME: String = "income"
     const val DEBT: String = "debt"
-    const val BUDGET_PLAN_DAY:String = "budget_plan_generation_day"
+    const val BUDGET_PLAN_DAY: String = "budget_plan_generation_day"
 }
 
 object HomeScreens {
@@ -25,7 +25,7 @@ object HomeScreens {
 
 object BudgetScreens{
     const val INCOME: String = "income"
-    const val REMINDER: String = "reminder"
     const val EXPENSE_GROUP: String = "expense_group"
     const val EXPENSE: String = "expense"
+    const val REMINDER: String = "reminder"
 }

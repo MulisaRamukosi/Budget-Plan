@@ -12,24 +12,31 @@ import com.puzzle.industries.budgetplan.screens.home.SearchScreen
 import com.puzzle.industries.budgetplan.screens.home.SettingsScreen
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
 
 @Composable
 fun homeScreenGraph(
     navController: NavHostController,
     windowSizeClass: WindowSizeClass,
     incomeViewModel: IncomeViewModel,
-    expenseViewModel: ExpenseViewModel
+    expenseViewModel: ExpenseViewModel,
+    reminderViewModel: ReminderViewModel
 ): NavGraph {
     return navController.createGraph(startDestination = Routes.Home.path) {
         composable(route = Routes.Home.path) {
-            HomeScreen(incomeViewModel = incomeViewModel)
+            HomeScreen(
+                incomeViewModel = incomeViewModel,
+                reminderViewModel = reminderViewModel,
+                expenseViewModel = expenseViewModel
+            )
         }
 
         budgetScreensGraph(
             navController = navController,
             windowSizeClass = windowSizeClass,
             incomeViewModel = incomeViewModel,
-            expenseViewModel = expenseViewModel
+            expenseViewModel = expenseViewModel,
+            reminderViewModel = reminderViewModel
         )
 
         composable(route = Routes.Search.path) {

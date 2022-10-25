@@ -11,6 +11,7 @@ import com.puzzle.industries.budgetplan.navigation.graphs.appScreensGraph
 import com.puzzle.industries.budgetplan.navigation.graphs.homeScreenGraph
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
 
 @Composable
 fun AppScreensNavHost(modifier: Modifier = Modifier, windowSizeClass: WindowSizeClass) {
@@ -31,6 +32,7 @@ fun HomeScreenNestedNavHost(
 ){
     val incomeViewModel: IncomeViewModel = hiltViewModel()
     val expenseViewModel: ExpenseViewModel = hiltViewModel()
+    val reminderViewModel: ReminderViewModel = hiltViewModel()
 
     NavHost(
         modifier = modifier,
@@ -39,7 +41,8 @@ fun HomeScreenNestedNavHost(
             navController = navController,
             windowSizeClass = windowSizeClass,
             incomeViewModel = incomeViewModel,
-            expenseViewModel = expenseViewModel
+            expenseViewModel = expenseViewModel,
+            reminderViewModel = reminderViewModel
         )
     )
 }
