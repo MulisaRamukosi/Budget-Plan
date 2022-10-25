@@ -26,13 +26,17 @@ fun ExpenseItem(
     modifier: Modifier,
     currencySymbol: String,
     expense: Expense,
-    onEditClick: (Expense) -> Unit,
-    onDeleteClick: (Expense) -> Unit
+    onEditClick: ((Expense) -> Unit)? = null,
+    onDeleteClick: ((Expense) -> Unit)? = null,
+    isSelected: Boolean = false,
+    onSelect: ((Boolean) -> Unit)? = null
 ) {
     ModifiableItemWrapper(
         modifier = modifier,
-        onEditClick = { onEditClick(expense) },
-        onDeleteClick = { onDeleteClick(expense) }
+        isSelected = isSelected,
+        onSelect = onSelect,
+        onEditClick = { onEditClick?.invoke(expense) },
+        onDeleteClick = { onDeleteClick?.invoke(expense) }
     ) {
         Column(modifier = it) {
 

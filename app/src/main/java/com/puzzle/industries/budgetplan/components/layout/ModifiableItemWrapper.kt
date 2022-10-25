@@ -1,15 +1,16 @@
 package com.puzzle.industries.budgetplan.components.layout
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,11 +30,16 @@ import com.puzzle.industries.budgetplan.theme.spacing
 @Composable
 fun ModifiableItemWrapper(
     modifier: Modifier,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    onEditClick: (() -> Unit)? = null,
+    onDeleteClick: (() -> Unit)? = null,
+    onSelect: ((Boolean) -> Unit)? = null,
+    isSelected: Boolean = false,
     content: @Composable (modifier: Modifier) -> Unit
 ) {
     val defaultMargin = MaterialTheme.spacing.medium
+    val selected = remember {
+        mutableStateOf(isSelected)
+    }
 
     ConstraintLayout(modifier = modifier) {
         val (cardConstraints, optionsConstraints) = createRefs()
@@ -41,27 +47,56 @@ fun ModifiableItemWrapper(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onEditClick() }
+                .clickable {
+                    if (onSelect != null){
+                        selected.value = !selected.value
+                        onSelect(selected.value)
+                    }
+                    else{
+                        onEditClick?.invoke()
+                    }
+
+                }
                 .constrainAs(ref = cardConstraints) {
                     linkTo(start = parent.start, end = parent.end)
-                },
-            content = {
+                }
+        ){
+            Column {
                 content(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(all = defaultMargin)
                 )
-            }
-        )
 
-        ModifyOptionsHolder(
-            modifier = Modifier.constrainAs(optionsConstraints) {
-                linkTo(top = cardConstraints.bottom, bottom = cardConstraints.bottom)
-                end.linkTo(anchor = cardConstraints.end, margin = defaultMargin)
-            },
-            onEditClick = onEditClick,
-            onDeleteClick = onDeleteClick
-        )
+                AnimatedVisibility(visible = selected.value) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(35.dp)
+                            .background(color = MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.item_selected),
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                }
+            }
+        }
+
+        if(onSelect == null) {
+            ModifyOptionsHolder(
+                modifier = Modifier.constrainAs(optionsConstraints) {
+                    linkTo(top = cardConstraints.bottom, bottom = cardConstraints.bottom)
+                    end.linkTo(anchor = cardConstraints.end, margin = defaultMargin)
+                },
+                onEditClick = onEditClick,
+                onDeleteClick = onDeleteClick
+            )
+        }
+
     }
 }
 
@@ -109,8 +144,8 @@ fun MiniCaption(modifier: Modifier = Modifier, imageVector: ImageVector, message
 @Composable
 private fun ModifyOptionsHolder(
     modifier: Modifier,
-    onEditClick: () -> Unit,
-    onDeleteClick: () -> Unit
+    onEditClick: (() -> Unit)?,
+    onDeleteClick: (() -> Unit)?
 ) {
     Card(
         modifier = modifier,
@@ -122,21 +157,29 @@ private fun ModifyOptionsHolder(
         ) {
             H_S_Space()
 
-            Icon(
-                modifier = Modifier.clickable { onDeleteClick() },
-                imageVector = Icons.Rounded.Delete,
-                contentDescription = stringResource(id = R.string.desc_delete_icon),
-                tint = Color.White
-            )
+            if (onDeleteClick != null) {
+                Icon(
+                    modifier = Modifier.clickable { onDeleteClick() },
+                    imageVector = Icons.Rounded.Delete,
+                    contentDescription = stringResource(id = R.string.desc_delete_icon),
+                    tint = Color.White
+                )
+            }
 
-            H_M_Space()
 
-            Icon(
-                modifier = Modifier.clickable { onEditClick() },
-                imageVector = Icons.Rounded.Edit,
-                contentDescription = stringResource(id = R.string.desc_edit_icon),
-                tint = Color.White
-            )
+            if (onDeleteClick != null && onEditClick != null) {
+                H_M_Space()
+            }
+
+            if (onEditClick != null) {
+                Icon(
+                    modifier = Modifier.clickable { onEditClick() },
+                    imageVector = Icons.Rounded.Edit,
+                    contentDescription = stringResource(id = R.string.desc_edit_icon),
+                    tint = Color.White
+                )
+            }
+
 
             H_S_Space()
         }
@@ -152,6 +195,33 @@ private fun PreviewModifiableItemWrapper() {
             modifier = Modifier.fillMaxWidth(),
             onEditClick = {},
             onDeleteClick = {}
+        ) {
+            Text(modifier = it, text = "Hello")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewModifiableItemWrapperWithDeleteOnly() {
+    BudgetPlanTheme(dynamicColor = false) {
+        ModifiableItemWrapper(
+            modifier = Modifier.fillMaxWidth(),
+            onDeleteClick = {}
+        ) {
+            Text(modifier = it, text = "Hello")
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewModifiableItemWrapperWithSelect() {
+    BudgetPlanTheme(dynamicColor = false) {
+        ModifiableItemWrapper(
+            modifier = Modifier.fillMaxWidth(),
+            onSelect = {},
+            isSelected = true
         ) {
             Text(modifier = it, text = "Hello")
         }
