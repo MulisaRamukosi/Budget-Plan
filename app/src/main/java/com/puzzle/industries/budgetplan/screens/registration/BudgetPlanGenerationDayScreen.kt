@@ -7,6 +7,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.picker.DayOfMonthPicker
@@ -16,7 +17,7 @@ import com.puzzle.industries.budgetplan.viewModels.registrationFlow.BudgetPlanDa
 
 @Composable
 fun BudgetPlanGenerationDayScreen(
-    viewModel: BudgetPlanDayViewModel = viewModel(),
+    viewModel: BudgetPlanDayViewModel = hiltViewModel(),
     onContinueClick: (Int) -> Unit = {}
 ) {
     val selectedDay by viewModel.sub.collectAsState()

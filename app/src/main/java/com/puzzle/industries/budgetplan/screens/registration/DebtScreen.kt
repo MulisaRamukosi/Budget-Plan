@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.CheckboxButton
@@ -21,7 +22,7 @@ import com.puzzle.industries.budgetplan.viewModels.registrationFlow.DebtViewMode
 @Composable
 fun DebtScreen(
     modifier: Modifier = Modifier,
-    viewModel: DebtViewModel = viewModel(),
+    viewModel: DebtViewModel = hiltViewModel(),
     onContinueClick: (Boolean) -> Unit
 ) {
     val debtEnabled by viewModel.sub.collectAsState()

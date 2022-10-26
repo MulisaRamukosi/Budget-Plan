@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "647592866512",
+    "project_id": "budgetplan-5c2b8",
+    "storage_bucket": "budgetplan-5c2b8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:647592866512:android:70f63a5597d12d16f0a4d5",
+        "android_client_info": {
+          "package_name": "com.puzzle.industries.budgetplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "647592866512-59h7fvuo9depi0qorqj8kttt7pclsjfm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.puzzle.industries.budgetplan",
+            "certificate_hash": "85cf5354425fa6911832db5bd42a16e3ee43a4a2"
+          }
+        },
+        {
+          "client_id": "647592866512-qk27opg187s1j3tvrae1343cv29pba2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz2SxepMZ73ACM50iD4fPk-4BXmPH5mPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "647592866512-qk27opg187s1j3tvrae1343cv29pba2v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

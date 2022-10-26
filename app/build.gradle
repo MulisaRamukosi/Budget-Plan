@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -89,6 +91,8 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':data')
 
+    implementation platform('com.google.firebase:firebase-bom:31.0.1')
+
     implementation "androidx.core:core-ktx:$core_ktx_version"
 
     //constraint layout
@@ -129,6 +133,10 @@ dependencies {
 
     //reflection
     implementation "org.jetbrains.kotlin:kotlin-reflect:$reflection_version"
+
+    //firebase
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     testImplementation 'junit:junit:4.13.2'
 
