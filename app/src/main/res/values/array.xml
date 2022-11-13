@@ -8,6 +8,12 @@
         <item>Yearly</item>
     </string-array>
 
+    <string-array name="themes">
+        <item>System Dependent</item>
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
     <string-array name="months">
         <item>January</item>
         <item>February</item>
