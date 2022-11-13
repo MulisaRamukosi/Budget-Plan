@@ -45,8 +45,6 @@ fun SettingsScreen(
     settingsViewModel: SettingsViewModel = hiltViewModel(),
     mainNavController: NavController
 ) {
-    //bPlan gen
-
     LazyVerticalStaggeredGrid(
         modifier = Modifier
             .fillMaxSize()
@@ -65,9 +63,6 @@ fun SettingsScreen(
             HowItWorks(navController = mainNavController)
         }
 
-
-
-        //TODO: add divider
         item {
             DebtPreference(settingsViewModel = settingsViewModel)
         }
@@ -91,24 +86,16 @@ fun SettingsScreen(
 
 @Composable
 private fun ThemePreference(settingsViewModel: SettingsViewModel) {
-    val selectedTheme by settingsViewModel.selectedTheme.collectAsState(initial = ThemeType.SYSTEM_DEPENDENT)
     val themeNames = stringArrayResource(id = R.array.themes).toList()
-    val availableThemes: List<String> = settingsViewModel.availableThemes.map {
-        themeNames[it.ordinal]
-    }
-
-    val selectedThemeName by remember {
-        mutableStateOf(availableThemes[selectedTheme.ordinal])
-    }
-
+    val selectedTheme by settingsViewModel.selectedThemeOrdinal.collectAsState(initial = 0)
 
     PreferenceSelectItem(
         title = stringResource(id = R.string.theme),
         description = stringResource(id = R.string.desc_theme),
-        selectedItem = selectedThemeName,
+        selectedItem = themeNames[selectedTheme],
         values = themeNames,
         onOptionSelected = {
-            val themeTypeOrdinal = availableThemes.indexOf(it)
+            val themeTypeOrdinal = themeNames.indexOf(it)
             val themeType = ThemeType.values()[themeTypeOrdinal]
             settingsViewModel.onThemeSelected(type = themeType)
         }
