@@ -20,10 +20,7 @@ class SettingsViewModel @Inject constructor(
     ViewModel(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
-    val selectedTheme: Flow<ThemeType> = settingsPreferences.themePref.getSelectedTheme()
-    val availableThemes
-        get() = settingsPreferences.themePref.getAllThemes()
-
+    val selectedThemeOrdinal: Flow<Int> = settingsPreferences.themePref.getSelectedTheme().map { it.ordinal }
     fun onThemeSelected(type: ThemeType) = runCoroutine {
         settingsPreferences.themePref.saveTheme(themeType = type)
     }
