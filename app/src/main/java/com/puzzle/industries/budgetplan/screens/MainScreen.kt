@@ -31,18 +31,20 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 
 @Composable
 fun MainScreen(
-    navController: NavHostController = rememberNavController(),
+    homeScreenNavController: NavHostController = rememberNavController(),
+    mainNavController: NavHostController,
     windowSizeClass: WindowSizeClass
 ) {
     ScreenSizeAwareScaffold(
         windowSizeClass = windowSizeClass,
-        actions = actions(navController = navController),
-        navController = navController
+        actions = actions(navController = homeScreenNavController),
+        navController = homeScreenNavController
     ) { paddingValues ->
 
         HomeScreenNestedNavHost(
             modifier = Modifier.padding(paddingValues = paddingValues).fillMaxSize(),
-            navController = navController,
+            mainNavController = mainNavController,
+            homeScreenNavController = homeScreenNavController,
             windowSizeClass = windowSizeClass
         )
 
@@ -120,6 +122,7 @@ private fun bottomAppBarOnClick(navController: NavHostController, destinationRou
 private fun MainScreenPreview() {
     BudgetPlanTheme(dynamicColor = false) {
         MainScreen(
+            mainNavController = rememberNavController(),
             windowSizeClass = WindowSizeClass.calculateFromSize(
                 DpSize(
                     width = 500.dp,
