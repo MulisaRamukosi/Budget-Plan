@@ -1,7 +1,7 @@
 package com.puzzle.industries.budgetplan.delegates
 
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 interface CurrencySymbolObserverDelegate {
-    val currencySymbolFlow: MutableStateFlow<String>
+    val currencySymbolFlow: StateFlow<String>
 }
