@@ -4,6 +4,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -28,7 +29,8 @@ fun AppScreensNavHost(modifier: Modifier = Modifier, windowSizeClass: WindowSize
 fun HomeScreenNestedNavHost(
     modifier: Modifier = Modifier,
     windowSizeClass: WindowSizeClass,
-    navController: NavHostController
+    mainNavController: NavHostController,
+    homeScreenNavController: NavHostController
 ){
     val incomeViewModel: IncomeViewModel = hiltViewModel()
     val expenseViewModel: ExpenseViewModel = hiltViewModel()
@@ -36,9 +38,10 @@ fun HomeScreenNestedNavHost(
 
     NavHost(
         modifier = modifier,
-        navController = navController,
+        navController = homeScreenNavController,
         graph = homeScreenGraph(
-            navController = navController,
+            mainNavController = mainNavController,
+            homeScreenNavController = homeScreenNavController,
             windowSizeClass = windowSizeClass,
             incomeViewModel = incomeViewModel,
             expenseViewModel = expenseViewModel,

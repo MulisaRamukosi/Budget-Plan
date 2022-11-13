@@ -4,8 +4,6 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.composable
@@ -21,6 +19,7 @@ import com.puzzle.industries.budgetplan.screens.WelcomeScreen
 import com.puzzle.industries.budgetplan.viewModels.intro.SplashScreenViewModel
 import com.puzzle.industries.budgetplan.viewModels.intro.WelcomeMessagesViewModel
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
+import com.puzzle.industries.domain.constants.CountryCurrencyConfig
 
 
 @Composable
@@ -42,7 +41,10 @@ fun appScreensGraph(
         RegistrationGuideFlowGraph(navController = navController)
 
         composable(route = Routes.Main.path) {
-            MainScreen(windowSizeClass = windowSizeClass)
+            MainScreen(
+                mainNavController = navController,
+                windowSizeClass = windowSizeClass
+            )
         }
 
     }
