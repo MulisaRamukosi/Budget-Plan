@@ -29,6 +29,7 @@ import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.income.IncomeItem
 import com.puzzle.industries.budgetplan.components.income.TotalIncome
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
+import com.puzzle.industries.budgetplan.components.uiState.EmptyView
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.util.configs.ViewConfig
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
@@ -78,23 +79,29 @@ private fun IncomeItems(
     onEditItemClick: (Income) -> Unit
 ) {
     val incomes by incomeViewModel.incomes.collectAsState()
-    val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
 
-    LazyVerticalStaggeredGrid(
-        modifier = modifier,
-        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
-        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
-        columns = StaggeredGridCells.Adaptive(minSize = ViewConfig.staggeredGridItemMinWidth),
-    ){
-        items(items = incomes) { income ->
-            IncomeItem(
-                modifier = Modifier.fillMaxWidth(),
-                currencySymbol = currencySymbol,
-                income = income,
-                onEditClick = onEditItemClick,
-                onDeleteClick = incomeViewModel.onDeleteIncome
-            )
+    if(incomes.isEmpty()){
+        EmptyView(modifier = Modifier.fillMaxSize(), message = stringResource(id = R.string.empty_incomes))
+    }
+    else{
+        val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
+
+        LazyVerticalStaggeredGrid(
+            modifier = modifier,
+            contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
+            verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+            columns = StaggeredGridCells.Adaptive(minSize = ViewConfig.staggeredGridItemMinWidth),
+        ){
+            items(items = incomes) { income ->
+                IncomeItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    currencySymbol = currencySymbol,
+                    income = income,
+                    onEditClick = onEditItemClick,
+                    onDeleteClick = incomeViewModel.onDeleteIncome
+                )
+            }
         }
     }
 }

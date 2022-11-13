@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.reminder.PaymentReminderItem
+import com.puzzle.industries.budgetplan.components.uiState.EmptyView
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.util.configs.ViewConfig
 import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
@@ -42,31 +43,37 @@ fun ReminderScreens(reminderViewModel: ReminderViewModel, onAddReminder: () -> U
 @Composable
 private fun ReminderItems(reminderViewModel: ReminderViewModel) {
     val reminderWithExpenses by reminderViewModel.reminders.collectAsState()
-    val currencySymbol by reminderViewModel.currencySymbol.collectAsState()
 
-    LazyVerticalStaggeredGrid(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = MaterialTheme.spacing.medium)
-            .padding(top = MaterialTheme.spacing.medium),
-        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
-        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
-        columns = StaggeredGridCells.Adaptive(minSize = ViewConfig.staggeredGridItemMinWidth)
-    ) {
-        items(items = reminderWithExpenses) { reminderWithExpense: ReminderWithExpense ->
-            PaymentReminderItem(
-                modifier = Modifier.fillMaxWidth(),
-                reminderWithExpense = reminderWithExpense,
-                currencySymbol = currencySymbol,
-                onDelete = {
-                    reminderViewModel.deleteReminders(it)
-                },
-                onRemindChange = {
-                    reminderWithExpense.reminder.remind = it
-                    reminderViewModel.updateReminders(reminderWithExpense)
-                }
-            )
+
+    if (reminderWithExpenses.isEmpty()){
+        EmptyView(modifier = Modifier.fillMaxSize(), message = stringResource(id = R.string.empty_reminders))
+    }
+    else{
+        val currencySymbol by reminderViewModel.currencySymbol.collectAsState()
+        LazyVerticalStaggeredGrid(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = MaterialTheme.spacing.medium)
+                .padding(top = MaterialTheme.spacing.medium),
+            contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
+            verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+            columns = StaggeredGridCells.Adaptive(minSize = ViewConfig.staggeredGridItemMinWidth)
+        ) {
+            items(items = reminderWithExpenses) { reminderWithExpense: ReminderWithExpense ->
+                PaymentReminderItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    reminderWithExpense = reminderWithExpense,
+                    currencySymbol = currencySymbol,
+                    onDelete = {
+                        reminderViewModel.deleteReminders(it)
+                    },
+                    onRemindChange = {
+                        reminderWithExpense.reminder.remind = it
+                        reminderViewModel.updateReminders(reminderWithExpense)
+                    }
+                )
+            }
         }
     }
 

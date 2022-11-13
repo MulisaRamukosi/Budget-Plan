@@ -21,6 +21,7 @@ import com.puzzle.industries.budgetplan.components.dialog.ReasonPickerDialog
 import com.puzzle.industries.budgetplan.components.expenses.ExpenseGroupItem
 import com.puzzle.industries.budgetplan.components.income.TotalIncome
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
+import com.puzzle.industries.budgetplan.components.uiState.EmptyView
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.util.configs.ViewConfig
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
@@ -40,7 +41,7 @@ fun ExpenseScreen(
 
     SetupDeleteHandler(expenseViewModel = expenseViewModel)
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
             V_M_Space()
 
@@ -213,25 +214,31 @@ private fun ExpenseGroupWithExpensesItems(
     onAddExpense: (ExpenseGroup) -> Unit
 ) {
     val expenseGroupsWithExpenses by expenseViewModel.expenseGroupsWithExpenses.collectAsState()
-    val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
 
-    LazyVerticalStaggeredGrid(
-        modifier = modifier,
-        contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
-        verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
-        columns = StaggeredGridCells.Adaptive(minSize = ViewConfig.staggeredGridItemMinWidth)
-    ){
-        items(items = expenseGroupsWithExpenses) { expenseGroupWithExpenses ->
-            ExpenseGroupItem(
-                currencySymbol = currencySymbol,
-                expenseGroupWithExpenses = expenseGroupWithExpenses,
-                onAddExpenseClick = { onAddExpense(expenseGroupWithExpenses.expenseGroup) },
-                onEditExpenseGroupClick = onEditExpenseGroup,
-                onDeleteExpenseGroupClick = onDeleteExpenseGroupWithExpenses,
-                onEditExpenseClick = onEditExpense,
-                onDeleteExpenseClick = onDeleteExpense
-            )
+
+    if (expenseGroupsWithExpenses.isEmpty()){
+        EmptyView(modifier = Modifier.fillMaxSize(), message = stringResource(id = R.string.empty_expenses))
+    }
+    else{
+        val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
+        LazyVerticalStaggeredGrid(
+            modifier = modifier,
+            contentPadding = PaddingValues(bottom = MaterialTheme.spacing.large * 2),
+            verticalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium),
+            columns = StaggeredGridCells.Adaptive(minSize = ViewConfig.staggeredGridItemMinWidth)
+        ){
+            items(items = expenseGroupsWithExpenses) { expenseGroupWithExpenses ->
+                ExpenseGroupItem(
+                    currencySymbol = currencySymbol,
+                    expenseGroupWithExpenses = expenseGroupWithExpenses,
+                    onAddExpenseClick = { onAddExpense(expenseGroupWithExpenses.expenseGroup) },
+                    onEditExpenseGroupClick = onEditExpenseGroup,
+                    onDeleteExpenseGroupClick = onDeleteExpenseGroupWithExpenses,
+                    onEditExpenseClick = onEditExpense,
+                    onDeleteExpenseClick = onDeleteExpense
+                )
+            }
         }
     }
 }
