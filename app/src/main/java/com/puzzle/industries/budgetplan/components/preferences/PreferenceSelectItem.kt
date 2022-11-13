@@ -55,30 +55,26 @@ private fun <T> Options(
     onOptionSelected: (selection: T) -> Unit
 ) {
     val chipRowScrollState = rememberScrollState()
-    var selectedValue by remember {
-        mutableStateOf(selectedItem)
-    }
 
     Row(
         modifier = Modifier
             .horizontalScroll(chipRowScrollState)
-            .padding(start = MaterialTheme.spacing.medium),
+            .padding(horizontal = MaterialTheme.spacing.medium),
         horizontalArrangement = Arrangement.spacedBy(space = MaterialTheme.spacing.medium)
     ) {
         values.forEach {
             FilterChip(
                 label = { Text(text = it.toString()) },
-                selected = selectedValue == it,
+                selected = selectedItem == it,
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = MaterialTheme.colorScheme.primary,
                     selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
                     selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 onClick = {
-                    selectedValue = it
                     onOptionSelected(it)
                 },
-                leadingIcon = if (selectedValue == it) {
+                leadingIcon = if (selectedItem == it) {
                     {
                         Icon(
                             imageVector = Icons.Filled.Done,
