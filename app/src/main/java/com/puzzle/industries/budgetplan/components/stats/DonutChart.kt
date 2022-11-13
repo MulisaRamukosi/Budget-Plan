@@ -83,23 +83,25 @@ private fun DrawDonutChart(
     Canvas(modifier = modifier) {
         val canvasSize = size.width
         val donutRadius = size.width / 1.25f
-        val gap = if(colors.size == 1) 0 else (8 * 2)/colors.size
+        val gap = if(colors.size == 1 || angles.contains(360f)) 0 else (8 * 2)/colors.size
 
         angles.forEachIndexed { index, angle ->
             val sweepAngle = if (angle == 0f) 0f else angle - gap
 
-            drawArc(
-                color = colors[index],
-                startAngle = startAngle,
-                sweepAngle = sweepAngle,
-                useCenter = false,
-                size = Size(width = donutRadius, height = donutRadius),
-                topLeft = Offset(
-                    x = (canvasSize / 2) - (donutRadius / 2),
-                    y = canvasSize / 2 - (donutRadius / 2)
-                ),
-                style = Stroke(width = donutRadius / 5)
-            )
+            if(sweepAngle > 0){
+                drawArc(
+                    color = colors[index],
+                    startAngle = startAngle,
+                    sweepAngle = sweepAngle,
+                    useCenter = false,
+                    size = Size(width = donutRadius, height = donutRadius),
+                    topLeft = Offset(
+                        x = (canvasSize / 2) - (donutRadius / 2),
+                        y = canvasSize / 2 - (donutRadius / 2)
+                    ),
+                    style = Stroke(width = donutRadius / 5)
+                )
+            }
 
             startAngle += angle
         }
@@ -109,7 +111,8 @@ private fun DrawDonutChart(
 
 private fun convertValuesToPercentage(values: List<Double>): List<Float> {
     val sum = values.sum().toFloat()
-    return values.map { it.toFloat() * 100 / sum }
+    val total = if(sum == 0f) 1f else sum
+    return values.map { it.toFloat() * 100 / total }
 }
 
 private fun convertPercentagesToAngles(percentages: List<Float>): List<Float> {
