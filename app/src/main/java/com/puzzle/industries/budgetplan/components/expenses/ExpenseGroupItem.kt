@@ -23,13 +23,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.layout.MiniCaption
 import com.puzzle.industries.budgetplan.components.layout.ModifiableItemWrapper
-import com.puzzle.industries.budgetplan.components.layout.TitleAndDescription
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.components.symbols.BulletPoint
+import com.puzzle.industries.budgetplan.components.text.MiniCaption
+import com.puzzle.industries.budgetplan.components.text.TitleAndDescription
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.colorPickerColors
 import com.puzzle.industries.budgetplan.theme.spacing

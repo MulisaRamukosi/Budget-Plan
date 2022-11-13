@@ -9,13 +9,12 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.puzzle.industries.budgetplan.components.layout.MiniCaption
 import com.puzzle.industries.budgetplan.components.layout.ModifiableItemWrapper
-import com.puzzle.industries.budgetplan.components.layout.TitleAndDescription
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
+import com.puzzle.industries.budgetplan.components.text.MiniCaption
+import com.puzzle.industries.budgetplan.components.text.TitleAndDescription
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
-import com.puzzle.industries.budgetplan.theme.colorPickerColors
 import com.puzzle.industries.budgetplan.util.buildFrequencyMessage
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.expense.Expense

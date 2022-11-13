@@ -17,11 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.layout.MiniCaption
 import com.puzzle.industries.budgetplan.components.layout.ModifiableItemWrapper
-import com.puzzle.industries.budgetplan.components.layout.TitleAndDescription
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
+import com.puzzle.industries.budgetplan.components.text.MiniCaption
+import com.puzzle.industries.budgetplan.components.text.TitleAndDescription
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.util.buildFrequencyMessage
 import com.puzzle.industries.domain.constants.FrequencyType

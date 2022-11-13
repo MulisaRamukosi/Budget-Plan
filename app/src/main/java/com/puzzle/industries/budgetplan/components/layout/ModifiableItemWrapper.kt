@@ -101,47 +101,6 @@ fun ModifiableItemWrapper(
 }
 
 @Composable
-fun TitleAndDescription(title: String, description: String = "") {
-    Text(
-        text = title,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        style = MaterialTheme.typography.titleMedium
-    )
-
-    if (description.isNotBlank()) {
-        V_XS_Space()
-
-        Text(
-            text = description,
-            style = MaterialTheme.typography.labelSmall,
-            maxLines = 4,
-            overflow = TextOverflow.Ellipsis
-        )
-    }
-}
-
-@Composable
-fun MiniCaption(modifier: Modifier = Modifier, imageVector: ImageVector, message: String) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            modifier = Modifier.size(size = 12.dp),
-            imageVector = imageVector,
-            contentDescription = stringResource(id = R.string.desc_income_frequency),
-            tint = MaterialTheme.colorScheme.secondary
-        )
-
-        H_S_Space()
-
-        Text(
-            text = message,
-            color = MaterialTheme.colorScheme.secondary,
-            style = MaterialTheme.typography.bodySmall
-        )
-    }
-}
-
-@Composable
 private fun ModifyOptionsHolder(
     modifier: Modifier,
     onEditClick: (() -> Unit)?,
