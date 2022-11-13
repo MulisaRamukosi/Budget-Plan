@@ -25,7 +25,6 @@ fun <T> ValueDropDownPicker(
     onValueChange: (T) -> Unit
 ) {
     val expanded = rememberSaveable { mutableStateOf(value = false) }
-    val selectedValue = rememberSaveable { mutableStateOf(value = currentValue) }
     val source = remember { MutableInteractionSource() }
     val pressedState = source.interactions.collectAsState(
         initial = PressInteraction.Cancel(PressInteraction.Press(Offset.Zero))
@@ -40,7 +39,7 @@ fun <T> ValueDropDownPicker(
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
-            value = selectedValue.value.toString(),
+            value = currentValue.toString(),
             onValueChange = {},
             label = { Text(text = label, maxLines = 1, overflow = TextOverflow.Ellipsis) },
             leadingIcon = {
@@ -62,8 +61,7 @@ fun <T> ValueDropDownPicker(
                 DropdownMenuItem(
                     text = { Text(text = value.toString()) },
                     onClick = {
-                        selectedValue.value = value
-                        onValueChange(selectedValue.value)
+                        onValueChange(value)
                         expanded.value = false
                     }
                 )
