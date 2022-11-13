@@ -25,7 +25,7 @@ internal class PaymentReminderNotificationHandler(private val context: Context) 
 
     fun notify(id: Int, title: String, amount: Double) = runBlocking {
         val notificationTitle  = context.getString(R.string.format_payment_reminder, title)
-        val currencySymbol = getCurrencySymbol().first()
+        val currencySymbol = getSelectedCurrencySymbol().first()
         val notificationContent = context.getString(R.string.format_payment_reminder_desc,
         currencySymbol, amount, title)
 
