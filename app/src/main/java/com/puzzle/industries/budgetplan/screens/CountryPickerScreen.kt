@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -25,9 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
-import com.puzzle.industries.budgetplan.data.CountryCurrency
+import com.puzzle.industries.domain.models.CountryCurrency
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.util.configs.CurrencyConfig
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
 
 @Composable
@@ -35,7 +37,7 @@ fun CountryPickerScreen(
     viewModel: CurrencyViewModel,
     onDoneClick: () -> Unit
 ) {
-    val selectedIndex by viewModel.sub.collectAsState()
+    val selectedCountryCurrency by viewModel.sub.collectAsState()
 
     Column {
         Text(
@@ -46,12 +48,12 @@ fun CountryPickerScreen(
 
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
 
-            itemsIndexed(items = viewModel.countries) { index, item ->
+            items(items = viewModel.allCountries) {item: CountryCurrency ->
                 CountryCurrencyItem(
                     modifier = Modifier.fillMaxWidth(),
                     countryCurrency = item,
-                    isSelected = index == selectedIndex,
-                    onClick = { viewModel.publishValue(value = index) }
+                    isSelected = item == selectedCountryCurrency,
+                    onClick = { viewModel.publishValue(value = item) }
                 )
             }
         }
