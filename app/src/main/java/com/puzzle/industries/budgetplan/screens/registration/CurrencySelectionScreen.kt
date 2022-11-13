@@ -18,7 +18,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,10 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
-import com.puzzle.industries.budgetplan.data.CountryCurrency
+import com.puzzle.industries.domain.models.CountryCurrency
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
@@ -44,8 +42,7 @@ fun CurrencySelectionScreen(
     onCurrencySelectionClick: () -> Unit = {},
     onContinueClick: (CountryCurrency) -> Unit = {}
 ) {
-    val selectedIndex by viewModel.sub.collectAsState()
-    val selectedCountry = viewModel.countries[selectedIndex]
+    val selectedCountry by viewModel.sub.collectAsState()
 
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
