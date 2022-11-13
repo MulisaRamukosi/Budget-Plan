@@ -19,13 +19,20 @@ import com.puzzle.industries.budgetplan.theme.factory.TypographyFactory
 import com.puzzle.industries.budgetplan.theme.util.ColorPaletteType
 import com.puzzle.industries.budgetplan.theme.util.ColorPickerColorsType
 import com.puzzle.industries.budgetplan.theme.util.FontType
+import com.puzzle.industries.domain.constants.ThemeType
 
 @Composable
 fun BudgetPlanTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeType: ThemeType = ThemeType.SYSTEM_DEPENDENT,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
+
+    val darkTheme = when(themeType){
+        ThemeType.DARK -> true
+        ThemeType.SYSTEM_DEPENDENT -> isSystemInDarkTheme()
+        ThemeType.LIGHT -> false
+    }
 
     lateinit var colorPaletteType: ColorPaletteType
     lateinit var colorPickerColorsType: ColorPickerColorsType
