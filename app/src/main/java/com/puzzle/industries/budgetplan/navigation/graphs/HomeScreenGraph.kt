@@ -16,13 +16,14 @@ import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewM
 
 @Composable
 fun homeScreenGraph(
-    navController: NavHostController,
+    mainNavController: NavHostController,
+    homeScreenNavController: NavHostController,
     windowSizeClass: WindowSizeClass,
     incomeViewModel: IncomeViewModel,
     expenseViewModel: ExpenseViewModel,
     reminderViewModel: ReminderViewModel
 ): NavGraph {
-    return navController.createGraph(startDestination = Routes.Home.path) {
+    return homeScreenNavController.createGraph(startDestination = Routes.Home.path) {
         composable(route = Routes.Home.path) {
             HomeScreen(
                 incomeViewModel = incomeViewModel,
@@ -32,7 +33,7 @@ fun homeScreenGraph(
         }
 
         budgetScreensGraph(
-            navController = navController,
+            navController = homeScreenNavController,
             windowSizeClass = windowSizeClass,
             incomeViewModel = incomeViewModel,
             expenseViewModel = expenseViewModel,
@@ -44,7 +45,7 @@ fun homeScreenGraph(
         }
 
         composable(route = Routes.Settings.path) {
-            SettingsScreen()
+            SettingsScreen(mainNavController = mainNavController)
         }
     }
 }
