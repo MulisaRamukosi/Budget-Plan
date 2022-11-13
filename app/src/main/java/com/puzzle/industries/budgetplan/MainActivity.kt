@@ -11,20 +11,27 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.puzzle.industries.budgetplan.factory.viewModel.AddEditExpenseGroupViewModelAssistedFactory
 import com.puzzle.industries.budgetplan.factory.viewModel.AddEditExpenseViewModelAssistedFactory
 import com.puzzle.industries.budgetplan.factory.viewModel.AddEditIncomeViewModelAssistedFactory
 import com.puzzle.industries.budgetplan.navigation.AppScreensNavHost
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
+import com.puzzle.industries.domain.constants.ThemeType
+import com.puzzle.industries.domain.datastores.ThemeDataStore
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.components.ActivityComponent
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var themePreferences: ThemeDataStore
 
     @EntryPoint
     @InstallIn(ActivityComponent::class)
@@ -38,7 +45,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(activity = this)
-            BudgetPlanTheme {
+            val themeType by themePreferences.getSelectedTheme().collectAsState(initial = ThemeType.SYSTEM_DEPENDENT)
+
+            BudgetPlanTheme(themeType = themeType) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
