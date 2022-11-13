@@ -1,13 +1,13 @@
 buildscript {
     ext {
-        compose_version = '1.2.1'
-        nav_version = '2.5.2'
+        compose_version = '1.4.0-alpha02'
+        nav_version = '2.5.3'
         hilt_version = '2.42'
         hilt_compose_version = '1.0.0'
         room_version = '2.4.3'
         system_ui_version = '0.17.0'
         pager_version = '0.25.1'
-        material3_version = '1.0.0-rc01'
+        material3_version = '1.1.0-alpha02'
         coroutines_version = '1.6.4'
         core_ktx_version = '1.9.0'
         pref_data_store_version = '1.0.0'
