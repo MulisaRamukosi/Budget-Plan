@@ -42,6 +42,8 @@ fun AmountInput(
                 if (it.toDoubleOrNull() != null && it.length < 15 && hasAMaxOfTwoDecimals(it)) {
                     amount = it
                     onValueChange(it.toDouble())
+                } else if (it.isBlank()) {
+                    amount = ""
                 }
             },
             singleLine = true,
