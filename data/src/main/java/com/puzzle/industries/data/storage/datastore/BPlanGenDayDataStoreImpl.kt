@@ -6,15 +6,16 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.puzzle.industries.data.util.config.DataStoreNameConfig
 import com.puzzle.industries.domain.datastores.BPlanGenDayDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val Context.bPlanGenDayStore: DataStore<Preferences> by preferencesDataStore(name = "BPlanGenDay")
+private val Context.bPlanGenDayStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameConfig.B_PLAN_GEN_DAY)
 
 internal class BPlanGenDayDataStoreImpl(private val context: Context) : BPlanGenDayDataStore {
 
-    private val dayKey = intPreferencesKey(name = "dk")
+    private val dayKey = intPreferencesKey(name = "dayKey")
 
     override suspend fun saveDay(day: Int) {
         context.bPlanGenDayStore.edit { settings ->
