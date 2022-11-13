@@ -1,7 +1,7 @@
 package com.puzzle.industries.budgetplan.viewModels.registrationFlow
 
 import androidx.lifecycle.ViewModel
-import com.puzzle.industries.budgetplan.data.CountryCurrency
+import com.puzzle.industries.domain.models.CountryCurrency
 import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandlerDelegateImpl
 
@@ -32,7 +32,7 @@ class RegistrationFlowViewModel @Inject constructor(
     fun register(){
         runCoroutine {
             incomeUseCase.create.insert(reason = "", income)
-            countryCurrencyDataStore.saveCurrencySymbol(symbol = countryCurrency.symbol)
+            countryCurrencyDataStore.saveCountryCurrency(countryCurrency = countryCurrency)
             bPlanGenDayDataStore.saveDay(day = day)
             debtDataStore.saveAllowDebtOption(option = debtAllowed)
             launchTrackingDataStore.updateToNotFirstTimeLaunch()
