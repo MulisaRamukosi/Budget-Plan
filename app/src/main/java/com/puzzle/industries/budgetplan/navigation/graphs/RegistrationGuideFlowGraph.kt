@@ -1,6 +1,7 @@
 package com.puzzle.industries.budgetplan.navigation.graphs
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -40,11 +41,14 @@ private fun NavGraphBuilder.currencyScreen(
 ) {
     composable(route = Routes.Currency.path) {
 
-        val currencyViewModel: CurrencyViewModel = viewModel()
+        val currencyViewModel: CurrencyViewModel = hiltViewModel()
 
-        navController.GetOnceResult<Int>(
+        navController.GetOnceResult<String>(
             keyResult = ValueKey.COUNTRY_CURRENCY_KEY.name,
-            onResult = { currencyId -> currencyViewModel.publishValue(value = currencyId) }
+            onResult = { currencyName ->
+                val countryCurrency = currencyViewModel.getCountryCurrencyByCurrencyName(currencyName = currencyName)
+                currencyViewModel.publishValue(value = countryCurrency)
+            }
         )
 
         CurrencySelectionScreen(
@@ -53,12 +57,11 @@ private fun NavGraphBuilder.currencyScreen(
                 navController.navigate(
                     route = Routes.CurrencyPicker.addParam(
                         key = RouteParamKey.ID,
-                        value = currencyViewModel.sub.value.toString()
+                        value = currencyViewModel.sub.value.currency
                     ).path
                 )
-            }) {
-
-            regFlowViewModel.setCurrency(countryCurrency = it)
+            }) { countryCurrency ->
+            regFlowViewModel.setCurrency(countryCurrency = countryCurrency)
             navController.navigate(route = Routes.Income.path)
         }
     }
