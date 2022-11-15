@@ -1,7 +1,9 @@
 package com.puzzle.industries.data.dependencyInjection
 
 import android.content.Context
+import com.puzzle.industries.data.services.CalendarServiceImpl
 import com.puzzle.industries.data.services.CountryCurrencyServiceImpl
+import com.puzzle.industries.data.services.MonthTotalAmountCalculatorServiceImpl
 import com.puzzle.industries.data.services.ReminderServiceImpl
 import com.puzzle.industries.data.storage.datastore.*
 import com.puzzle.industries.domain.datastores.*
@@ -25,4 +27,13 @@ internal class ServiceModule {
     @Singleton
     @Provides
     fun provideCountryCurrencyService(): CountryCurrencyService = CountryCurrencyServiceImpl()
+
+    @Singleton
+    @Provides
+    fun provideCalendarService(): CalendarService = CalendarServiceImpl()
+
+    @Singleton
+    @Provides
+    fun provideMonthTotalAmountCalculatorService(calendarService: CalendarService): MonthTotalAmountCalculatorService =
+        MonthTotalAmountCalculatorServiceImpl(calendarService = calendarService)
 }
