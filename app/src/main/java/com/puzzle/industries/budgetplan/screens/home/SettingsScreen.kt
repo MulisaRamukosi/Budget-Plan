@@ -68,7 +68,7 @@ fun SettingsScreen(
         }
 
         item {
-            AutoDeleteReminders(settingsViewModel = settingsViewModel)
+            AutoDeleteExpenses(settingsViewModel = settingsViewModel)
         }
 
         item {
@@ -115,12 +115,12 @@ private fun DebtPreference(settingsViewModel: SettingsViewModel) {
 }
 
 @Composable
-private fun AutoDeleteReminders(settingsViewModel: SettingsViewModel) {
+private fun AutoDeleteExpenses(settingsViewModel: SettingsViewModel) {
     val autoDelete by settingsViewModel.autoDeleteReminders.collectAsState(initial = false)
 
     PreferenceSwitchItem(
-        title = stringResource(id = R.string.auto_delete_reminders),
-        description = stringResource(id = R.string.desc_auto_delete_reminders),
+        title = stringResource(id = R.string.auto_delete_expenses),
+        description = stringResource(id = R.string.desc_auto_delete_expenses),
         checked = autoDelete,
         onEnabledChanged = {
             settingsViewModel.onAutoDeleteRemindersChange(autoDelete = it)
