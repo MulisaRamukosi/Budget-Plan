@@ -45,6 +45,9 @@ class IncomeViewModel @Inject constructor(
     private val _totalIncomeForCurrentMonth = MutableStateFlow(value = 0.0)
     val totalIncomeForCurrentMonth: StateFlow<Double> = _totalIncomeForCurrentMonth
 
+    private val _totalIncomeForMonth = MutableStateFlow(value = 0.0)
+    val totalIncomeForMonth: StateFlow<Double> = _totalIncomeForMonth
+
     init {
         initIncomes()
         initTotalIncome()
@@ -66,14 +69,16 @@ class IncomeViewModel @Inject constructor(
 
     private fun initTotalIncomeForMonth() = runCoroutine {
         incomes.collect { incomes ->
-            _totalIncomeForCurrentMonth.value =
-                monthTotalCalculator.calculateTotalIncomesForMonth(incomes = incomes)
+            val total = monthTotalCalculator.calculateTotalIncomesForMonth(incomes = incomes)
+            _totalIncomeForCurrentMonth.value = total
+            _totalIncomeForMonth.value = total
+
         }
     }
 
     fun getTotalIncomesForMonth(month: Int) = runCoroutine {
         incomes.collectLatest { incomes ->
-            _totalIncomeForCurrentMonth.value = monthTotalCalculator.calculateTotalIncomesForMonth(
+            _totalIncomeForMonth.value = monthTotalCalculator.calculateTotalIncomesForMonth(
                 month = Months.values()[month],
                 incomes = incomes
             )

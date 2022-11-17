@@ -58,6 +58,9 @@ class ExpenseViewModel @Inject constructor(
     private val _totalExpenseForCurrentMonth = MutableStateFlow(value = 0.0)
     val totalExpenseForCurrentMonth: StateFlow<Double> = _totalExpenseForCurrentMonth
 
+    private val _totalExpenseForMonth = MutableStateFlow(value = 0.0)
+    val totalExpenseForMonth: StateFlow<Double> = _totalExpenseForMonth
+
     init {
         initExpenseGroupWithExpenses()
         initTotalExpenses()
@@ -84,15 +87,16 @@ class ExpenseViewModel @Inject constructor(
     private fun initTotalExpensesForMonth() = runCoroutine {
         expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
             val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
-            _totalExpenseForCurrentMonth.value =
-                monthTotalCalculator.calculateTotalExpensesForMonth(expenses = expenses)
+            val total = monthTotalCalculator.calculateTotalExpensesForMonth(expenses = expenses)
+            _totalExpenseForCurrentMonth.value = total
+            _totalExpenseForMonth.value = total
         }
     }
 
     fun getTotalExpensesForMonth(month: Int) = runCoroutine {
         expenseGroupsWithExpenses.collectLatest { expenseGroupsWithExpenses ->
             val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
-            _totalExpenseForCurrentMonth.value = monthTotalCalculator.calculateTotalExpensesForMonth(
+            _totalExpenseForMonth.value = monthTotalCalculator.calculateTotalExpensesForMonth(
                 month = Months.values()[month],
                 expenses = expenses
             )
