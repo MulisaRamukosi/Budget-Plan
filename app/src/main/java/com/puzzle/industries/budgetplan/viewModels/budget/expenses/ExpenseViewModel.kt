@@ -8,10 +8,12 @@ import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandle
 import com.puzzle.industries.budgetplan.delegates.implementation.CrudViewModelHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.CurrencySymbolObserverDelegateImpl
 import com.puzzle.industries.domain.common.response.Response
+import com.puzzle.industries.domain.constants.Months
+import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupWithExpenses
-import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
+import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import com.puzzle.industries.domain.usescases.expense.ExpenseUseCase
 import com.puzzle.industries.domain.usescases.expenseGroup.ExpenseGroupUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class ExpenseViewModel @Inject constructor(
     private val expenseGroupUseCase: ExpenseGroupUseCase,
     private val expenseUseCase: ExpenseUseCase,
-    private val currencyPreferenceService: CountryCurrencyDataStore
+    private val currencyPreferenceService: CountryCurrencyDataStore,
+    private val monthTotalCalculator: MonthTotalAmountCalculatorService
 ) : ViewModel(),
     CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
     CrudViewModelHandlerDelegate<Boolean, ExpenseGroupWithExpenses> by CrudViewModelHandlerDelegateImpl(),
@@ -35,11 +38,12 @@ class ExpenseViewModel @Inject constructor(
         deleteValueEventEmitter
     val onDeleteExpenseGroupWithExpenses: (ExpenseGroupWithExpenses) -> Unit = onDeleteValue
 
-    private val _deleteExpenseEventEmitter by lazy{
+    private val _deleteExpenseEventEmitter by lazy {
         MutableSharedFlow<Expense>()
     }
     val deleteExpenseEventListener: SharedFlow<Expense> = _deleteExpenseEventEmitter
-    val onDeleteExpense: (Expense) -> Unit = { runCoroutine { _deleteExpenseEventEmitter.emit(it) } }
+    val onDeleteExpense: (Expense) -> Unit =
+        { runCoroutine { _deleteExpenseEventEmitter.emit(it) } }
 
     val updateExpenseEventListener: SharedFlow<Unit> = updateValueEventEmitter
     val emitUpdateExpenseEvent: () -> Unit = onUpdateValue
@@ -51,9 +55,13 @@ class ExpenseViewModel @Inject constructor(
     private val _totalExpenses = MutableStateFlow(value = 0.0)
     val totalExpenses = _totalExpenses
 
+    private val _totalExpenseForMonth = MutableStateFlow(value = 0.0)
+    val totalExpenseForMonth: StateFlow<Double> = _totalExpenseForMonth
+
     init {
         initExpenseGroupWithExpenses()
         initTotalExpenses()
+        initTotalExpensesForMonth()
     }
 
     private fun initExpenseGroupWithExpenses() = runCoroutine {
@@ -70,6 +78,24 @@ class ExpenseViewModel @Inject constructor(
             _totalExpenses.value = expenseGroupsWithExpenses.sumOf { expenseGroupWithExpenses ->
                 expenseGroupWithExpenses.expenses.sumOf { expense -> expense.amount }
             }
+        }
+    }
+
+    private fun initTotalExpensesForMonth() = runCoroutine {
+        expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
+            val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
+            _totalExpenseForMonth.value =
+                monthTotalCalculator.calculateTotalExpensesForCurrentMonth(expenses = expenses)
+        }
+    }
+
+    fun getTotalExpensesForMonth(month: Int) = runCoroutine {
+        expenseGroupsWithExpenses.collectLatest { expenseGroupsWithExpenses ->
+            val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
+            _totalExpenseForMonth.value = monthTotalCalculator.calculateTotalExpensesForMonth(
+                month = Months.values()[month],
+                expenses = expenses
+            )
         }
     }
 
@@ -151,19 +177,24 @@ class ExpenseViewModel @Inject constructor(
         val expenseGroup = expenseGroupWithExpenses.expenseGroup
         val expenses = expenseGroupWithExpenses.expenses.toTypedArray()
 
-        if(expenses.isNotEmpty()){
+        if (expenses.isNotEmpty()) {
             val deleteExpensesResponse = expenseUseCase.delete.delete(
                 reason = reason,
                 *expenses
             )
 
-            if(!deleteExpensesResponse.response){
+            if (!deleteExpensesResponse.response) {
                 crudResponseEventEmitter.emit(deleteExpensesResponse)
                 return@runCoroutine
             }
         }
 
-        crudResponseEventEmitter.emit(expenseGroupUseCase.delete.delete(reason = reason, expenseGroup))
+        crudResponseEventEmitter.emit(
+            expenseGroupUseCase.delete.delete(
+                reason = reason,
+                expenseGroup
+            )
+        )
     }
 
 }
