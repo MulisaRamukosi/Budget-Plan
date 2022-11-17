@@ -27,10 +27,15 @@ import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.components.text.SingleLineText
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
+import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 
 @Composable
-fun BudgetPlanHeader(modifier: Modifier = Modifier, incomeViewModel: IncomeViewModel) {
+fun BudgetPlanHeader(
+    modifier: Modifier = Modifier,
+    incomeViewModel: IncomeViewModel,
+    expenseViewModel: ExpenseViewModel
+) {
     Surface(
         modifier = modifier.clip(shape = RoundedCornerShape(size = MaterialTheme.spacing.small))
     ) {
@@ -41,7 +46,7 @@ fun BudgetPlanHeader(modifier: Modifier = Modifier, incomeViewModel: IncomeViewM
                 Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
                 RemainingCash()
                 Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-                BalanceInfo(incomeViewModel = incomeViewModel)
+                BalanceInfo(incomeViewModel = incomeViewModel, expenseViewModel = expenseViewModel)
             }
 
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
@@ -77,8 +82,9 @@ private fun RemainingCash() {
 }
 
 @Composable
-private fun BalanceInfo(incomeViewModel: IncomeViewModel) {
-    val totalIncomeForMonth by incomeViewModel.totalIncomeForMonth.collectAsState()
+private fun BalanceInfo(incomeViewModel: IncomeViewModel, expenseViewModel: ExpenseViewModel) {
+    val totalIncomeForMonth by incomeViewModel.totalIncomeForCurrentMonth.collectAsState()
+    val totalExpensesForMonth by expenseViewModel.totalExpenseForCurrentMonth.collectAsState()
     val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
 
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -93,7 +99,7 @@ private fun BalanceInfo(incomeViewModel: IncomeViewModel) {
         MoneyInfo(
             modifier = Modifier,
             title = stringResource(id = R.string.forecast_after_all_payments),
-            amount = stringResource(id = R.string.currency_amount, "R", 64000.0)
+            amount = stringResource(id = R.string.currency_amount, currencySymbol, totalIncomeForMonth - totalExpensesForMonth)
         )
     }
 }
@@ -155,6 +161,10 @@ private fun MoneyInfo(modifier: Modifier, title: String, amount: String) {
 @ExperimentalMaterial3WindowSizeClassApi
 fun PreviewBudgetPlanHeader() {
     BudgetPlanTheme(dynamicColor = false) {
-        BudgetPlanHeader(modifier = Modifier.fillMaxWidth(), incomeViewModel = viewModel())
+        BudgetPlanHeader(
+            modifier = Modifier.fillMaxWidth(),
+            incomeViewModel = viewModel(),
+            expenseViewModel = viewModel()
+        )
     }
 }
