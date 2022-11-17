@@ -47,7 +47,7 @@ fun HomeScreen(
             .padding(all = MaterialTheme.spacing.small),
         maxColumnWidth = 500.dp
     ) {
-        BudgetPlanHeader(modifier = itemModifier)
+        BudgetPlanHeader(modifier = itemModifier, incomeViewModel = incomeViewModel)
         PendingExpenses(modifier = itemModifier)
         PaymentReminders(modifier = itemModifier, reminderViewModel = reminderViewModel)
         ExpenseGroupDonutChartField(modifier = itemModifier, expenseViewModel = expenseViewModel)
