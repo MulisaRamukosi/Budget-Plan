@@ -7,23 +7,23 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.puzzle.industries.data.util.config.DataStoreNameConfig
-import com.puzzle.industries.domain.datastores.AutoDeleteReminderDataStore
+import com.puzzle.industries.domain.datastores.AutoDeleteExpenseDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val Context.autoDeleteReminderStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameConfig.REMINDER)
+private val Context.autoDeleteReminderStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameConfig.EXPENSE)
 
-internal class AutoDeleteReminderDataStoreImpl(private val context: Context) : AutoDeleteReminderDataStore{
+internal class AutoDeleteExpenseDataStoreImpl(private val context: Context) : AutoDeleteExpenseDataStore{
 
-    private val autoDeleteKey = booleanPreferencesKey(name = "deleteReminderKey")
+    private val autoDeleteKey = booleanPreferencesKey(name = "autoDeleteExpenseKey")
 
-    override suspend fun saveAutoDeleteReminder(enabled: Boolean) {
+    override suspend fun saveAutoDeleteExpense(enabled: Boolean) {
         context.autoDeleteReminderStore.edit { settings ->
             settings[autoDeleteKey] = enabled
         }
     }
 
-    override fun getAutoDeleteReminderState(): Flow<Boolean> = context.autoDeleteReminderStore.data.map {
+    override fun getAutoDeleteExpenseState(): Flow<Boolean> = context.autoDeleteReminderStore.data.map {
         preferences -> preferences[autoDeleteKey] ?: false
     }
 }
