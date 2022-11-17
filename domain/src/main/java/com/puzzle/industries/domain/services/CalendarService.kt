@@ -5,5 +5,5 @@ import java.util.Calendar
 
 interface CalendarService {
     fun getInstance(): Calendar
-    fun addMonth(month: Months): Calendar
+    fun setMonth(month: Months): Calendar
 }
