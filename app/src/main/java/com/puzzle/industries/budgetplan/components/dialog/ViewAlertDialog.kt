@@ -97,7 +97,7 @@ fun viewAlertDialogDefaultTitle(
         topAppBar(
             title = title,
             subTitle = subTitle,
-            colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.Transparent),
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent),
             actions = listOf(
                 TopAppBarActionButton(
                     imageVector = Icons.Rounded.Close,
