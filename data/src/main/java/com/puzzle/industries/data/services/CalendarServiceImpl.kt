@@ -8,7 +8,7 @@ internal class CalendarServiceImpl : CalendarService {
 
     override fun getInstance(): Calendar = tryToGetCachedCalendarInstance()
 
-    override fun addMonth(month: Months): Calendar {
+    override fun setMonth(month: Months): Calendar {
         val instance = tryToGetCachedCalendarInstance()
         val currentMonth = instance.get(Calendar.MONTH)
 
