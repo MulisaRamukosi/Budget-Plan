@@ -26,12 +26,15 @@ import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
 import com.puzzle.industries.budgetplan.util.layout.buildOrientationAwareActions
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
+import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.WeekDays
+import com.puzzle.industries.domain.models.FrequencyDate
 
 @Composable
 fun AddEditExpenseScreen(
     expenseViewModel: ExpenseViewModel,
+    incomeViewModel: IncomeViewModel,
     addEditExpenseViewModel: AddEditExpenseViewModel,
     isInTabletLandscape: Boolean,
     onNavigateBackToParent: () -> Unit
@@ -67,6 +70,12 @@ fun AddEditExpenseScreen(
             Column(modifier = Modifier.padding(paddingValues = paddingValues)) {
                 TitleTextField(addEditExpenseViewModel = addEditExpenseViewModel)
                 V_M_Space()
+
+                RemainingAmount(
+                    addEditExpenseViewModel = addEditExpenseViewModel,
+                    expenseViewModel = expenseViewModel,
+                    incomeViewModel = incomeViewModel
+                )
 
                 AmountTextField(addEditExpenseViewModel = addEditExpenseViewModel)
 
@@ -246,6 +255,40 @@ private fun getOrientationActions(
         onSaveOrUpdateClickListener = saveOrUpdateExpenseClick,
         onDismiss = onDismiss
     )
+}
+
+@Composable
+private fun RemainingAmount(
+    addEditExpenseViewModel: AddEditExpenseViewModel,
+    expenseViewModel: ExpenseViewModel,
+    incomeViewModel: IncomeViewModel
+) {
+    val enteredAmount by addEditExpenseViewModel.amountStateFlowHandler.valueStateFlow.collectAsState()
+    val frequencyType by addEditExpenseViewModel.frequencyTypeStateFlowHandler.valueStateFlow.collectAsState()
+    val frequencyWhen by addEditExpenseViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
+    val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
+
+    if (enteredAmount > 0) {
+        val totalIncome by incomeViewModel.totalIncomeForMonth.collectAsState()
+        val totalExpense by expenseViewModel.totalExpenseForMonth.collectAsState()
+
+        if(frequencyType == FrequencyType.ONCE_OFF) {
+            val frequencyDate = FrequencyDate.parseDate(date = frequencyWhen)
+            expenseViewModel.getTotalExpensesForMonth(month = frequencyDate.month)
+            incomeViewModel.getTotalIncomesForMonth(month = frequencyDate.month)
+        }
+
+        Text(
+            text = stringResource(
+                id = R.string.currency_amount,
+                currencySymbol,
+                totalIncome - totalExpense - enteredAmount
+            ),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.secondary
+        )
+    }
+
 }
 
 @Composable
