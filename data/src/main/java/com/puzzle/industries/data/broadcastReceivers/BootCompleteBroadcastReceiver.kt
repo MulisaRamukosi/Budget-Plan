@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-
 internal class BootCompleteBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -25,6 +24,7 @@ internal class BootCompleteBroadcastReceiver : BroadcastReceiver() {
             intent?.let {
                 if (intent.action == Intent.ACTION_BOOT_COMPLETED){
                     context.sendBroadcast(Intent(context, SetRemindersBroadcastReceiver::class.java))
+                    context.sendBroadcast(Intent(context, SetAutoDeleteExpensesBroadcastReceiver::class.java))
                 }
             }
         }
