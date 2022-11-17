@@ -1,10 +1,9 @@
 package com.puzzle.industries.data.dependencyInjection
 
 import android.content.Context
-import com.puzzle.industries.data.services.CalendarServiceImpl
-import com.puzzle.industries.data.services.CountryCurrencyServiceImpl
-import com.puzzle.industries.data.services.MonthTotalAmountCalculatorServiceImpl
-import com.puzzle.industries.data.services.ReminderServiceImpl
+import com.puzzle.industries.data.services.*
+import com.puzzle.industries.data.services.alarmManager.AlarmManagerService
+import com.puzzle.industries.data.services.alarmManager.AlarmManagerServiceImpl
 import com.puzzle.industries.data.storage.datastore.*
 import com.puzzle.industries.domain.datastores.*
 import com.puzzle.industries.domain.services.*
@@ -21,8 +20,21 @@ internal class ServiceModule {
 
     @Singleton
     @Provides
-    fun provideReminderService(@ApplicationContext context: Context): ReminderService =
-        ReminderServiceImpl(context = context)
+    fun provideAlarmManagerService(@ApplicationContext context: Context): AlarmManagerService =
+        AlarmManagerServiceImpl(context = context)
+
+    @Singleton
+    @Provides
+    fun provideReminderService(
+        @ApplicationContext context: Context,
+        alarmManagerService: AlarmManagerService,
+        calendarService: CalendarService
+    ): ReminderService =
+        ReminderServiceImpl(
+            context = context,
+            alarmManagerService = alarmManagerService,
+            calendarService = calendarService
+        )
 
     @Singleton
     @Provides
@@ -36,4 +48,18 @@ internal class ServiceModule {
     @Provides
     fun provideMonthTotalAmountCalculatorService(calendarService: CalendarService): MonthTotalAmountCalculatorService =
         MonthTotalAmountCalculatorServiceImpl(calendarService = calendarService)
+
+    @Singleton
+    @Provides
+    fun provideAutoDeleteExpensesAlarmService(
+        @ApplicationContext context: Context,
+        alarmManagerService: AlarmManagerService,
+        autoDeleteExpenseDataStore: AutoDeleteExpenseDataStore,
+        calendarService: CalendarService
+    ): AutoDeleteExpensesAlarmService = AutoDeleteExpensesAlarmServiceImpl(
+        context = context,
+        alarmManagerService = alarmManagerService,
+        autoDeleteExpenseDataStore = autoDeleteExpenseDataStore,
+        calendarService = calendarService
+    )
 }
