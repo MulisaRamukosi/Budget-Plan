@@ -44,6 +44,7 @@ fun AmountInput(
                     onValueChange(it.toDouble())
                 } else if (it.isBlank()) {
                     amount = ""
+                    onValueChange(0.0)
                 }
             },
             singleLine = true,
