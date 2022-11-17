@@ -59,7 +59,8 @@ fun NavGraphBuilder.budgetScreensGraph(
         addEditExpenseScreen(
             navController = navController,
             windowSizeClass = windowSizeClass,
-            expenseViewModel = expenseViewModel
+            expenseViewModel = expenseViewModel,
+            incomeViewModel = incomeViewModel
         )
 
         addReminderScreen(
@@ -137,7 +138,8 @@ fun NavGraphBuilder.addEditExpenseGroupScreen(
 fun NavGraphBuilder.addEditExpenseScreen(
     navController: NavController,
     windowSizeClass: WindowSizeClass,
-    expenseViewModel: ExpenseViewModel
+    expenseViewModel: ExpenseViewModel,
+    incomeViewModel: IncomeViewModel
 ) {
     composable(
         route = Routes.AddEditExpense.path,
@@ -148,6 +150,7 @@ fun NavGraphBuilder.addEditExpenseScreen(
     ) { navBackStackEntry ->
         AddEditExpenseScreen(
             expenseViewModel = expenseViewModel,
+            incomeViewModel = incomeViewModel,
             addEditExpenseViewModel = buildAddEditExpenseViewModel(
                 owner = navBackStackEntry,
                 expenseViewModel = expenseViewModel
