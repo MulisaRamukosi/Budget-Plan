@@ -67,7 +67,7 @@ class IncomeViewModel @Inject constructor(
     private fun initTotalIncomeForMonth() = runCoroutine {
         incomes.collect { incomes ->
             _totalIncomeForMonth.value =
-                monthTotalCalculator.calculateTotalIncomesForCurrentMonth(incomes = incomes)
+                monthTotalCalculator.calculateTotalIncomesForMonth(incomes = incomes)
         }
     }
 

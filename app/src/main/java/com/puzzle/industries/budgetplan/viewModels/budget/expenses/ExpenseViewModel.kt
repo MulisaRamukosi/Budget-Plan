@@ -85,7 +85,7 @@ class ExpenseViewModel @Inject constructor(
         expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
             val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
             _totalExpenseForMonth.value =
-                monthTotalCalculator.calculateTotalExpensesForCurrentMonth(expenses = expenses)
+                monthTotalCalculator.calculateTotalExpensesForMonth(expenses = expenses)
         }
     }
 

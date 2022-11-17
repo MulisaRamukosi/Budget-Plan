@@ -14,34 +14,9 @@ import java.util.*
 internal class MonthTotalAmountCalculatorServiceImpl(private val calendarService: CalendarService) :
     MonthTotalAmountCalculatorService {
 
-    override fun calculateTotalIncomesForCurrentMonth(
-        incomes: List<Income>
-    ): Double {
-        return incomes.sumOf { income ->
-            handleSumCalculation(
-                amount = income.amount,
-                frequencyType = income.frequencyType,
-                frequencyWhen = income.frequencyWhen,
-                calendarInstance = calendarService.getInstance()
-            )
-        }
-    }
-
-    override fun calculateTotalExpensesForCurrentMonth(
-        expenses: List<Expense>
-    ): Double {
-        return expenses.sumOf { expense ->
-            handleSumCalculation(
-                amount = expense.amount,
-                frequencyType = expense.frequencyType,
-                frequencyWhen = expense.frequencyWhen,
-                calendarInstance = calendarService.getInstance()
-            )
-        }
-    }
-
-    override fun calculateTotalIncomesForMonth(month: Months, incomes: List<Income>): Double {
-        val calendarInstance = calendarService.setMonth(month = month)
+    override fun calculateTotalIncomesForMonth(month: Months?, incomes: List<Income>): Double {
+        val calendarInstance =
+            if (month == null) calendarService.getInstance() else calendarService.setMonth(month = month)
 
         return incomes.sumOf { income ->
             handleSumCalculation(
@@ -53,8 +28,9 @@ internal class MonthTotalAmountCalculatorServiceImpl(private val calendarService
         }
     }
 
-    override fun calculateTotalExpensesForMonth(month: Months, expenses: List<Expense>): Double {
-        val calendarInstance = calendarService.setMonth(month = month)
+    override fun calculateTotalExpensesForMonth(month: Months?, expenses: List<Expense>): Double {
+        val calendarInstance =
+            if (month == null) calendarService.getInstance() else calendarService.setMonth(month = month)
 
         return expenses.sumOf { expense ->
             handleSumCalculation(
@@ -118,7 +94,8 @@ internal class MonthTotalAmountCalculatorServiceImpl(private val calendarService
             DAILY -> totalDaysInMonth * amount
             WEEKLY -> {
                 val weekDay = WeekDays.valueOf(value = frequencyWhen).ordinal + 1
-                val totalWeekDays = calculateTotalWeekDayInMonth(calendar = calendar, weekDay = weekDay)
+                val totalWeekDays =
+                    calculateTotalWeekDayInMonth(calendar = calendar, weekDay = weekDay)
                 totalWeekDays * amount
             }
             else -> amount
@@ -129,10 +106,10 @@ internal class MonthTotalAmountCalculatorServiceImpl(private val calendarService
         var count = 0
         val totalDaysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
 
-        for (day in 1 .. totalDaysInMonth){
+        for (day in 1..totalDaysInMonth) {
             calendar.set(Calendar.DAY_OF_MONTH, day)
             val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-            if(dayOfWeek == weekDay){
+            if (dayOfWeek == weekDay) {
                 count++
             }
         }
