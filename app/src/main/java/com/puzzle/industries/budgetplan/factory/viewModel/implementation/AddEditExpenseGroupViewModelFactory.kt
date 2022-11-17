@@ -9,6 +9,7 @@ import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
+@Suppress("UNCHECKED_CAST")
 class AddEditExpenseGroupViewModelFactory @AssistedInject constructor(
     @Assisted owner: SavedStateRegistryOwner,
     @Assisted private val prevExpenseGroup: ExpenseGroup?

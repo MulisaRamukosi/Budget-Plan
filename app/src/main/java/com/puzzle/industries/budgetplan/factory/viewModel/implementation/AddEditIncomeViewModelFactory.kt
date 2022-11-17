@@ -9,6 +9,7 @@ import com.puzzle.industries.domain.models.income.Income
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 
+@Suppress("UNCHECKED_CAST")
 class AddEditIncomeViewModelFactory @AssistedInject constructor(
     @Assisted owner: SavedStateRegistryOwner,
     @Assisted private val prevIncome: Income?

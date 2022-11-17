@@ -10,6 +10,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.util.*
 
+@Suppress("UNCHECKED_CAST")
 class AddEditExpenseViewModelFactory @AssistedInject constructor(
     @Assisted owner: SavedStateRegistryOwner,
     @Assisted private val expenseGroupId: UUID,
