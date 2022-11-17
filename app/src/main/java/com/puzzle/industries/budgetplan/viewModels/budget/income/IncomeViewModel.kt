@@ -8,8 +8,10 @@ import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandle
 import com.puzzle.industries.budgetplan.delegates.implementation.CrudViewModelHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.CurrencySymbolObserverDelegateImpl
 import com.puzzle.industries.domain.common.response.Response
-import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
+import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import com.puzzle.industries.domain.usescases.income.IncomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -19,7 +21,8 @@ import javax.inject.Inject
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
-    private val currencyPreferenceService: CountryCurrencyDataStore
+    private val currencyPreferenceService: CountryCurrencyDataStore,
+    private val monthTotalCalculator: MonthTotalAmountCalculatorService
 ) : ViewModel(),
     CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
     CrudViewModelHandlerDelegate<Boolean, Income> by CrudViewModelHandlerDelegateImpl(),
@@ -37,11 +40,15 @@ class IncomeViewModel @Inject constructor(
     val currencySymbol: StateFlow<String> = currencySymbolFlow
 
     private val _totalIncome = MutableStateFlow(value = 0.0)
-    val totalIncome = _totalIncome
+    val totalIncome: StateFlow<Double> = _totalIncome
+
+    private val _totalIncomeForMonth = MutableStateFlow(value = 0.0)
+    val totalIncomeForMonth: StateFlow<Double> = _totalIncomeForMonth
 
     init {
         initIncomes()
         initTotalIncome()
+        initTotalIncomeForMonth()
     }
 
     private fun initIncomes() = runCoroutine {
@@ -54,6 +61,22 @@ class IncomeViewModel @Inject constructor(
     private fun initTotalIncome() = runCoroutine {
         incomes.collect { incomes ->
             _totalIncome.value = incomes.sumOf { income -> income.amount }
+        }
+    }
+
+    private fun initTotalIncomeForMonth() = runCoroutine {
+        incomes.collect { incomes ->
+            _totalIncomeForMonth.value =
+                monthTotalCalculator.calculateTotalIncomesForCurrentMonth(incomes = incomes)
+        }
+    }
+
+    fun getTotalIncomesForMonth(month: Int) = runCoroutine {
+        incomes.collectLatest { incomes ->
+            _totalIncomeForMonth.value = monthTotalCalculator.calculateTotalIncomesForMonth(
+                month = Months.values()[month],
+                incomes = incomes
+            )
         }
     }
 
