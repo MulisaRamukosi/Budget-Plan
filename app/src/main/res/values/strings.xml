@@ -159,9 +159,7 @@
     <string name="desc_allow_debt">Allow adding new expenses although the sum of all expenses overweight the sum of all incomes. (RECOMMENDED to keep as disabled)</string>
     <string name="desc_currency">Select the currency that you would like to see displayed alongside your expenses.</string>
     <string name="auto_delete_expenses">Automatically delete expenses</string>
-    <string name="desc_auto_delete_expenses">"Automatically delete non repetitive (once off) expenses
-        along with their reminders(if the reminder was enabled) that have already passed. Please note
-        if enabled, an expense will be deleted once its date has passed."</string>
+    <string name="desc_auto_delete_expenses">"Automatically delete non repetitive (once off) expenses along with their reminders(if the reminder was enabled) that have already passed. Please note if enabled, an expense will be deleted once its date has passed."</string>
     <string name="how_it_works">How it works!</string>
     <string name="desc_how_it_works">Read a full guide on which features are available, how each feature works, and how you can interact with them.</string>
     <string name="read_more">Read more</string>
