@@ -269,8 +269,8 @@ private fun RemainingAmount(
     val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
 
     if (enteredAmount > 0) {
-        val totalIncome by incomeViewModel.totalIncomeForMonth.collectAsState()
-        val totalExpense by expenseViewModel.totalExpenseForMonth.collectAsState()
+        val totalIncome by incomeViewModel.totalIncomeForCurrentMonth.collectAsState()
+        val totalExpense by expenseViewModel.totalExpenseForCurrentMonth.collectAsState()
 
         if(frequencyType == FrequencyType.ONCE_OFF) {
             val frequencyDate = FrequencyDate.parseDate(date = frequencyWhen)
