@@ -35,8 +35,8 @@ class DataStoreModule {
 
     @Singleton
     @Provides
-    fun provideAutoDeleteReminderPrefDataStore(@ApplicationContext context: Context): AutoDeleteReminderDataStore =
-        AutoDeleteReminderDataStoreImpl(context = context)
+    fun provideAutoDeleteExpensePrefDataStore(@ApplicationContext context: Context): AutoDeleteExpenseDataStore =
+        AutoDeleteExpenseDataStoreImpl(context = context)
 
     @Singleton
     @Provides
@@ -46,14 +46,14 @@ class DataStoreModule {
     @Singleton
     @Provides
     fun providePreferencesStore(
-        autoDeleteReminderDataStore: AutoDeleteReminderDataStore,
+        autoDeleteExpenseDataStore: AutoDeleteExpenseDataStore,
         bPlanGenDayDataStore: BPlanGenDayDataStore,
         countryCurrencyDataStore: CountryCurrencyDataStore,
         debtPreferencesStore: DebtDataStore,
         themePreferencesStore: ThemeDataStore
     ): PreferencesStore =
         PreferencesStoreImpl(
-            autoDeleteReminderPref = autoDeleteReminderDataStore,
+            autoDeleteExpensePref = autoDeleteExpenseDataStore,
             bPlanGenDayPref = bPlanGenDayDataStore,
             currencyPref = countryCurrencyDataStore,
             debtPref = debtPreferencesStore,
