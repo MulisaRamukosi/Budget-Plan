@@ -47,7 +47,11 @@ fun HomeScreen(
             .padding(all = MaterialTheme.spacing.small),
         maxColumnWidth = 500.dp
     ) {
-        BudgetPlanHeader(modifier = itemModifier, incomeViewModel = incomeViewModel)
+        BudgetPlanHeader(
+            modifier = itemModifier,
+            incomeViewModel = incomeViewModel,
+            expenseViewModel = expenseViewModel
+        )
         PendingExpenses(modifier = itemModifier)
         PaymentReminders(modifier = itemModifier, reminderViewModel = reminderViewModel)
         ExpenseGroupDonutChartField(modifier = itemModifier, expenseViewModel = expenseViewModel)
@@ -217,11 +221,17 @@ private fun dummyGroup() = listOf(
 @Composable
 fun ExpenseGroupDonutChartField() {
     BudgetPlanTheme {
-        ExpenseGroupDonutChartItem(modifier = Modifier.fillMaxWidth(), expenseGroupsWithExpenses = listOf(
-            ExpenseGroupWithExpenses(
-                expenseGroup = ExpenseGroup(name = "test", description = "", colorId = "color0"),
-                expenses = emptyList()
+        ExpenseGroupDonutChartItem(
+            modifier = Modifier.fillMaxWidth(), expenseGroupsWithExpenses = listOf(
+                ExpenseGroupWithExpenses(
+                    expenseGroup = ExpenseGroup(
+                        name = "test",
+                        description = "",
+                        colorId = "color0"
+                    ),
+                    expenses = emptyList()
+                )
             )
-        ))
+        )
     }
 }
