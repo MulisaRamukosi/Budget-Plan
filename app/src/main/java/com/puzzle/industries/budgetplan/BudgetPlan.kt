@@ -2,7 +2,8 @@ package com.puzzle.industries.budgetplan
 
 import android.app.Application
 import com.puzzle.industries.data.notification.NotificationChannelService
-import com.puzzle.industries.domain.services.AutoDeleteExpensesAlarmService
+import com.puzzle.industries.domain.services.ExpenseAlarmService
+import com.puzzle.industries.domain.services.IncomeAlarmService
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -11,13 +12,19 @@ import javax.inject.Inject
 class BudgetPlan : Application() {
 
     @Inject lateinit var notificationChannelService: NotificationChannelService
-    @Inject lateinit var autoDeleteExpensesAlarmService: AutoDeleteExpensesAlarmService
+    @Inject lateinit var expenseAlarmService: ExpenseAlarmService
+    @Inject lateinit var incomeAlarmService: IncomeAlarmService
 
     override fun onCreate() {
         super.onCreate()
         notificationChannelService.createNotificationChannels()
-        CoroutineScope(Dispatchers.IO).launch {
-            autoDeleteExpensesAlarmService.setAutoDeleteExpenseAlarm()
+        setAutoDeleteAlarms()
+    }
+
+    private fun setAutoDeleteAlarms(){
+        CoroutineScope(context = Dispatchers.IO).launch {
+            expenseAlarmService.setAutoDeleteExpenseAlarm()
+            incomeAlarmService.setAutoDeleteExpenseAlarm()
         }
     }
 }

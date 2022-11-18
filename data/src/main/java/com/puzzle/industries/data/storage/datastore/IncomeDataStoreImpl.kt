@@ -7,23 +7,23 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.puzzle.industries.data.util.config.DataStoreNameConfig
-import com.puzzle.industries.domain.datastores.ExpenseDataStore
+import com.puzzle.industries.domain.datastores.IncomeDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val Context.expenseDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameConfig.EXPENSE)
+private val Context.incomeDataStore: DataStore<Preferences> by preferencesDataStore(name = DataStoreNameConfig.INCOME)
 
-internal class ExpenseDataStoreImpl(private val context: Context) : ExpenseDataStore{
+internal class IncomeDataStoreImpl(private val context: Context) : IncomeDataStore {
 
-    private val autoDeleteKey = booleanPreferencesKey(name = "autoDeleteExpenseKey")
+    private val autoDeleteKey = booleanPreferencesKey(name = "autoDeleteIncomeKey")
 
-    override suspend fun saveAutoDeleteExpense(enabled: Boolean) {
-        context.expenseDataStore.edit { settings ->
+    override suspend fun saveAutoDeleteIncome(enabled: Boolean) {
+        context.incomeDataStore.edit { settings ->
             settings[autoDeleteKey] = enabled
         }
     }
 
-    override fun getAutoDeleteExpenseState(): Flow<Boolean> = context.expenseDataStore.data.map {
+    override fun getAutoDeleteIncomeState(): Flow<Boolean> = context.incomeDataStore.data.map {
         preferences -> preferences[autoDeleteKey] ?: false
     }
 }

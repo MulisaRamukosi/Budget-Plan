@@ -12,6 +12,7 @@ internal class BootCompleteBroadcastReceiver : BroadcastReceiver() {
                 if (intent.action == Intent.ACTION_BOOT_COMPLETED){
                     context.sendBroadcast(Intent(context, SetRemindersBroadcastReceiver::class.java))
                     context.sendBroadcast(Intent(context, SetAutoDeleteExpensesAlarmBroadcastReceiver::class.java))
+                    context.sendBroadcast(Intent(context, SetAutoDeleteIncomeAlarmBroadcastReceiver::class.java))
                 }
             }
         }

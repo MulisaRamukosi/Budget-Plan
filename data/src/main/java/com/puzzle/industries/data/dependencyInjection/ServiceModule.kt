@@ -51,15 +51,29 @@ internal class ServiceModule {
 
     @Singleton
     @Provides
-    fun provideAutoDeleteExpensesAlarmService(
+    fun provideExpenseAlarmService(
         @ApplicationContext context: Context,
         alarmManagerService: AlarmManagerService,
         expenseDataStore: ExpenseDataStore,
         calendarService: CalendarService
-    ): AutoDeleteExpensesAlarmService = AutoDeleteExpensesAlarmServiceImpl(
+    ): ExpenseAlarmService = ExpenseAlarmServiceImpl(
         context = context,
         alarmManagerService = alarmManagerService,
         expenseDataStore = expenseDataStore,
         calendarService = calendarService
+    )
+
+    @Singleton
+    @Provides
+    fun provideIncomeAlarmService(
+        @ApplicationContext context: Context,
+        alarmManagerService: AlarmManagerService,
+        incomeDataStore: IncomeDataStore,
+        calendarService: CalendarService
+    ): IncomeAlarmService = IncomeAlarmServiceImpl(
+        context = context,
+        calendarService = calendarService,
+        alarmManagerService = alarmManagerService,
+        incomeDataStore = incomeDataStore
     )
 }

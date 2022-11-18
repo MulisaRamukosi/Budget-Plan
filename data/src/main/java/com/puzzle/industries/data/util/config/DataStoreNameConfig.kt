@@ -6,5 +6,6 @@ object DataStoreNameConfig {
     const val DEBT = "Debt"
     const val LAUNCH_TRACKING = "Launch"
     const val EXPENSE = "Expense"
+    const val INCOME = "Income"
     const val THEME = "Theme"
 }

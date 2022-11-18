@@ -72,6 +72,10 @@ fun SettingsScreen(
         }
 
         item {
+            AutoDeleteIncomes(settingsViewModel = settingsViewModel)
+        }
+
+        item {
             CurrencyPreference(
                 navController = mainNavController,
                 settingsViewModel = settingsViewModel
@@ -116,14 +120,28 @@ private fun DebtPreference(settingsViewModel: SettingsViewModel) {
 
 @Composable
 private fun AutoDeleteExpenses(settingsViewModel: SettingsViewModel) {
-    val autoDelete by settingsViewModel.autoDeleteReminders.collectAsState(initial = false)
+    val autoDelete by settingsViewModel.autoDeleteExpenses.collectAsState(initial = false)
 
     PreferenceSwitchItem(
         title = stringResource(id = R.string.auto_delete_expenses),
         description = stringResource(id = R.string.desc_auto_delete_expenses),
         checked = autoDelete,
         onEnabledChanged = {
-            settingsViewModel.onAutoDeleteRemindersChange(autoDelete = it)
+            settingsViewModel.onAutoDeleteExpensesChange(autoDelete = it)
+        }
+    )
+}
+
+@Composable
+fun AutoDeleteIncomes(settingsViewModel: SettingsViewModel) {
+    val autoDelete by settingsViewModel.autoDeleteIncomes.collectAsState(initial = false)
+
+    PreferenceSwitchItem(
+        title = stringResource(id = R.string.auto_delete_income),
+        description = stringResource(id = R.string.desc_auto_delete_income),
+        checked = autoDelete,
+        onEnabledChanged = {
+            settingsViewModel.onAutoDeleteIncomesChange(autoDelete = it)
         }
     )
 }

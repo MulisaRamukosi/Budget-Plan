@@ -9,6 +9,8 @@
         <receiver android:name=".broadcastReceivers.SetRemindersBroadcastReceiver"/>
         <receiver android:name=".broadcastReceivers.AutoDeleteExpensesBroadcastReceiver"/>
         <receiver android:name=".broadcastReceivers.SetAutoDeleteExpensesAlarmBroadcastReceiver"/>
+        <receiver android:name=".broadcastReceivers.AutoDeleteIncomeBroadcastReceiver"/>
+        <receiver android:name=".broadcastReceivers.SetAutoDeleteIncomeAlarmBroadcastReceiver"/>
         <receiver android:name=".broadcastReceivers.BootCompleteBroadcastReceiver"
             android:exported="true">
             <intent-filter>

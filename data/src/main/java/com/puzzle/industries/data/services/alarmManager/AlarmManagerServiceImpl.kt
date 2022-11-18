@@ -3,8 +3,10 @@ package com.puzzle.industries.data.services.alarmManager
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import com.puzzle.industries.data.broadcastReceivers.AutoDeleteExpensesBroadcastReceiver
 
-internal class AlarmManagerServiceImpl constructor(context: Context) : AlarmManagerService {
+internal class AlarmManagerServiceImpl constructor(private val context: Context) : AlarmManagerService {
 
     private val alarmManager: AlarmManager? =
         context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
@@ -32,5 +34,14 @@ internal class AlarmManagerServiceImpl constructor(context: Context) : AlarmMana
 
     override fun cancelAlarm(pendingIntent: PendingIntent) {
         alarmManager?.cancel(pendingIntent)
+    }
+
+    override fun alarmIsSet(requestCode: Int, intent: Intent):Boolean {
+        return PendingIntent.getBroadcast(
+            context,
+            requestCode,
+            intent,
+            PendingIntent.FLAG_NO_CREATE
+        ) != null
     }
 }

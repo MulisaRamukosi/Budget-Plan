@@ -1,5 +1,5 @@
 package com.puzzle.industries.domain.services
 
-interface AutoDeleteExpensesAlarmService {
+interface IncomeAlarmService {
     suspend fun setAutoDeleteExpenseAlarm()
 }

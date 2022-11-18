@@ -45,8 +45,14 @@ class DataStoreModule {
 
     @Singleton
     @Provides
+    fun provideIncomePrefDataStore(@ApplicationContext context: Context): IncomeDataStore =
+        IncomeDataStoreImpl(context = context)
+
+    @Singleton
+    @Provides
     fun providePreferencesStore(
         expenseDataStore: ExpenseDataStore,
+        incomeDataStore: IncomeDataStore,
         bPlanGenDayDataStore: BPlanGenDayDataStore,
         countryCurrencyDataStore: CountryCurrencyDataStore,
         debtPreferencesStore: DebtDataStore,
@@ -54,6 +60,7 @@ class DataStoreModule {
     ): PreferencesStore =
         PreferencesStoreImpl(
             expensePref = expenseDataStore,
+            incomePref = incomeDataStore,
             bPlanGenDayPref = bPlanGenDayDataStore,
             currencyPref = countryCurrencyDataStore,
             debtPref = debtPreferencesStore,

@@ -8,6 +8,7 @@ import com.puzzle.industries.data.storage.database.dao.base.Insert
 import com.puzzle.industries.data.storage.database.dao.base.Read
 import com.puzzle.industries.data.storage.database.dao.base.Update
 import com.puzzle.industries.data.storage.database.entity.income.IncomeEntity
+import com.puzzle.industries.domain.constants.FrequencyType
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,5 +17,8 @@ internal interface IncomeDao : Insert<IncomeEntity>, Update<IncomeEntity>, Delet
 
     @Query("select * from ${Entities.INCOME}")
     override fun read(): Flow<List<IncomeEntity>>
+
+    @Query("select * from ${Entities.INCOME} where frequencyType == :frequencyType")
+    fun readAllIncomesByFrequencyType(frequencyType: FrequencyType): Flow<List<IncomeEntity>>
 
 }
