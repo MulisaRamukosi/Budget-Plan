@@ -35,8 +35,8 @@ class DataStoreModule {
 
     @Singleton
     @Provides
-    fun provideAutoDeleteExpensePrefDataStore(@ApplicationContext context: Context): AutoDeleteExpenseDataStore =
-        AutoDeleteExpenseDataStoreImpl(context = context)
+    fun provideExpensePrefDataStore(@ApplicationContext context: Context): ExpenseDataStore =
+        ExpenseDataStoreImpl(context = context)
 
     @Singleton
     @Provides
@@ -46,14 +46,14 @@ class DataStoreModule {
     @Singleton
     @Provides
     fun providePreferencesStore(
-        autoDeleteExpenseDataStore: AutoDeleteExpenseDataStore,
+        expenseDataStore: ExpenseDataStore,
         bPlanGenDayDataStore: BPlanGenDayDataStore,
         countryCurrencyDataStore: CountryCurrencyDataStore,
         debtPreferencesStore: DebtDataStore,
         themePreferencesStore: ThemeDataStore
     ): PreferencesStore =
         PreferencesStoreImpl(
-            autoDeleteExpensePref = autoDeleteExpenseDataStore,
+            expensePref = expenseDataStore,
             bPlanGenDayPref = bPlanGenDayDataStore,
             currencyPref = countryCurrencyDataStore,
             debtPref = debtPreferencesStore,

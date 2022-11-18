@@ -54,12 +54,12 @@ internal class ServiceModule {
     fun provideAutoDeleteExpensesAlarmService(
         @ApplicationContext context: Context,
         alarmManagerService: AlarmManagerService,
-        autoDeleteExpenseDataStore: AutoDeleteExpenseDataStore,
+        expenseDataStore: ExpenseDataStore,
         calendarService: CalendarService
     ): AutoDeleteExpensesAlarmService = AutoDeleteExpensesAlarmServiceImpl(
         context = context,
         alarmManagerService = alarmManagerService,
-        autoDeleteExpenseDataStore = autoDeleteExpenseDataStore,
+        expenseDataStore = expenseDataStore,
         calendarService = calendarService
     )
 }

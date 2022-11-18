@@ -39,9 +39,9 @@ class SettingsViewModel @Inject constructor(
         settingsPreferences.currencyPref.saveCountryCurrency(countryCurrency = countryCurrency)
     }
 
-    val autoDeleteReminders: Flow<Boolean> = settingsPreferences.autoDeleteExpensePref.getAutoDeleteExpenseState()
+    val autoDeleteReminders: Flow<Boolean> = settingsPreferences.expensePref.getAutoDeleteExpenseState()
     fun onAutoDeleteRemindersChange(autoDelete: Boolean) = runCoroutine {
-        settingsPreferences.autoDeleteExpensePref.saveAutoDeleteExpense(enabled = autoDelete)
+        settingsPreferences.expensePref.saveAutoDeleteExpense(enabled = autoDelete)
     }
 
     val bPlanGenerationDay: Flow<Int> = settingsPreferences.bPlanGenDayPref.getDay()

@@ -12,4 +12,5 @@
     <string name="channel_payment_reminders_desc">Notifications for expense that you enabled reminders for.</string>
     <string name="format_payment_reminder">Payment Reminder for %s</string>
     <string name="format_payment_reminder_desc">You have a payment of %s%.2f for %s due today.</string>
+    <string name="reason_auto_delete">Automatically deleted</string>
 </resources>

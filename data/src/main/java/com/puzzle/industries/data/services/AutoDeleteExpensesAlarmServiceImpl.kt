@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import com.puzzle.industries.data.broadcastReceivers.AutoDeleteExpensesBroadcastReceiver
 import com.puzzle.industries.data.services.alarmManager.AlarmManagerService
-import com.puzzle.industries.domain.datastores.AutoDeleteExpenseDataStore
+import com.puzzle.industries.domain.datastores.ExpenseDataStore
 import com.puzzle.industries.domain.services.AutoDeleteExpensesAlarmService
 import com.puzzle.industries.domain.services.CalendarService
 import java.util.*
@@ -15,7 +15,7 @@ internal class AutoDeleteExpensesAlarmServiceImpl constructor(
     private val context: Context,
     private val calendarService: CalendarService,
     private val alarmManagerService: AlarmManagerService,
-    private val autoDeleteExpenseDataStore: AutoDeleteExpenseDataStore
+    private val expenseDataStore: ExpenseDataStore
 ) : AutoDeleteExpensesAlarmService {
 
     private val requestCode = 8028
@@ -28,7 +28,7 @@ internal class AutoDeleteExpensesAlarmServiceImpl constructor(
     )
 
     override suspend fun setAutoDeleteExpenseAlarm() {
-        autoDeleteExpenseDataStore.getAutoDeleteExpenseState().collect { enabled ->
+        expenseDataStore.getAutoDeleteExpenseState().collect { enabled ->
             if(enabled && !alarmIsSet()){
                 setAlarm()
             }
