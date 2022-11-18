@@ -8,6 +8,7 @@ import com.puzzle.industries.data.storage.database.dao.expense.ExpenseDao
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.FrequencyDate
 import com.puzzle.industries.domain.services.CalendarService
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -15,6 +16,7 @@ import kotlinx.coroutines.runBlocking
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 internal class AutoDeleteExpensesBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
