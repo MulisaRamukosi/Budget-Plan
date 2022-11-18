@@ -8,7 +8,7 @@
         <receiver android:name="com.puzzle.industries.data.broadcastReceivers.ReminderBroadcastReceiver"/>
         <receiver android:name=".broadcastReceivers.SetRemindersBroadcastReceiver"/>
         <receiver android:name=".broadcastReceivers.AutoDeleteExpensesBroadcastReceiver"/>
-        <receiver android:name=".broadcastReceivers.SetAutoDeleteExpensesBroadcastReceiver"/>
+        <receiver android:name=".broadcastReceivers.SetAutoDeleteExpensesAlarmBroadcastReceiver"/>
         <receiver android:name=".broadcastReceivers.BootCompleteBroadcastReceiver"
             android:exported="true">
             <intent-filter>

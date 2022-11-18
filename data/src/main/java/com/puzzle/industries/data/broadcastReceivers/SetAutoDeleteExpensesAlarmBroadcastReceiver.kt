@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @AndroidEntryPoint
-internal class SetAutoDeleteExpensesBroadcastReceiver : BroadcastReceiver() {
+internal class SetAutoDeleteExpensesAlarmBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var autoDeleteExpensesAlarmService: AutoDeleteExpensesAlarmService
