@@ -38,13 +38,13 @@ internal class DebtServiceImpl constructor(
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            async {
+            launch {
                 incomeDao.read().collect {
                     incomes.value = it
                 }
             }
 
-            async {
+            launch {
                 expenseDao.read().collect {
                     expenses.value = it
                 }
