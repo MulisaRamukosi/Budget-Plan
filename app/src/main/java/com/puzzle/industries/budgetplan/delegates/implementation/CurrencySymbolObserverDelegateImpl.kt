@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class CurrencySymbolObserverDelegateImpl constructor(
-    private val currencyPreferenceService: CountryCurrencyDataStore
+    private val countryCurrencyDataStore: CountryCurrencyDataStore
 ) : CurrencySymbolObserverDelegate, CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
     private val symbolFlow = MutableStateFlow(value = CurrencyConfig.DEFAULT_CURRENCY)
@@ -17,7 +17,7 @@ class CurrencySymbolObserverDelegateImpl constructor(
 
     init {
         runCoroutine {
-            currencyPreferenceService.getSelectedCurrencySymbol().collect { symbol ->
+            countryCurrencyDataStore.getSelectedCurrencySymbol().collect { symbol ->
                 symbolFlow.value = symbol
             }
         }
