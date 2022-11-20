@@ -186,11 +186,14 @@ private fun TitleTextField(addEditIncomeViewModel: AddEditIncomeViewModel) {
 
 @Composable
 private fun AmountTextField(addEditIncomeViewModel: AddEditIncomeViewModel) {
+    val currencySymbol by addEditIncomeViewModel.currencySymbol.collectAsState()
+
     AmountInput(
         modifier = Modifier.fillMaxWidth(),
         imeAction = ImeAction.Next,
         income = addEditIncomeViewModel.amountStateFlowHandler.getValue(),
-        onValueChange = addEditIncomeViewModel.amountStateFlowHandler.onValueChange
+        onValueChange = addEditIncomeViewModel.amountStateFlowHandler.onValueChange,
+        currencySymbol = currencySymbol
     )
 }
 

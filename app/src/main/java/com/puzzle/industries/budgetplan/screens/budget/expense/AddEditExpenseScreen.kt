@@ -204,11 +204,14 @@ private fun TitleTextField(addEditExpenseViewModel: AddEditExpenseViewModel) {
 
 @Composable
 private fun AmountTextField(addEditExpenseViewModel: AddEditExpenseViewModel) {
+    val currencySymbol by addEditExpenseViewModel.currencySymbol.collectAsState()
+
     AmountInput(
         modifier = Modifier.fillMaxWidth(),
         imeAction = ImeAction.Next,
         income = addEditExpenseViewModel.amountStateFlowHandler.getValue(),
-        onValueChange = addEditExpenseViewModel.amountStateFlowHandler.onValueChange
+        onValueChange = addEditExpenseViewModel.amountStateFlowHandler.onValueChange,
+        currencySymbol = currencySymbol
     )
 }
 

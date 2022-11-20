@@ -14,6 +14,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,11 +29,18 @@ fun AmountInput(
     modifier: Modifier = Modifier,
     income: Double,
     imeAction: ImeAction = ImeAction.Default,
+    currencySymbol: String,
     onValueChange: (Double) -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     var amount by remember {
         mutableStateOf(if (income == 0.0) "" else income.toBigDecimal().toPlainString())
+    }
+    var leadingIconSection: (@Composable () -> Unit)? = null
+    if (currencySymbol.isNotBlank()){
+        leadingIconSection = {
+            Text(text = currencySymbol, fontWeight = FontWeight.Bold)
+        }
     }
 
     Column {
@@ -53,13 +62,14 @@ fun AmountInput(
                 imeAction = imeAction,
                 keyboardType = KeyboardType.Decimal
             ),
-            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-        )
-        V_XS_Space()
-        Text(
-            modifier = Modifier.padding(start = MaterialTheme.spacing.medium),
-            text = stringResource(id = R.string.input_required),
-            style = MaterialTheme.typography.labelSmall
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            supportingText = {
+                Text(
+                    text = stringResource(id = R.string.input_required),
+                    style = MaterialTheme.typography.labelSmall
+                )
+            },
+            leadingIcon = leadingIconSection
         )
     }
 }
@@ -76,6 +86,6 @@ private fun hasAMaxOfTwoDecimals(amount: String): Boolean {
 @Composable
 private fun PreviewAmountInput() {
     BudgetPlanTheme {
-        AmountInput(income = 0.0, onValueChange = {})
+        AmountInput(income = 0.0, onValueChange = {}, currencySymbol = "R")
     }
 }
