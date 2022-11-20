@@ -28,6 +28,7 @@ import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpens
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
+import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.FrequencyDate
 
@@ -100,6 +101,11 @@ fun AddEditExpenseScreen(
             FrequencyTypePickerField(
                 addEditExpenseViewModel = addEditExpenseViewModel,
                 horizontalPadding = horizontalPadding.value.dp
+            )
+
+            DebtLockMessageField(
+                modifier = Modifier.padding(horizontal = horizontalPadding),
+                addEditExpenseViewModel = addEditExpenseViewModel
             )
         }
     }
@@ -191,6 +197,37 @@ private fun SetUpUpdateEventListener(
 }
 
 @Composable
+private fun DebtLockMessageField(
+    modifier: Modifier,
+    addEditExpenseViewModel: AddEditExpenseViewModel
+) {
+    val debtAllowed by addEditExpenseViewModel.allowDebt.collectAsState()
+    if (!debtAllowed) {
+
+        val debtCheckResult by addEditExpenseViewModel.debtCheckResult.collectAsState()
+        val currencySymbol by addEditExpenseViewModel.currencySymbol.collectAsState()
+
+        if (debtCheckResult.willBeInDebt) {
+            V_M_Space()
+
+            Text(
+                modifier = modifier,
+                text = stringResource(
+                    id = R.string.debt_lock_message,
+                    currencySymbol,
+                    debtCheckResult.debtAmount,
+                    stringArrayResource(id = R.array.months)[debtCheckResult.forMonth.ordinal],
+                    debtCheckResult.forYear
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
+    }
+}
+
+@Composable
 private fun TitleTextField(addEditExpenseViewModel: AddEditExpenseViewModel) {
     val title by addEditExpenseViewModel.titleStateFlowHandler.valueStateFlow.collectAsState()
 
@@ -269,23 +306,41 @@ private fun RemainingAmount(
     val enteredAmount by addEditExpenseViewModel.amountStateFlowHandler.valueStateFlow.collectAsState()
     val frequencyType by addEditExpenseViewModel.frequencyTypeStateFlowHandler.valueStateFlow.collectAsState()
     val frequencyWhen by addEditExpenseViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
-    val currencySymbol by expenseViewModel.currencySymbol.collectAsState()
+    val currencySymbol by addEditExpenseViewModel.currencySymbol.collectAsState()
+    val totalIncome by incomeViewModel.totalIncomeForSelectedMonth.collectAsState()
+    val totalExpense by expenseViewModel.totalExpenseForSelectedMonth.collectAsState()
 
     if (enteredAmount > 0) {
-        val totalIncome by incomeViewModel.totalIncomeForMonth.collectAsState()
-        val totalExpense by expenseViewModel.totalExpenseForMonth.collectAsState()
-
-        if(frequencyType == FrequencyType.ONCE_OFF) {
-            val frequencyDate = FrequencyDate.parseDate(date = frequencyWhen)
-            expenseViewModel.getTotalExpensesForMonth(month = frequencyDate.month)
-            incomeViewModel.getTotalIncomesForMonth(month = frequencyDate.month)
+        when (frequencyType) {
+            FrequencyType.YEARLY -> {
+                val frequencyDate = FrequencyDate.parseDayMonth(date = frequencyWhen)
+                val selectedMonth = Months.values()[frequencyDate.month]
+                expenseViewModel.onSelectedMonthYearForExpenseChange(month = selectedMonth)
+                incomeViewModel.onSelectedMonthYearForIncomeChange(month = selectedMonth)
+            }
+            FrequencyType.ONCE_OFF -> {
+                val frequencyDate = FrequencyDate.parseDate(date = frequencyWhen)
+                val selectedMonth = Months.values()[frequencyDate.month]
+                expenseViewModel.onSelectedMonthYearForExpenseChange(
+                    month = selectedMonth,
+                    year = frequencyDate.year
+                )
+                incomeViewModel.onSelectedMonthYearForIncomeChange(
+                    month = selectedMonth,
+                    year = frequencyDate.year
+                )
+            }
+            else -> {
+                expenseViewModel.onSelectedMonthYearForExpenseChange()
+                incomeViewModel.onSelectedMonthYearForIncomeChange()
+            }
         }
 
         Text(
             text = stringResource(
                 id = R.string.expense_remaining_amount,
                 currencySymbol,
-                totalIncome - totalExpense - enteredAmount
+                totalIncome - totalExpense - addEditExpenseViewModel.getPayableExpenseAmountBasedOnFrequency()
             ),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.secondary
@@ -314,6 +369,7 @@ private fun FrequencyTypePickerField(
         selectedFrequency = selectedFrequency,
         horizontalPadding = horizontalPadding.value.dp,
         onFrequencySelected = { type ->
+            addEditExpenseViewModel.frequencyTypeStateFlowHandler.onValueChange(type)
             addEditExpenseViewModel.frequencyWhenStateFlowHandler.onValueChange(
                 when (type) {
                     FrequencyType.ONCE_OFF -> FrequencyDateFactory.createCurrentDate()
@@ -325,7 +381,6 @@ private fun FrequencyTypePickerField(
                         .formatToDayMonth()
                 }
             )
-            addEditExpenseViewModel.frequencyTypeStateFlowHandler.onValueChange(type)
         }
     )
 
