@@ -4,6 +4,8 @@ import android.content.Context
 import com.puzzle.industries.data.services.*
 import com.puzzle.industries.data.services.alarmManager.AlarmManagerService
 import com.puzzle.industries.data.services.alarmManager.AlarmManagerServiceImpl
+import com.puzzle.industries.data.storage.database.dao.expense.ExpenseDao
+import com.puzzle.industries.data.storage.database.dao.income.IncomeDao
 import com.puzzle.industries.data.storage.datastore.*
 import com.puzzle.industries.domain.datastores.*
 import com.puzzle.industries.domain.services.*
@@ -75,5 +77,19 @@ internal class ServiceModule {
         calendarService = calendarService,
         alarmManagerService = alarmManagerService,
         incomeDataStore = incomeDataStore
+    )
+
+    @Singleton
+    @Provides
+    fun provideDebtService(
+        calendarService: CalendarService,
+        debtDataStore: DebtDataStore,
+        incomeDao: IncomeDao,
+        expenseDao: ExpenseDao
+    ): DebtService = DebtServiceImpl(
+        calendarService = calendarService,
+        debtDataStore = debtDataStore,
+        incomeDao = incomeDao,
+        expenseDao = expenseDao
     )
 }
