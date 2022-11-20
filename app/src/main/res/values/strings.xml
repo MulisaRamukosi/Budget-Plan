@@ -168,4 +168,5 @@
     <string name="budget_plan_generation_day">Budget plan generation day</string>
     <string name="desc_budget_plan_generation_day">Choose the day on which you want a monthly budget plan to be generated for the upcoming month.</string>
     <string name="expense_remaining_amount">You will have %s%.2f after paying this expense</string>
+    <string name="debt_lock_message">Your budget plan will be in debt by %s%.2f. The debt will occur in %s %d.</string>
 </resources>
