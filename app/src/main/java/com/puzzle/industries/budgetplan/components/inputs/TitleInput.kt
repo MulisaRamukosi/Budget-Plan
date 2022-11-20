@@ -44,13 +44,13 @@ fun TitleInput(
                 imeAction = imeAction,
                 keyboardType = KeyboardType.Text
             ),
-            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
-        )
-        V_XS_Space()
-        Text(
-            modifier = Modifier.padding(start = MaterialTheme.spacing.medium),
-            text = stringResource(id = R.string.input_required),
-            style = MaterialTheme.typography.labelSmall
+            keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+            supportingText = {
+                Text(
+                    text = stringResource(id = R.string.input_required),
+                    style = MaterialTheme.typography.labelSmall
+                )
+            }
         )
     }
 }
