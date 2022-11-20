@@ -27,7 +27,7 @@ internal class IncomeAlarmServiceImpl constructor(
         context,
         requestCode,
         Intent(context, AutoDeleteIncomeBroadcastReceiver::class.java),
-        PendingIntent.FLAG_IMMUTABLE
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
     override suspend fun setAutoDeleteExpenseAlarm() {
