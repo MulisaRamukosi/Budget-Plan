@@ -45,13 +45,21 @@ class IncomeViewModel @Inject constructor(
     private val _totalIncomeForCurrentMonth = MutableStateFlow(value = 0.0)
     val totalIncomeForCurrentMonth: StateFlow<Double> = _totalIncomeForCurrentMonth
 
-    private val _totalIncomeForMonth = MutableStateFlow(value = 0.0)
-    val totalIncomeForMonth: StateFlow<Double> = _totalIncomeForMonth
+    private val _selectedYearForIncome: MutableStateFlow<Int?> = MutableStateFlow(value = null)
+    private val _selectedMonthForIncome: MutableStateFlow<Months?> = MutableStateFlow(value = null)
+    fun onSelectedMonthYearForIncomeChange(month: Months? = null, year: Int? = null) {
+        _selectedMonthForIncome.value = month
+        _selectedYearForIncome.value = year
+    }
+
+    private val _totalIncomeForSelectedMonth = MutableStateFlow(value = 0.0)
+    val totalIncomeForSelectedMonth: StateFlow<Double> = _totalIncomeForSelectedMonth
 
     init {
         initIncomes()
         initTotalIncome()
         initTotalIncomeForMonth()
+        initTotalIncomeForSelectedMonthYear()
     }
 
     private fun initIncomes() = runCoroutine {
@@ -71,17 +79,23 @@ class IncomeViewModel @Inject constructor(
         incomes.collect { incomes ->
             val total = monthTotalCalculator.calculateTotalIncomesForMonth(incomes = incomes)
             _totalIncomeForCurrentMonth.value = total
-            _totalIncomeForMonth.value = total
 
         }
     }
 
-    fun getTotalIncomesForMonth(month: Int) = runCoroutine {
-        incomes.collectLatest { incomes ->
-            _totalIncomeForMonth.value = monthTotalCalculator.calculateTotalIncomesForMonth(
-                month = Months.values()[month],
+    private fun initTotalIncomeForSelectedMonthYear() = runCoroutine {
+        combine(
+            incomes,
+            _selectedMonthForIncome,
+            _selectedYearForIncome
+        ) { incomes, selectedMonth, selectedYear ->
+            monthTotalCalculator.calculateTotalIncomesForMonth(
+                month = selectedMonth,
+                year = selectedYear,
                 incomes = incomes
             )
+        }.distinctUntilChanged().collect { totalIncomeForSelectedMonth ->
+            _totalIncomeForSelectedMonth.value = totalIncomeForSelectedMonth
         }
     }
 

@@ -55,16 +55,27 @@ class ExpenseViewModel @Inject constructor(
     private val _totalExpenses = MutableStateFlow(value = 0.0)
     val totalExpenses = _totalExpenses
 
+    private val _expenses: MutableStateFlow<List<Expense>> = MutableStateFlow(value = emptyList())
+
     private val _totalExpenseForCurrentMonth = MutableStateFlow(value = 0.0)
     val totalExpenseForCurrentMonth: StateFlow<Double> = _totalExpenseForCurrentMonth
 
-    private val _totalExpenseForMonth = MutableStateFlow(value = 0.0)
-    val totalExpenseForMonth: StateFlow<Double> = _totalExpenseForMonth
+    private val _selectedYearForExpense: MutableStateFlow<Int?> = MutableStateFlow(value = null)
+    private val _selectedMonthForExpense: MutableStateFlow<Months?> = MutableStateFlow(value = null)
+    fun onSelectedMonthYearForExpenseChange(month: Months? = null, year: Int? = null) {
+        _selectedMonthForExpense.value = month
+        _selectedYearForExpense.value = year
+    }
+
+    private val _totalExpenseForSelectedMonth = MutableStateFlow(value = 0.0)
+    val totalExpenseForSelectedMonth: StateFlow<Double> = _totalExpenseForSelectedMonth
 
     init {
         initExpenseGroupWithExpenses()
         initTotalExpenses()
         initTotalExpensesForMonth()
+        initExpensesList()
+        initTotalExpenseForSelectedMonthYear()
     }
 
     private fun initExpenseGroupWithExpenses() = runCoroutine {
@@ -84,22 +95,34 @@ class ExpenseViewModel @Inject constructor(
         }
     }
 
+    private fun initExpensesList() = runCoroutine {
+        expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
+            _expenses.value = expenseGroupsWithExpenses.flatMap { it.expenses }
+        }
+    }
+
     private fun initTotalExpensesForMonth() = runCoroutine {
         expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
             val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
             val total = monthTotalCalculator.calculateTotalExpensesForMonth(expenses = expenses)
             _totalExpenseForCurrentMonth.value = total
-            _totalExpenseForMonth.value = total
         }
     }
 
-    fun getTotalExpensesForMonth(month: Int) = runCoroutine {
-        expenseGroupsWithExpenses.collectLatest { expenseGroupsWithExpenses ->
-            val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
-            _totalExpenseForMonth.value = monthTotalCalculator.calculateTotalExpensesForMonth(
-                month = Months.values()[month],
+    private fun initTotalExpenseForSelectedMonthYear() = runCoroutine {
+        combine(
+            _expenses,
+            _selectedMonthForExpense,
+            _selectedYearForExpense
+        ) { expenses, selectedMonth, selectedYear ->
+
+            monthTotalCalculator.calculateTotalExpensesForMonth(
+                month = selectedMonth,
+                year = selectedYear,
                 expenses = expenses
             )
+        }.distinctUntilChanged().collect { totalExpenseForSelectedMonth ->
+            _totalExpenseForSelectedMonth.value = totalExpenseForSelectedMonth
         }
     }
 
