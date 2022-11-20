@@ -4,7 +4,6 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import com.puzzle.industries.data.broadcastReceivers.AutoDeleteExpensesBroadcastReceiver
 
 internal class AlarmManagerServiceImpl constructor(private val context: Context) : AlarmManagerService {
 
@@ -41,7 +40,7 @@ internal class AlarmManagerServiceImpl constructor(private val context: Context)
             context,
             requestCode,
             intent,
-            PendingIntent.FLAG_NO_CREATE
+            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
         ) != null
     }
 }
