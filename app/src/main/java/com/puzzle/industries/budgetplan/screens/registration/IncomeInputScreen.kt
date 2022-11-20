@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.inputs.AmountInput
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
@@ -21,7 +20,6 @@ import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
 import com.puzzle.industries.budgetplan.viewModels.registrationFlow.IncomeInputViewModel
-import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.models.income.Income
 
 @Composable
@@ -40,7 +38,11 @@ fun IncomeInputScreen(
                 note = stringResource(id = R.string.note_income_addition)
             )
 
-            AmountInput(income = 0.0, onValueChange = { viewModel.publishValue(value = it) })
+            AmountInput(
+                income = 0.0,
+                onValueChange = { viewModel.publishValue(value = it) },
+                currencySymbol = ""
+            )
 
             V_M_Space()
 
@@ -50,7 +52,7 @@ fun IncomeInputScreen(
 }
 
 @Composable
-private fun ContinueButton(viewModel: IncomeInputViewModel, onContinueClick: (Income) -> Unit){
+private fun ContinueButton(viewModel: IncomeInputViewModel, onContinueClick: (Income) -> Unit) {
     val income by viewModel.sub.collectAsState()
     val incomeTitle = stringResource(id = R.string.base_income)
     val incomeDescription = stringResource(id = R.string.desc_base_income)
@@ -74,6 +76,6 @@ private fun ContinueButton(viewModel: IncomeInputViewModel, onContinueClick: (In
 @Composable
 private fun PreviewIncomeInputScreen() {
     BudgetPlanTheme(dynamicColor = false) {
-        IncomeInputScreen{}
+        IncomeInputScreen {}
     }
 }
