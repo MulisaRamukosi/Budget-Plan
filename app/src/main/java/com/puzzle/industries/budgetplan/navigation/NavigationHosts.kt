@@ -32,10 +32,6 @@ fun HomeScreenNestedNavHost(
     mainNavController: NavHostController,
     homeScreenNavController: NavHostController
 ){
-    val incomeViewModel: IncomeViewModel = hiltViewModel()
-    val expenseViewModel: ExpenseViewModel = hiltViewModel()
-    val reminderViewModel: ReminderViewModel = hiltViewModel()
-
     NavHost(
         modifier = modifier,
         navController = homeScreenNavController,
@@ -43,9 +39,9 @@ fun HomeScreenNestedNavHost(
             mainNavController = mainNavController,
             homeScreenNavController = homeScreenNavController,
             windowSizeClass = windowSizeClass,
-            incomeViewModel = incomeViewModel,
-            expenseViewModel = expenseViewModel,
-            reminderViewModel = reminderViewModel
+            incomeViewModel = hiltViewModel(),
+            expenseViewModel = hiltViewModel(),
+            reminderViewModel = hiltViewModel()
         )
     )
 }
