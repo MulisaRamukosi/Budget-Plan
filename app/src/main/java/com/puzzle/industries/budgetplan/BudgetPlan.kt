@@ -24,7 +24,7 @@ class BudgetPlan : Application() {
     private fun setAutoDeleteAlarms(){
         CoroutineScope(context = Dispatchers.IO).launch {
             launch { expenseAlarmService.setAutoDeleteExpenseAlarm() }
-            launch { incomeAlarmService.setAutoDeleteExpenseAlarm() }
+            launch { incomeAlarmService.setAutoDeleteIncomeAlarm() }
         }
     }
 }

@@ -31,11 +31,7 @@ internal class ExpenseAlarmServiceImpl constructor(
 
     override suspend fun setAutoDeleteExpenseAlarm() {
         expenseDataStore.getAutoDeleteExpenseState().collect { enabled ->
-            val alarmIsSet = alarmManagerService.alarmIsSet(
-                requestCode = requestCode,
-                intent = Intent(context, AutoDeleteExpensesBroadcastReceiver::class.java)
-            )
-            if (enabled && !alarmIsSet) {
+            if (enabled) {
                 setAlarm()
             } else {
                 alarmManagerService.cancelAlarm(pendingIntent = autoDeleteExpenseWithReminderPendingIntent)

@@ -30,13 +30,9 @@ internal class IncomeAlarmServiceImpl constructor(
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
-    override suspend fun setAutoDeleteExpenseAlarm() {
+    override suspend fun setAutoDeleteIncomeAlarm() {
         incomeDataStore.getAutoDeleteIncomeState().collect { enabled ->
-            val alarmIsSet = alarmManagerService.alarmIsSet(
-                requestCode = requestCode,
-                intent = Intent(context, AutoDeleteIncomeBroadcastReceiver::class.java)
-            )
-            if (enabled && !alarmIsSet) {
+            if (enabled) {
                 setAlarm()
             } else {
                 alarmManagerService.cancelAlarm(pendingIntent = autoDeleteIncomePendingIntent)

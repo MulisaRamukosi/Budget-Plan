@@ -34,13 +34,4 @@ internal class AlarmManagerServiceImpl constructor(private val context: Context)
     override fun cancelAlarm(pendingIntent: PendingIntent) {
         alarmManager?.cancel(pendingIntent)
     }
-
-    override fun alarmIsSet(requestCode: Int, intent: Intent):Boolean {
-        return PendingIntent.getBroadcast(
-            context,
-            requestCode,
-            intent,
-            PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
-        ) != null
-    }
 }

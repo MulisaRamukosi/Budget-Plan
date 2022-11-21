@@ -18,7 +18,7 @@ class SetAutoDeleteIncomeAlarmBroadcastReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         CoroutineScope(Dispatchers.Default).launch {
-            incomeAlarmService.setAutoDeleteExpenseAlarm()
+            incomeAlarmService.setAutoDeleteIncomeAlarm()
         }
     }
 }
