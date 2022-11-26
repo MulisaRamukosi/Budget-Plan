@@ -10,7 +10,9 @@ import com.puzzle.industries.budgetplan.delegates.implementation.CurrencySymbolO
 import com.puzzle.industries.domain.common.response.Response
 import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
+import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.services.DebtService
 import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import com.puzzle.industries.domain.usescases.income.IncomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +24,8 @@ import javax.inject.Inject
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
     private val currencyPreferenceService: CountryCurrencyDataStore,
-    private val monthTotalCalculator: MonthTotalAmountCalculatorService
+    private val monthTotalCalculator: MonthTotalAmountCalculatorService,
+    private val debtService: DebtService
 ) : ViewModel(),
     CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
     CrudViewModelHandlerDelegate<Boolean, Income> by CrudViewModelHandlerDelegateImpl(),
@@ -55,11 +58,21 @@ class IncomeViewModel @Inject constructor(
     private val _totalIncomeForSelectedMonth = MutableStateFlow(value = 0.0)
     val totalIncomeForSelectedMonth: StateFlow<Double> = _totalIncomeForSelectedMonth
 
+    private val _debtAllowed = MutableStateFlow(value = false)
+
+    private val _debtWarning by lazy {
+        MutableSharedFlow<DebtCheckResult>()
+    }
+    val debtWarning: SharedFlow<DebtCheckResult> by lazy {
+        _debtWarning
+    }
+
     init {
         initIncomes()
         initTotalIncome()
         initTotalIncomeForMonth()
         initTotalIncomeForSelectedMonthYear()
+        initDebtAllowedFlow()
     }
 
     private fun initIncomes() = runCoroutine {
@@ -99,6 +112,12 @@ class IncomeViewModel @Inject constructor(
         }
     }
 
+    private fun initDebtAllowedFlow() = runCoroutine {
+        debtService.getDebtAllowedState().collect {
+            _debtAllowed.value = it
+        }
+    }
+
     fun getIncomeById(id: UUID): Income? = incomes.value.find { income ->
         income.id == id
     }
@@ -122,6 +141,29 @@ class IncomeViewModel @Inject constructor(
     }
 
     fun deleteIncome(reason: String, vararg incomes: Income) = runCoroutine {
+        if (!_debtAllowed.value){
+            val debtResult = willBeInDebtAfterRemovingIncomes(incomes = incomes)
+            if (debtResult.willBeInDebt){
+                _debtWarning.emit(value = debtResult)
+            }
+            else{
+                initiateIncomeDelete(reason = reason, incomes = incomes)
+            }
+        }
+        else {
+            initiateIncomeDelete(reason = reason, incomes = incomes)
+        }
+    }
+
+    private fun willBeInDebtAfterRemovingIncomes(vararg incomes: Income):DebtCheckResult {
+        return debtService.willBeInDebtAfterRemovingIncomes(incomes = incomes)
+    }
+
+    fun forceDeleteIncome(reason: String, vararg incomes: Income) = runCoroutine {
+        initiateIncomeDelete(reason = reason, incomes = incomes)
+    }
+
+    private fun initiateIncomeDelete(reason: String, vararg incomes: Income) = runCoroutine {
         crudResponseEventEmitter.emit(
             value = incomeUseCase.delete.delete(
                 reason = reason,

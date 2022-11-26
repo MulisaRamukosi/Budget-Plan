@@ -8,9 +8,15 @@ internal class CalendarServiceImpl : CalendarService {
 
     override fun getInstance(): Calendar = tryToGetCachedCalendarInstance()
 
-    override fun setMonth(month: Months): Calendar {
+    override fun setMonthYear(month: Months, year: Int?): Calendar {
         val instance = tryToGetCachedCalendarInstance()
+        instance.set(Calendar.DAY_OF_MONTH, 1)
         val currentMonth = instance.get(Calendar.MONTH)
+        val currentYear = instance.get(Calendar.YEAR)
+
+        if (year != null && year > currentYear){
+            instance.set(Calendar.YEAR, year)
+        }
 
         if (currentMonth > month.ordinal) {
             val monthsLeftTillEndOfYear = 11 - currentMonth

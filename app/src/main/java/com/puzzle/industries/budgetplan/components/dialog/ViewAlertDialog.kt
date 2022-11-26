@@ -2,7 +2,6 @@
 
 package com.puzzle.industries.budgetplan.components.dialog
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -57,15 +56,10 @@ fun ViewAlertDialog(
                 modifier = Modifier
                     .padding(all = alertMargins)
                     .heightIn(max = maxDialogHeight)
-                    .widthIn(min = 280.dp, max = 560.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                )
+                    .widthIn(min = 280.dp, max = 560.dp)
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(color = MaterialTheme.colorScheme.background)
+                    modifier = Modifier.fillMaxWidth()
 
                 ) {
                     dialogTitleSection(

@@ -29,9 +29,9 @@
     <string name="day">Day</string>
     <string name="debt">Debt</string>
     <string name="delete">delete</string>
-    <string name="delete_expense">Delete Expense</string>
+    <string name="delete_expense">Delete Expense?</string>
     <string name="delete_expense_category">Delete Expense Category</string>
-    <string name="delete_income">Delete Income</string>
+    <string name="delete_income">Delete Income?</string>
     <string name="desc_add_icon">Add icon</string>
     <string name="desc_add_income">Add income</string>
     <string name="desc_alarm_icon">Alarm icon</string>
@@ -169,4 +169,8 @@
     <string name="desc_budget_plan_generation_day">Choose the day on which you want a monthly budget plan to be generated for the upcoming month.</string>
     <string name="expense_remaining_amount">You will have %s%.2f after paying this expense</string>
     <string name="debt_lock_message">Your budget plan will be in debt by %s%.2f. The debt will occur in %s %d.</string>
+    <string name="income_debt_warning_message">Your budget plan will be in debt by %s%.2f after removing the income(s). The debt will occur in %s %d.</string>
+    <string name="debt_warning">Debt Warning</string>
+    <string name="desc_warning">warning icon</string>
+    <string name="delete_anyway">Delete anyway!</string>
 </resources>

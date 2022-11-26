@@ -91,6 +91,11 @@ fun AddEditIncomeScreen(
                 addEditIncomeViewModel = addEditIncomeViewModel,
                 horizontalPadding = horizontalPadding.value.dp
             )
+
+            DebtLockMessageField(
+                modifier = Modifier.padding(horizontal = horizontalPadding),
+                addEditIncomeViewModel = addEditIncomeViewModel
+            )
         }
     }
 }
@@ -242,13 +247,45 @@ private fun FrequencyTypePickerField(
         }
     )
 
+    val frequencyWhen by addEditIncomeViewModel.frequencyWhenStateFlowHandler.valueStateFlow.collectAsState()
     FrequencyWhenPicker(
         selectedFrequency = selectedFrequency,
-        selectedValue = addEditIncomeViewModel.frequencyWhenStateFlowHandler.getValue(),
+        selectedValue = frequencyWhen,
         frequencyNote = selectedFrequencyNote,
         horizontalPadding = horizontalPadding.value.dp,
         onValueChange = addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange
     )
+}
+
+@Composable
+private fun DebtLockMessageField(
+    modifier: Modifier,
+    addEditIncomeViewModel: AddEditIncomeViewModel
+) {
+    val debtAllowed by addEditIncomeViewModel.allowDebt.collectAsState()
+    if (!debtAllowed) {
+
+        val debtCheckResult by addEditIncomeViewModel.debtCheckResult.collectAsState()
+        val currencySymbol by addEditIncomeViewModel.currencySymbol.collectAsState()
+
+        if (debtCheckResult.willBeInDebt) {
+            V_M_Space()
+
+            Text(
+                modifier = modifier,
+                text = stringResource(
+                    id = R.string.debt_lock_message,
+                    currencySymbol,
+                    debtCheckResult.amount,
+                    stringArrayResource(id = R.array.months)[debtCheckResult.forMonth.ordinal],
+                    debtCheckResult.forYear
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
+    }
 }
 
 @Composable

@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface DebtService {
     fun getDebtAllowedState(): Flow<Boolean>
+    fun getRemainingAmountAfterAllExpenses(expense: Expense, isAnExistingExpense: Boolean): DebtCheckResult
     fun willBeInDebtAfterAddingExpense(expense: Expense): DebtCheckResult
     fun willBeInDebtAfterModifyingExpense(expense: Expense): DebtCheckResult
-    fun willBeInDebtAfterRemovingIncome(income: Income): DebtCheckResult
-    fun willBeInDebtAfterModifyingIncome(expense: Expense): Flow<DebtCheckResult>
+    fun willBeInDebtAfterRemovingIncomes(vararg incomes: Income): DebtCheckResult
+    fun willBeInDebtAfterModifyingIncome(income: Income): DebtCheckResult
 }

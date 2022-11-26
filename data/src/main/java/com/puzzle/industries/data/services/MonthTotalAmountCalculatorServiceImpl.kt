@@ -58,7 +58,7 @@ internal class MonthTotalAmountCalculatorServiceImpl(private val calendarService
 
     private fun getCalendarInstance(month: Months?, year: Int?): Calendar {
         val calendarInstance =
-            if (month == null) calendarService.getInstance() else calendarService.setMonth(month = month)
+            if (month == null) calendarService.getInstance() else calendarService.setMonthYear(month = month)
 
         calendarInstance.set(
             Calendar.DAY_OF_MONTH,

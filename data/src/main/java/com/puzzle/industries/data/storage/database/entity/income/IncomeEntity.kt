@@ -16,4 +16,18 @@ internal data class IncomeEntity(
     val title: String,
     val description: String,
     val lastModifyDate: Date = Date()
-)
+){
+    override fun equals(other: Any?): Boolean {
+        return other is IncomeEntity && id == other.id
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + frequencyType.hashCode()
+        result = 31 * result + frequencyWhen.hashCode()
+        result = 31 * result + amount.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + description.hashCode()
+        return result
+    }
+}

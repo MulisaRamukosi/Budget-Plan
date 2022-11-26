@@ -17,7 +17,6 @@ import java.util.*
 class AddEditExpenseViewModelFactory @AssistedInject constructor(
     @Assisted owner: SavedStateRegistryOwner,
     private val debtService: DebtService,
-    private val monthTotalAmountCalculatorService: MonthTotalAmountCalculatorService,
     private val countryCurrencyDataStore: CountryCurrencyDataStore,
     @Assisted private val expenseGroupId: UUID,
     @Assisted private val prevExpense: Expense?
@@ -32,7 +31,6 @@ class AddEditExpenseViewModelFactory @AssistedInject constructor(
         expenseGroupId = expenseGroupId,
         prevExpense = prevExpense,
         debtService = debtService,
-        monthTotalAmountCalculatorService = monthTotalAmountCalculatorService,
         countryCurrencyDataStore = countryCurrencyDataStore
     ) as T
 }

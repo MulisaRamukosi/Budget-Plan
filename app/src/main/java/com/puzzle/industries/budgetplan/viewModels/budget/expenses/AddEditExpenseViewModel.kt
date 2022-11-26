@@ -28,7 +28,6 @@ class AddEditExpenseViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val expenseGroupId: UUID,
     private val debtService: DebtService,
-    private val monthTotalAmountCalculatorService: MonthTotalAmountCalculatorService,
     private val countryCurrencyDataStore: CountryCurrencyDataStore,
     private val prevExpense: Expense?
 ) : ViewModel(),
@@ -94,7 +93,7 @@ class AddEditExpenseViewModel @AssistedInject constructor(
         MutableStateFlow(
             value = DebtCheckResult(
                 willBeInDebt = false,
-                debtAmount = 0.0,
+                amount = 0.0,
                 forMonth = Months.JANUARY,
                 forYear = 2022
             )
@@ -102,6 +101,13 @@ class AddEditExpenseViewModel @AssistedInject constructor(
     val debtCheckResult: StateFlow<DebtCheckResult> = _debtCheckResult
 
     val currencySymbol: StateFlow<String> = currencySymbolFlow
+
+    private val _remainAmountResult: MutableStateFlow<DebtCheckResult?> by lazy {
+        MutableStateFlow(
+            value = null
+        )
+    }
+    val remainingAmountResult: StateFlow<DebtCheckResult?> = _remainAmountResult
 
     val expense: Expense
         get() = Expense(
@@ -122,10 +128,7 @@ class AddEditExpenseViewModel @AssistedInject constructor(
         initAllInputsValidFlow()
         initDebtAllowedFlow()
         initDebtFlows()
-    }
-
-    fun getPayableExpenseAmountBasedOnFrequency(): Double {
-        return monthTotalAmountCalculatorService.calculatePayableExpenseInAMonth(expense)
+        initRemainingAmountFlow()
     }
 
     private fun cacheExpense() {
@@ -163,8 +166,8 @@ class AddEditExpenseViewModel @AssistedInject constructor(
 
         val requiredConditions = combine(
             requiredInputsCondition,
-            allowDebt,
-            debtCheckResult
+            _allowDebt,
+            _debtCheckResult
         ) { inputsCondition, allowDebt, debtCheckResult ->
             if (!allowDebt) return@combine inputsCondition && !debtCheckResult.willBeInDebt
             return@combine inputsCondition
@@ -194,6 +197,28 @@ class AddEditExpenseViewModel @AssistedInject constructor(
                     _debtCheckResult.value =
                         debtService.willBeInDebtAfterAddingExpense(expense = it)
                 }
+            }
+    }
+
+    private fun initRemainingAmountFlow() = runCoroutine {
+        combine(
+            amountStateFlowHandler.valueStateFlow,
+            frequencyWhenStateFlowHandler.valueStateFlow
+        ) { _, _ -> expense }
+            .distinctUntilChanged().collect {
+                val result = debtService.getRemainingAmountAfterAllExpenses(
+                    expense = it,
+                    isAnExistingExpense = isUpdatingConditionHandler.getValue()
+                )
+                if(result.willBeInDebt){
+                    _remainAmountResult.value = DebtCheckResult(
+                        willBeInDebt = true,
+                        amount = -result.amount,
+                        forMonth = result.forMonth,
+                        forYear = result.forYear
+                    )
+                }
+                else _remainAmountResult.value = result
             }
     }
 }

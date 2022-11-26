@@ -11,19 +11,20 @@ import com.puzzle.industries.budgetplan.delegates.implementation.CoroutineHandle
 import com.puzzle.industries.budgetplan.delegates.implementation.CurrencySymbolObserverDelegateImpl
 import com.puzzle.industries.budgetplan.delegates.implementation.SavedStateHandlerDelegateImpl
 import com.puzzle.industries.budgetplan.util.configs.FrequencyConfig
+import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
+import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.services.DebtService
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import java.util.*
 
 class AddEditIncomeViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val prevIncome: Income?,
-    private val countryCurrencyDataStore: CountryCurrencyDataStore
+    private val countryCurrencyDataStore: CountryCurrencyDataStore,
+    private val debtService: DebtService
 ) : ViewModel(),
     CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyDataStore),
     SavedStateHandlerDelegate by SavedStateHandlerDelegateImpl(savedStateHandle),
@@ -82,6 +83,20 @@ class AddEditIncomeViewModel @AssistedInject constructor(
 
     val currencySymbol: StateFlow<String> = currencySymbolFlow
 
+    private val _allowDebt: MutableStateFlow<Boolean> = MutableStateFlow(value = false)
+    val allowDebt: StateFlow<Boolean> = _allowDebt
+
+    private val _debtCheckResult: MutableStateFlow<DebtCheckResult> =
+        MutableStateFlow(
+            value = DebtCheckResult(
+                willBeInDebt = false,
+                amount = 0.0,
+                forMonth = Months.JANUARY,
+                forYear = 2022
+            )
+        )
+    val debtCheckResult: StateFlow<DebtCheckResult> = _debtCheckResult
+
     val income: Income
         get() = Income(
             id = getStateFlow(key = Income::id.name, initialValue = UUID.randomUUID()).value,
@@ -95,6 +110,8 @@ class AddEditIncomeViewModel @AssistedInject constructor(
     init {
         cacheIncomeId()
         initAllInputsValidFlow()
+        initDebtAllowedFlow()
+        initDebtFlows()
     }
 
     private fun cacheIncomeId() {
@@ -105,7 +122,7 @@ class AddEditIncomeViewModel @AssistedInject constructor(
 
     private fun initAllInputsValidFlow() {
         runCoroutine {
-            val requiredInputsCheckFlow: Flow<Boolean> = combine(
+            val requiredInputsCondition: Flow<Boolean> = combine(
                 titleStateFlowHandler.valueStateFlow,
                 amountStateFlowHandler.valueStateFlow,
                 descriptionStateFlowHandler.valueStateFlow,
@@ -124,10 +141,39 @@ class AddEditIncomeViewModel @AssistedInject constructor(
 
                 valueChangedCondition && title.isBlank().not() && amount > 0
             }
-            requiredInputsCheckFlow.distinctUntilChanged().collect { allInputsMeetCondition ->
+
+            val requiredConditions = combine(
+                requiredInputsCondition,
+                _allowDebt,
+                _debtCheckResult
+            ) { inputsCondition, allowDebt, debtCheckResult ->
+                if (!allowDebt) return@combine inputsCondition && !debtCheckResult.willBeInDebt
+                return@combine inputsCondition
+            }
+
+            requiredConditions.distinctUntilChanged().collect { allInputsMeetCondition ->
                 requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
             }
         }
+    }
+
+    private fun initDebtAllowedFlow() = runCoroutine {
+        debtService.getDebtAllowedState().collect { allowDebt ->
+            _allowDebt.value = allowDebt
+        }
+    }
+
+    private fun initDebtFlows() = runCoroutine {
+        combine(
+            amountStateFlowHandler.valueStateFlow,
+            frequencyTypeStateFlowHandler.valueStateFlow
+        ) { _, _ -> income }
+            .distinctUntilChanged().collect {
+                if (isUpdatingConditionHandler.getValue()) {
+                    _debtCheckResult.value =
+                        debtService.willBeInDebtAfterModifyingIncome(income = it)
+                }
+            }
     }
 
 }

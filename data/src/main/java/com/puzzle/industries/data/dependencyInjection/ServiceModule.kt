@@ -1,6 +1,8 @@
 package com.puzzle.industries.data.dependencyInjection
 
 import android.content.Context
+import com.puzzle.industries.data.mapper.expense.ExpenseMapper
+import com.puzzle.industries.data.mapper.income.IncomeMapper
 import com.puzzle.industries.data.services.*
 import com.puzzle.industries.data.services.alarmManager.AlarmManagerService
 import com.puzzle.industries.data.services.alarmManager.AlarmManagerServiceImpl
@@ -8,6 +10,9 @@ import com.puzzle.industries.data.storage.database.dao.expense.ExpenseDao
 import com.puzzle.industries.data.storage.database.dao.income.IncomeDao
 import com.puzzle.industries.data.storage.datastore.*
 import com.puzzle.industries.domain.datastores.*
+import com.puzzle.industries.domain.repository.expense.ExpenseRepository
+import com.puzzle.industries.domain.repository.expenseGroup.ExpenseGroupRepository
+import com.puzzle.industries.domain.repository.income.IncomeRepository
 import com.puzzle.industries.domain.services.*
 import dagger.Module
 import dagger.Provides
@@ -84,12 +89,12 @@ internal class ServiceModule {
     fun provideDebtService(
         calendarService: CalendarService,
         debtDataStore: DebtDataStore,
-        incomeDao: IncomeDao,
-        expenseDao: ExpenseDao
+        incomeRepo: IncomeRepository,
+        expenseGroupRepo: ExpenseGroupRepository
     ): DebtService = DebtServiceImpl(
         calendarService = calendarService,
         debtDataStore = debtDataStore,
-        incomeDao = incomeDao,
-        expenseDao = expenseDao
+        incomeRepo = incomeRepo,
+        expenseGroupRepo = expenseGroupRepo
     )
 }
