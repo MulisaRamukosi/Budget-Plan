@@ -253,6 +253,7 @@ private fun FrequencyTypePickerField(
         selectedValue = frequencyWhen,
         frequencyNote = selectedFrequencyNote,
         horizontalPadding = horizontalPadding.value.dp,
+        calendarService = addEditIncomeViewModel.calendarService,
         onValueChange = addEditIncomeViewModel.frequencyWhenStateFlowHandler.onValueChange
     )
 }

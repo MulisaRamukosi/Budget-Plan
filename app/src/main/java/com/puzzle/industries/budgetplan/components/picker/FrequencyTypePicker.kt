@@ -25,6 +25,7 @@ import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.FrequencyDate
+import com.puzzle.industries.domain.services.CalendarService
 
 @Composable
 fun FrequencyTypePicker(
@@ -59,6 +60,7 @@ fun FrequencyWhenPicker(
     selectedValue: String,
     frequencyNote: String,
     horizontalPadding: Dp,
+    calendarService: CalendarService,
     onValueChange: (String) -> Unit
 ) {
     when (selectedFrequency) {
@@ -89,6 +91,7 @@ fun FrequencyWhenPicker(
             selectedValue = selectedValue,
             frequencyNote = frequencyNote,
             horizontalPadding = horizontalPadding,
+            calendarService = calendarService,
             onValueChange = onValueChange
         )
 
@@ -187,6 +190,7 @@ private fun YearlyFrequencyPicker(
     selectedValue: String,
     frequencyNote: String,
     horizontalPadding: Dp,
+    calendarService: CalendarService,
     onValueChange: (String) -> Unit
 ) {
     V_M_Space()
@@ -203,6 +207,7 @@ private fun YearlyFrequencyPicker(
         V_S_Space()
         DayAndMonthPicker(modifier = Modifier.fillMaxWidth(),
             preselectedFrequencyDate = FrequencyDate.parseDayMonth(date = selectedValue),
+            calendarService = calendarService,
             onDateSelected = { day, month ->
                 val date = FrequencyDate(day = day, month = month, year = 0)
                 onValueChange(date.formatToDayMonth())

@@ -7,6 +7,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeViewModel
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.services.CalendarService
 import com.puzzle.industries.domain.services.DebtService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -16,7 +17,8 @@ class AddEditIncomeViewModelFactory @AssistedInject constructor(
     @Assisted owner: SavedStateRegistryOwner,
     @Assisted private val prevIncome: Income?,
     private val countryCurrencyDataStore: CountryCurrencyDataStore,
-    private val debtService: DebtService
+    private val debtService: DebtService,
+    private val calendarService: CalendarService
 ) : AbstractSavedStateViewModelFactory(owner, null) {
 
     override fun <T : ViewModel> create(
@@ -27,7 +29,8 @@ class AddEditIncomeViewModelFactory @AssistedInject constructor(
         savedStateHandle = handle,
         prevIncome = prevIncome,
         countryCurrencyDataStore = countryCurrencyDataStore,
-        debtService = debtService
+        debtService = debtService,
+        calendarService = calendarService
     ) as T
 
 }

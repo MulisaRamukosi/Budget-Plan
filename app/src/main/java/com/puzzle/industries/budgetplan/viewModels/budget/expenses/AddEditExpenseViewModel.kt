@@ -15,6 +15,7 @@ import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.expense.Expense
+import com.puzzle.industries.domain.services.CalendarService
 import com.puzzle.industries.domain.services.DebtService
 import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import dagger.assisted.AssistedInject
@@ -29,7 +30,8 @@ class AddEditExpenseViewModel @AssistedInject constructor(
     private val expenseGroupId: UUID,
     private val debtService: DebtService,
     private val countryCurrencyDataStore: CountryCurrencyDataStore,
-    private val prevExpense: Expense?
+    private val prevExpense: Expense?,
+    val calendarService: CalendarService
 ) : ViewModel(),
     CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyDataStore),
     SavedStateHandlerDelegate by SavedStateHandlerDelegateImpl(savedStateHandle),

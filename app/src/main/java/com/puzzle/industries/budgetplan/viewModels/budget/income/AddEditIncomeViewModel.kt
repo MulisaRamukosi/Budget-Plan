@@ -15,6 +15,7 @@ import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.services.CalendarService
 import com.puzzle.industries.domain.services.DebtService
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.*
@@ -24,7 +25,8 @@ class AddEditIncomeViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val prevIncome: Income?,
     private val countryCurrencyDataStore: CountryCurrencyDataStore,
-    private val debtService: DebtService
+    private val debtService: DebtService,
+    val calendarService: CalendarService
 ) : ViewModel(),
     CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyDataStore),
     SavedStateHandlerDelegate by SavedStateHandlerDelegateImpl(savedStateHandle),

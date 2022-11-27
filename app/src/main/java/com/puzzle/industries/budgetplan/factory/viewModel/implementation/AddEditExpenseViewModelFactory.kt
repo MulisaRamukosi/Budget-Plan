@@ -7,6 +7,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpenseViewModel
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.expense.Expense
+import com.puzzle.industries.domain.services.CalendarService
 import com.puzzle.industries.domain.services.DebtService
 import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import dagger.assisted.Assisted
@@ -16,10 +17,11 @@ import java.util.*
 @Suppress("UNCHECKED_CAST")
 class AddEditExpenseViewModelFactory @AssistedInject constructor(
     @Assisted owner: SavedStateRegistryOwner,
+    @Assisted private val expenseGroupId: UUID,
+    @Assisted private val prevExpense: Expense?,
     private val debtService: DebtService,
     private val countryCurrencyDataStore: CountryCurrencyDataStore,
-    @Assisted private val expenseGroupId: UUID,
-    @Assisted private val prevExpense: Expense?
+    private val calendarService: CalendarService,
 ) : AbstractSavedStateViewModelFactory(owner, null) {
 
     override fun <T : ViewModel> create(
@@ -31,6 +33,7 @@ class AddEditExpenseViewModelFactory @AssistedInject constructor(
         expenseGroupId = expenseGroupId,
         prevExpense = prevExpense,
         debtService = debtService,
-        countryCurrencyDataStore = countryCurrencyDataStore
+        countryCurrencyDataStore = countryCurrencyDataStore,
+        calendarService = calendarService
     ) as T
 }

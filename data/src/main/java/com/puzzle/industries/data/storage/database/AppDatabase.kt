@@ -35,7 +35,7 @@ import com.puzzle.industries.data.storage.database.typeConverters.jsonConverter.
         IncomeHistoryEntity::class,
         ReminderEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(

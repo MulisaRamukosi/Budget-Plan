@@ -6,4 +6,5 @@ import java.util.Calendar
 interface CalendarService {
     fun getInstance(): Calendar
     fun setMonthYear(month: Months, year: Int? = null): Calendar
+    fun getTotalDaysForMonth(month: Months): Int
 }

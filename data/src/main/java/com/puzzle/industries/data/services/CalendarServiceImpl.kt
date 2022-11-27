@@ -31,6 +31,12 @@ internal class CalendarServiceImpl : CalendarService {
         return instance
     }
 
+    override fun getTotalDaysForMonth(month: Months): Int {
+        val calendarInstance = tryToGetCachedCalendarInstance()
+        calendarInstance.set(Calendar.MONTH, month.ordinal)
+        return calendarInstance.getActualMaximum(Calendar.DAY_OF_MONTH)
+    }
+
     private fun tryToGetCachedCalendarInstance(): Calendar {
         //TODO: implement logic to retrieve calendar from datastore
         return Calendar.getInstance()
