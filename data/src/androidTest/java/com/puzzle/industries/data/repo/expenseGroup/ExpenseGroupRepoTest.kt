@@ -34,7 +34,8 @@ private val testEntities = arrayOf(
     )
 )
 
-private val expenseGroupMapper: ExpenseGroupMapper = ExpenseGroupMapper()
+private val expenseGroupMapper: ExpenseGroupMapper =
+    ExpenseGroupMapper(expenseMapper = ExpenseMapper())
 
 @RunWith(Suite::class)
 @ExperimentalCoroutinesApi

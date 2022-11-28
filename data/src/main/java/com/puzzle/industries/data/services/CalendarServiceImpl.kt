@@ -37,7 +37,7 @@ internal class CalendarServiceImpl : CalendarService {
         return calendarInstance.getActualMaximum(Calendar.DAY_OF_MONTH)
     }
 
-    private fun tryToGetCachedCalendarInstance(): Calendar {
+    fun tryToGetCachedCalendarInstance(): Calendar {
         //TODO: implement logic to retrieve calendar from datastore
         return Calendar.getInstance()
     }

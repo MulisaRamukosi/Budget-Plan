@@ -11,7 +11,7 @@ buildscript {
         coroutines_version = '1.6.4'
         core_ktx_version = '1.9.0'
         pref_data_store_version = '1.0.0'
-        reflection_version = '1.7.10'
+        reflection_version = '1.7.21'
         constraint_layout_version = '1.0.1'
     }
 }
@@ -29,9 +29,9 @@ plugins {
 project.ext{
     minSdk = 21
     targetSdk = 32
-    versionCode = 3
+    versionCode = 4
     compileSdk = 33
-    versionName = "0.0.3"
+    versionName = "0.0.4"
     applicationId = "com.puzzle.industries.budgetplan"
 }
 

@@ -1,6 +1,7 @@
 package com.puzzle.industries.data.repo.expenseGroup
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.puzzle.industries.data.mapper.expense.ExpenseMapper
 import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupHistoryMapper
 import com.puzzle.industries.data.mapper.expenseGroup.ExpenseGroupMapper
 import com.puzzle.industries.data.repo.BaseRepoDeleteTest
@@ -37,7 +38,7 @@ private val testEntities = arrayOf(
 )
 
 private val expenseGroupHistoryMapper =
-    ExpenseGroupHistoryMapper(expenseGroupMapper = ExpenseGroupMapper())
+    ExpenseGroupHistoryMapper(expenseGroupMapper = ExpenseGroupMapper(expenseMapper = ExpenseMapper()))
 
 @RunWith(Suite::class)
 @ExperimentalCoroutinesApi
