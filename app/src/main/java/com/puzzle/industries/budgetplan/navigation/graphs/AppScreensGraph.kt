@@ -15,10 +15,10 @@ import com.puzzle.industries.budgetplan.navigation.constants.ValueKey
 import com.puzzle.industries.budgetplan.screens.CountryPickerScreen
 import com.puzzle.industries.budgetplan.screens.MainScreen
 import com.puzzle.industries.budgetplan.screens.SplashScreen
-import com.puzzle.industries.budgetplan.screens.WelcomeScreen
+import com.puzzle.industries.budgetplan.screens.registrationFlow.WelcomeScreen
 import com.puzzle.industries.budgetplan.viewModels.intro.SplashScreenViewModel
 import com.puzzle.industries.budgetplan.viewModels.intro.WelcomeMessagesViewModel
-import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
+import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CountryCurrencyViewModel
 import com.puzzle.industries.domain.constants.CountryCurrencyConfig
 
 
@@ -52,23 +52,23 @@ fun appScreensGraph(
 
 private fun NavGraphBuilder.countryPickerScreen(
     navController: NavHostController,
-    viewModel: CurrencyViewModel
+    viewModel: CountryCurrencyViewModel
 ) {
     composable(
         route = Routes.CurrencyPicker.path,
         arguments = listOf(navArgument(name = RouteParamKey.ID) { type = NavType.StringType })
     ) { navBackStackEntry ->
 
-        val currencyName = navBackStackEntry.arguments?.getString(RouteParamKey.ID) ?: CountryCurrencyConfig.DEFAULT_CURRENCY
+        val countryName = navBackStackEntry.arguments?.getString(RouteParamKey.ID) ?: CountryCurrencyConfig.DEFAULT_COUNTRY
         val selectedCountryCurrency by viewModel.sub.collectAsState(
-            initial = viewModel.getCountryCurrencyByCurrencyName(
-                currencyName = currencyName
+            initial = viewModel.getCountryCurrencyByCountryName(
+                countryName = countryName
             )
         )
         viewModel.publishValue(value = selectedCountryCurrency)
 
-        navController.SetResult(key = ValueKey.COUNTRY_CURRENCY_KEY.name, value = selectedCountryCurrency.currency)
-        CountryPickerScreen(viewModel = viewModel, onDoneClick = { navController.popBackStack() })
+        navController.SetResult(key = ValueKey.COUNTRY_CURRENCY_KEY.name, value = selectedCountryCurrency.country)
+        CountryPickerScreen(countryCurrencyViewModel = viewModel, onDoneClick = { navController.popBackStack() })
     }
 }
 

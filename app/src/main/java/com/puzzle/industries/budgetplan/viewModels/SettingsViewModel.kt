@@ -31,11 +31,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     val defaultCountryCurrency = countryCurrencyService.getDefaultCountryCurrency()
-    val selectedCurrency: Flow<CountryCurrency> = settingsPreferences.currencyPref.getSelectedCurrencyName().map { currencyName ->
-        countryCurrencyService.getCountryCurrencyByCurrencyName(currency = currencyName)
-    }
-    fun onSelectedCurrencyChange(currencyName: String) = runCoroutine {
-        val countryCurrency = countryCurrencyService.getCountryCurrencyByCurrencyName(currency = currencyName)
+    val selectedCurrency: Flow<CountryCurrency> = countryCurrencyService.selectedCountry()
+
+    fun onSelectedCurrencyChange(countryName: String) = runCoroutine {
+        val countryCurrency = countryCurrencyService.getCountryCurrencyByCountryName(country = countryName)
         settingsPreferences.currencyPref.saveCountryCurrency(countryCurrency = countryCurrency)
     }
 

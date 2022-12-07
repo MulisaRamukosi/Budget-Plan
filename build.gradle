@@ -13,6 +13,7 @@ buildscript {
         pref_data_store_version = '1.0.0'
         reflection_version = '1.7.21'
         constraint_layout_version = '1.0.1'
+        firebase_bom_version = '31.0.1'
     }
 }
 // Top-level build file where you can add configuration options common to all sub-projects/modules.

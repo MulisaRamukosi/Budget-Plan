@@ -31,6 +31,7 @@ import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.constants.WeekDays
 import com.puzzle.industries.domain.models.FrequencyDate
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddEditExpenseScreen(
@@ -142,7 +143,7 @@ private fun SetUpCrudResponseEventListener(
     dismiss: () -> Unit
 ) {
     LaunchedEffect(key1 = true) {
-        expenseViewModel.crudResponseEventListener.collect {
+        expenseViewModel.crudResponseEventListener.collectLatest {
             if (it.response) {
                 dismiss()
             } else {
@@ -160,7 +161,7 @@ private fun SetUpUpdateEventListener(
     val showUpdateReasonDialog = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
-        expenseViewModel.updateExpenseEventListener.collect {
+        expenseViewModel.updateExpenseEventListener.collectLatest {
             showUpdateReasonDialog.value = true
         }
     }

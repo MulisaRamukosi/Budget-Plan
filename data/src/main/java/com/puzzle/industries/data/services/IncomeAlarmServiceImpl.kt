@@ -12,6 +12,7 @@ import com.puzzle.industries.domain.datastores.IncomeDataStore
 import com.puzzle.industries.domain.services.CalendarService
 import com.puzzle.industries.domain.services.IncomeAlarmService
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 internal class IncomeAlarmServiceImpl constructor(
@@ -31,7 +32,7 @@ internal class IncomeAlarmServiceImpl constructor(
     )
 
     override suspend fun setAutoDeleteIncomeAlarm() {
-        incomeDataStore.getAutoDeleteIncomeState().collect { enabled ->
+        incomeDataStore.getAutoDeleteIncomeState().collectLatest { enabled ->
             if (enabled) {
                 setAlarm()
             } else {

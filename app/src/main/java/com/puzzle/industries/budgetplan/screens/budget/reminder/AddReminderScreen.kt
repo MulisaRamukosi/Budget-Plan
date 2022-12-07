@@ -22,6 +22,7 @@ import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.util.layout.buildOrientationAwareActions
 import com.puzzle.industries.budgetplan.viewModels.budget.reminder.AddReminderViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.reminder.ReminderViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddReminderScreen(
@@ -82,7 +83,7 @@ private fun SetUpCrudResponseEventListener(
     dismiss: () -> Unit
 ) {
     LaunchedEffect(key1 = true) {
-        reminderViewModel.crudResponseEventListener.collect {
+        reminderViewModel.crudResponseEventListener.collectLatest {
             if (it.response) {
                 dismiss()
             } else {

@@ -39,18 +39,18 @@ fun BudgetPlanHeader(
     Surface(
         modifier = modifier.clip(shape = RoundedCornerShape(size = MaterialTheme.spacing.small))
     ) {
-        Column(modifier = Modifier.padding(vertical = MaterialTheme.spacing.large)) {
+        Column(
+            modifier = Modifier.padding(
+                vertical = MaterialTheme.spacing.large,
+                horizontal = MaterialTheme.spacing.medium
+            )
+        ) {
 
-            Column(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
-                Title()
-                Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-                RemainingCash()
-                Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-                BalanceInfo(incomeViewModel = incomeViewModel, expenseViewModel = expenseViewModel)
-            }
-
+            Title()
             Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
-            ChipOptions()
+            RemainingCash()
+            Spacer(modifier = Modifier.height(height = MaterialTheme.spacing.small))
+            BalanceInfo(incomeViewModel = incomeViewModel, expenseViewModel = expenseViewModel)
         }
 
 
@@ -91,7 +91,11 @@ private fun BalanceInfo(incomeViewModel: IncomeViewModel, expenseViewModel: Expe
         MoneyInfo(
             modifier = Modifier,
             title = stringResource(id = R.string.total_income_for_month),
-            amount = stringResource(id = R.string.currency_amount, currencySymbol, totalIncomeForMonth)
+            amount = stringResource(
+                id = R.string.currency_amount,
+                currencySymbol,
+                totalIncomeForMonth
+            )
         )
 
         H_M_Space()
@@ -99,44 +103,11 @@ private fun BalanceInfo(incomeViewModel: IncomeViewModel, expenseViewModel: Expe
         MoneyInfo(
             modifier = Modifier,
             title = stringResource(id = R.string.forecast_after_all_payments),
-            amount = stringResource(id = R.string.currency_amount, currencySymbol, totalIncomeForMonth - totalExpensesForMonth)
-        )
-    }
-}
-
-@Composable
-@ExperimentalMaterial3Api
-private fun ChipOptions() {
-    val chipRowScrollState = rememberScrollState()
-
-    Row(
-        modifier = Modifier
-            .horizontalScroll(state = chipRowScrollState)
-            .padding(horizontal = MaterialTheme.spacing.medium)
-
-    ) {
-        AssistChip(
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Payments,
-                    contentDescription = stringResource(id = R.string.desc_payment_icon)
-                )
-            },
-            label = { Text(text = stringResource(id = R.string.view_expenses)) },
-            onClick = {}
-        )
-
-        H_S_Space()
-
-        AssistChip(
-            leadingIcon = {
-                Icon(
-                    imageVector = Icons.Rounded.Event,
-                    contentDescription = stringResource(id = R.string.desc_event_icon)
-                )
-            },
-            label = { Text(text = stringResource(id = R.string.view_next_payments)) },
-            onClick = {}
+            amount = stringResource(
+                id = R.string.currency_amount,
+                currencySymbol,
+                totalIncomeForMonth - totalExpensesForMonth
+            )
         )
     }
 }

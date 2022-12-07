@@ -3,8 +3,7 @@ package com.puzzle.industries.budgetplan.screens
 import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -28,7 +27,11 @@ fun SplashScreen(onNavigate: () -> Unit) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "usually plan A doesn\'t work, use")
-            TextAnimation(onAnimationComplete = onNavigate)
+            TextAnimation(
+                onAnimationComplete = {
+                    onNavigate()
+                }
+            )
         }
     }
 }

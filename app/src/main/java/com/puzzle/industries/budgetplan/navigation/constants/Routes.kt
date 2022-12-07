@@ -22,7 +22,7 @@ open class Routes(val path: String) {
     //main nested screens
     object Home: Routes(path = HomeScreens.HOME)
     object Budget: Routes(path = HomeScreens.BUDGET)
-    object Search: Routes(path = HomeScreens.SEARCH)
+    object Stats: Routes(path = HomeScreens.STATS)
     object Settings: Routes(path = HomeScreens.SETTINGS)
 
     //registration flow screens
@@ -30,6 +30,7 @@ open class Routes(val path: String) {
     object Income: Routes(path = "$registrationPath/${RegistrationScreens.INCOME}")
     object Debt: Routes(path = "$registrationPath/${RegistrationScreens.DEBT}")
     object PlanDay: Routes(path = "$registrationPath/${RegistrationScreens.BUDGET_PLAN_DAY}")
+    object Auth: Routes(path = "$registrationPath/${RegistrationScreens.AUTH}")
 
     fun addParam(key: String, value: String) : Routes{
         val newPath = path.replace("{$key}", value)

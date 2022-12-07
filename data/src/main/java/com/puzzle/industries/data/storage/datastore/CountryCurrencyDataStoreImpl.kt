@@ -19,22 +19,16 @@ private val Context.currencyStore: DataStore<Preferences> by preferencesDataStor
 internal class CountryCurrencyDataStoreImpl(private val context: Context) :
     CountryCurrencyDataStore {
 
-    private val currencyNameKey = stringPreferencesKey(name = "selectedCurrencyNameKey")
-    private val currencySymbolKey = stringPreferencesKey(name = "selectedCurrencySymbolKey")
+    private val currencyCountryKey = stringPreferencesKey(name = "selectedCurrencyCountryKey")
 
     override suspend fun saveCountryCurrency(countryCurrency: CountryCurrency) {
         context.currencyStore.edit { settings ->
-            settings[currencyNameKey] = countryCurrency.currency
-            settings[currencySymbolKey] = countryCurrency.symbol
+            settings[currencyCountryKey] = countryCurrency.country
         }
     }
 
-
-    override fun getSelectedCurrencySymbol(): Flow<String> = context.currencyStore.data.map { preferences ->
-        preferences[currencySymbolKey] ?: CountryCurrencyConfig.DEFAULT_SYMBOL
+    override fun getSelectedCountry(): Flow<String> = context.currencyStore.data.map { preferences ->
+        preferences[currencyCountryKey] ?: CountryCurrencyConfig.DEFAULT_COUNTRY
     }
 
-    override fun getSelectedCurrencyName(): Flow<String> = context.currencyStore.data.map { preferences ->
-        preferences[currencyNameKey] ?: CountryCurrencyConfig.DEFAULT_CURRENCY
-    }
 }

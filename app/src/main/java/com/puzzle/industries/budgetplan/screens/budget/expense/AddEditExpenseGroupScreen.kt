@@ -33,6 +33,7 @@ import com.puzzle.industries.budgetplan.theme.spacing
 import com.puzzle.industries.budgetplan.util.layout.buildOrientationAwareActions
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.AddEditExpenseGroupViewModel
 import com.puzzle.industries.budgetplan.viewModels.budget.expenses.ExpenseViewModel
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddEditExpenseGroupScreen(
@@ -155,7 +156,7 @@ private fun SetUpCrudResponseEventListener(
     dismiss: () -> Unit
 ) {
     LaunchedEffect(key1 = true) {
-        expenseViewModel.crudResponseEventListener.collect {
+        expenseViewModel.crudResponseEventListener.collectLatest {
             if (it.response) {
                 dismiss()
             } else {

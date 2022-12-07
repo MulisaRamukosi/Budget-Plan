@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import com.puzzle.industries.budgetplan.components.SwitchButton
+import com.puzzle.industries.budgetplan.components.buttons.SwitchButton
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing

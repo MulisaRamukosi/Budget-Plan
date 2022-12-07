@@ -27,6 +27,7 @@ import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeVi
 import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.constants.FrequencyType
 import com.puzzle.industries.domain.constants.WeekDays
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun AddEditIncomeScreen(
@@ -129,7 +130,7 @@ private fun SetUpCrudActionDefaultReason(addEditIncomeViewModel: AddEditIncomeVi
 @Composable
 private fun SetUpCrudResponseEventListener(incomeViewModel: IncomeViewModel, dismiss: () -> Unit) {
     LaunchedEffect(key1 = true) {
-        incomeViewModel.crudResponseEventListener.collect {
+        incomeViewModel.crudResponseEventListener.collectLatest {
             if (it.response) {
                 dismiss()
             } else {
@@ -147,7 +148,7 @@ private fun SetUpUpdateEventListener(
     val showUpdateReasonDialog = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
-        incomeViewModel.updateIncomeEventListener.collect {
+        incomeViewModel.updateIncomeEventListener.collectLatest {
             showUpdateReasonDialog.value = true
         }
     }

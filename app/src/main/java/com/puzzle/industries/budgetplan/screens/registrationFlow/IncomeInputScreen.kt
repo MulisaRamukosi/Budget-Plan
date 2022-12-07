@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.screens.registration
+package com.puzzle.industries.budgetplan.screens.registrationFlow
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -13,6 +13,7 @@ import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupWithExpenses
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import com.puzzle.industries.domain.usescases.expense.ExpenseUseCase
 import com.puzzle.industries.domain.usescases.expenseGroup.ExpenseGroupUseCase
@@ -25,10 +26,10 @@ import javax.inject.Inject
 class ExpenseViewModel @Inject constructor(
     private val expenseGroupUseCase: ExpenseGroupUseCase,
     private val expenseUseCase: ExpenseUseCase,
-    private val currencyPreferenceService: CountryCurrencyDataStore,
+    private val countryCurrencyService: CountryCurrencyService,
     private val monthTotalCalculator: MonthTotalAmountCalculatorService
 ) : ViewModel(),
-    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyService),
     CrudViewModelHandlerDelegate<Boolean, ExpenseGroupWithExpenses> by CrudViewModelHandlerDelegateImpl(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
@@ -82,13 +83,13 @@ class ExpenseViewModel @Inject constructor(
         val response: Response<Flow<List<ExpenseGroupWithExpenses>>> =
             expenseGroupUseCase.read.readAll()
 
-        response.response.distinctUntilChanged().collect { expenseGroupWithExpenses ->
+        response.response.distinctUntilChanged().collectLatest { expenseGroupWithExpenses ->
             items.value = expenseGroupWithExpenses
         }
     }
 
     private fun initTotalExpenses() = runCoroutine {
-        expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
+        expenseGroupsWithExpenses.collectLatest { expenseGroupsWithExpenses ->
             _totalExpenses.value = expenseGroupsWithExpenses.sumOf { expenseGroupWithExpenses ->
                 expenseGroupWithExpenses.expenses.sumOf { expense -> expense.amount }
             }
@@ -96,13 +97,13 @@ class ExpenseViewModel @Inject constructor(
     }
 
     private fun initExpensesList() = runCoroutine {
-        expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
+        expenseGroupsWithExpenses.collectLatest { expenseGroupsWithExpenses ->
             _expenses.value = expenseGroupsWithExpenses.flatMap { it.expenses }
         }
     }
 
     private fun initTotalExpensesForMonth() = runCoroutine {
-        expenseGroupsWithExpenses.collect { expenseGroupsWithExpenses ->
+        expenseGroupsWithExpenses.collectLatest { expenseGroupsWithExpenses ->
             val expenses = expenseGroupsWithExpenses.flatMap { it.expenses }
             val total = monthTotalCalculator.calculateTotalExpensesForMonth(expenses = expenses)
             _totalExpenseForCurrentMonth.value = total
@@ -121,7 +122,7 @@ class ExpenseViewModel @Inject constructor(
                 year = selectedYear,
                 expenses = expenses
             )
-        }.distinctUntilChanged().collect { totalExpenseForSelectedMonth ->
+        }.distinctUntilChanged().collectLatest { totalExpenseForSelectedMonth ->
             _totalExpenseForSelectedMonth.value = totalExpenseForSelectedMonth
         }
     }

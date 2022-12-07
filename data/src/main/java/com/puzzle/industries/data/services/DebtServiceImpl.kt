@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.abs
@@ -36,13 +37,13 @@ internal class DebtServiceImpl constructor(
     init {
         CoroutineScope(Dispatchers.IO).launch {
             launch {
-                incomeRepo.read().response.collect {
+                incomeRepo.read().response.collectLatest {
                     incomes.value = it
                 }
             }
 
             launch {
-                expenseGroupRepo.read().response.collect {
+                expenseGroupRepo.read().response.collectLatest {
                     expenses.value = it.flatMap { expenseGroup -> expenseGroup.expenses }
                 }
             }

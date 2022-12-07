@@ -13,6 +13,7 @@ import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.models.reminder.Reminder
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import com.puzzle.industries.domain.usescases.reminder.ReminderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -21,9 +22,9 @@ import javax.inject.Inject
 @HiltViewModel
 class ReminderViewModel @Inject constructor(
     private val reminderUseCase: ReminderUseCase,
-    private val currencyPreferenceService: CountryCurrencyDataStore
+    private val countryCurrencyService: CountryCurrencyService
 ) : ViewModel(),
-    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyService),
     CrudViewModelHandlerDelegate<Boolean, ReminderWithExpense> by CrudViewModelHandlerDelegateImpl(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
@@ -38,7 +39,7 @@ class ReminderViewModel @Inject constructor(
 
     private fun initRemindersWithExpense() = runCoroutine {
         val response: Response<Flow<List<ReminderWithExpense>>> = reminderUseCase.read.readAll()
-        response.response.distinctUntilChanged().collect { reminderWithExpenses ->
+        response.response.distinctUntilChanged().collectLatest { reminderWithExpenses ->
             items.value = reminderWithExpenses
         }
     }

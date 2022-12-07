@@ -11,6 +11,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
@@ -24,6 +25,7 @@ fun <T> ValueDropDownPicker(
     values: List<T>,
     onValueChange: (T) -> Unit
 ) {
+    val dropDownWidth = remember{ mutableStateOf(0) }
     val expanded = rememberSaveable { mutableStateOf(value = false) }
     val source = remember { MutableInteractionSource() }
     val pressedState = source.interactions.collectAsState(
@@ -35,7 +37,7 @@ fun <T> ValueDropDownPicker(
         source.tryEmit(PressInteraction.Cancel(PressInteraction.Press(Offset.Zero)))
     }
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.onSizeChanged { dropDownWidth.value = it.width }) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
@@ -51,7 +53,7 @@ fun <T> ValueDropDownPicker(
 
         DropdownMenu(
             modifier = Modifier
-                .fillMaxWidth()
+                .width(width = dropDownWidth.value.dp)
                 .wrapContentHeight()
                 .heightIn(max = 200.dp),
             expanded = expanded.value,

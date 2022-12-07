@@ -40,7 +40,7 @@ fun homeScreenGraph(
             reminderViewModel = reminderViewModel
         )
 
-        composable(route = Routes.Search.path) {
+        composable(route = Routes.Stats.path) {
             SearchScreen()
         }
 

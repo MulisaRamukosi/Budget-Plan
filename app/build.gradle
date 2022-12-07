@@ -89,7 +89,10 @@ dependencies {
     implementation project(path: ':domain')
     implementation project(path: ':data')
 
-    implementation platform('com.google.firebase:firebase-bom:31.0.1')
+    //firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebase_bom_version")
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
 
@@ -131,10 +134,6 @@ dependencies {
 
     //reflection
     implementation "org.jetbrains.kotlin:kotlin-reflect:$reflection_version"
-
-    //firebase
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     testImplementation 'junit:junit:4.13.2'
 

@@ -80,9 +80,9 @@ private fun actions(navController: NavHostController): List<BottomAppBarActionBu
         ),
         BottomAppBarActionButton(
             imageVector = Icons.Rounded.QueryStats,
-            label = stringResource(id = R.string.search),
+            label = stringResource(id = R.string.statistics),
             description = stringResource(id = R.string.desc_search),
-            destinationRoute = Routes.Search.path,
+            destinationRoute = Routes.Stats.path,
             onActionClick = { route ->
                 bottomAppBarOnClick(
                     navController = navController,

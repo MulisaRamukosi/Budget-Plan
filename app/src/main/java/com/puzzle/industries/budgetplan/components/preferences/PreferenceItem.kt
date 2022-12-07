@@ -14,7 +14,7 @@ import com.puzzle.industries.budgetplan.theme.spacing
 fun PreferenceItem(
     modifier: Modifier = Modifier,
     title: String,
-    description: String,
+    description: String = "",
     content: @Composable () -> Unit
 ){
     Card(modifier = modifier) {

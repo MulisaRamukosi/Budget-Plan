@@ -128,6 +128,7 @@
     <string name="save_icon">Save icon</string>
     <string name="save_income">Save income</string>
     <string name="search">Search</string>
+    <string name="statistics">Statistics</string>
     <string name="select_currency">Select Currency</string>
     <string name="select_expenses_for_reminders">Select expenses to enable reminders</string>
     <string name="set_reminders">Set Reminder(s)</string>
@@ -173,4 +174,21 @@
     <string name="debt_warning">Debt Warning</string>
     <string name="desc_warning">warning icon</string>
     <string name="delete_anyway">Delete anyway!</string>
+    <string name="desc_search_icon">Search Icon</string>
+    <string name="search_country">Search for country</string>
+    <string name="about">About</string>
+    <string name="account">Account</string>
+    <string name="terms_and_policy">Terms and Privacy Policy</string>
+    <string name="view_account">View Account</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="continue_without_account">Continue without account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="sign_in_facebook">Sign in with Facebook</string>
+    <string name="sign_in_with_email_password">Sign in with Email + Password</string>
+    <string name="sign_in_message">Select the option you want to sign in with.</string>
+    <string name="continue_without_account_note">Note: If you select continue without account, you can still sign in later in settings.</string>
+    <string name="desc_gmail_icon">gmail icon</string>
+    <string name="desc_facebook_icon">facebook icon</string>
+    <string name="desc_mail_icon">Mail icon</string>
 </resources>

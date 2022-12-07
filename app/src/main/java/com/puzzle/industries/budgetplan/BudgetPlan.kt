@@ -2,6 +2,7 @@ package com.puzzle.industries.budgetplan
 
 import android.app.Application
 import com.puzzle.industries.data.notification.NotificationChannelService
+import com.puzzle.industries.domain.services.AuthService
 import com.puzzle.industries.domain.services.ExpenseAlarmService
 import com.puzzle.industries.domain.services.IncomeAlarmService
 import dagger.hilt.android.HiltAndroidApp

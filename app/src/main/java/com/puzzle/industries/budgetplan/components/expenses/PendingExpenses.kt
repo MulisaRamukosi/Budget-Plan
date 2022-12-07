@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.CheckboxButton
+import com.puzzle.industries.budgetplan.components.buttons.CheckboxButton
 import com.puzzle.industries.budgetplan.components.divider.HorizontalDivider
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space

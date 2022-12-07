@@ -29,6 +29,7 @@ import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroupWithExpenses
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun ExpenseScreen(
@@ -94,7 +95,7 @@ private fun SetupDeleteHandler(expenseViewModel: ExpenseViewModel) {
 
 
     LaunchedEffect(key1 = true) {
-        expenseViewModel.crudResponseEventListener.collect {
+        expenseViewModel.crudResponseEventListener.collectLatest {
             if (it.response) {
                 showDeleteExpenseDialog.value = false
                 showDeleteExpenseGroupDialog.value = false
@@ -121,7 +122,7 @@ private fun DeleteExpenseGroupHandler(
         remember { MutableStateFlow<ExpenseGroupWithExpenses?>(value = null) }
 
     LaunchedEffect(key1 = true) {
-        expenseViewModel.deleteExpenseGroupWithExpensesEventListener.collect { expenseGroupWithExpenses ->
+        expenseViewModel.deleteExpenseGroupWithExpensesEventListener.collectLatest { expenseGroupWithExpenses ->
             expenseGroupWithExpensesToDelete.value = expenseGroupWithExpenses
             onShowDialog(true)
         }
@@ -169,7 +170,7 @@ private fun DeleteExpenseHandler(
     val expenseToDelete = remember { MutableStateFlow<Expense?>(value = null) }
 
     LaunchedEffect(key1 = true) {
-        expenseViewModel.deleteExpenseEventListener.collect { expense ->
+        expenseViewModel.deleteExpenseEventListener.collectLatest { expense ->
             expenseToDelete.value = expense
             onShowDialog(true)
         }

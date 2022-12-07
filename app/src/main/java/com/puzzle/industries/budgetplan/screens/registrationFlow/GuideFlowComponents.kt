@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.screens.registration
+package com.puzzle.industries.budgetplan.screens.registrationFlow
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.TrailingIconButton
+import com.puzzle.industries.budgetplan.components.buttons.TrailingIconButton
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_S_Space
 

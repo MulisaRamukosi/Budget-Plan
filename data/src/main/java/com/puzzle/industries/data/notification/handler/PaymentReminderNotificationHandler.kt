@@ -6,14 +6,14 @@ import android.content.Intent
 import com.puzzle.industries.data.R
 import com.puzzle.industries.data.notification.NotificationHandler
 import com.puzzle.industries.data.notification.utils.NotificationChannelID
-import com.puzzle.industries.data.storage.datastore.CountryCurrencyDataStoreImpl
-import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 
-internal class PaymentReminderNotificationHandler(private val context: Context) :
-    NotificationHandler(context = context),
-    CountryCurrencyDataStore by CountryCurrencyDataStoreImpl(context = context) {
+internal class PaymentReminderNotificationHandler(
+    private val context: Context,
+    private val countryCurrencyService: CountryCurrencyService
+) : NotificationHandler(context = context) {
 
     override val notificationChannelID: NotificationChannelID
         get() = NotificationChannelID.PAYMENT_REMINDER
@@ -24,10 +24,12 @@ internal class PaymentReminderNotificationHandler(private val context: Context) 
 
 
     fun notify(id: Int, title: String, amount: Double) = runBlocking {
-        val notificationTitle  = context.getString(R.string.format_payment_reminder, title)
-        val currencySymbol = getSelectedCurrencySymbol().first()
-        val notificationContent = context.getString(R.string.format_payment_reminder_desc,
-        currencySymbol, amount, title)
+        val notificationTitle = context.getString(R.string.format_payment_reminder, title)
+        val currencySymbol = countryCurrencyService.selectedCountry().first().symbol
+        val notificationContent = context.getString(
+            R.string.format_payment_reminder_desc,
+            currencySymbol, amount, title
+        )
 
         triggerNotification(
             id = id,

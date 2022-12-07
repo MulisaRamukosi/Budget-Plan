@@ -10,6 +10,7 @@ import com.puzzle.industries.data.util.config.AutoDeleteAlarmConfig
 import com.puzzle.industries.domain.datastores.ExpenseDataStore
 import com.puzzle.industries.domain.services.CalendarService
 import com.puzzle.industries.domain.services.ExpenseAlarmService
+import kotlinx.coroutines.flow.collectLatest
 import java.util.*
 
 internal class ExpenseAlarmServiceImpl constructor(
@@ -30,7 +31,7 @@ internal class ExpenseAlarmServiceImpl constructor(
         )
 
     override suspend fun setAutoDeleteExpenseAlarm() {
-        expenseDataStore.getAutoDeleteExpenseState().collect { enabled ->
+        expenseDataStore.getAutoDeleteExpenseState().collectLatest { enabled ->
             if (enabled) {
                 setAlarm()
             } else {

@@ -16,6 +16,7 @@ import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.services.CalendarService
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import com.puzzle.industries.domain.services.DebtService
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.*
@@ -24,11 +25,11 @@ import java.util.*
 class AddEditIncomeViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val prevIncome: Income?,
-    private val countryCurrencyDataStore: CountryCurrencyDataStore,
+    private val countryCurrencyService: CountryCurrencyService,
     private val debtService: DebtService,
     val calendarService: CalendarService
 ) : ViewModel(),
-    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyDataStore),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyService),
     SavedStateHandlerDelegate by SavedStateHandlerDelegateImpl(savedStateHandle),
     AddEditItemStateHandlerDelegate by AddEditItemStateHandlerDelegateImpl(savedStateHandle),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
@@ -153,14 +154,14 @@ class AddEditIncomeViewModel @AssistedInject constructor(
                 return@combine inputsCondition
             }
 
-            requiredConditions.distinctUntilChanged().collect { allInputsMeetCondition ->
+            requiredConditions.distinctUntilChanged().collectLatest { allInputsMeetCondition ->
                 requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
             }
         }
     }
 
     private fun initDebtAllowedFlow() = runCoroutine {
-        debtService.getDebtAllowedState().collect { allowDebt ->
+        debtService.getDebtAllowedState().collectLatest { allowDebt ->
             _allowDebt.value = allowDebt
         }
     }
@@ -170,7 +171,7 @@ class AddEditIncomeViewModel @AssistedInject constructor(
             amountStateFlowHandler.valueStateFlow,
             frequencyTypeStateFlowHandler.valueStateFlow
         ) { _, _ -> income }
-            .distinctUntilChanged().collect {
+            .distinctUntilChanged().collectLatest {
                 if (isUpdatingConditionHandler.getValue()) {
                     _debtCheckResult.value =
                         debtService.willBeInDebtAfterModifyingIncome(income = it)

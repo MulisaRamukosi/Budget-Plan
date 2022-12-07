@@ -16,24 +16,22 @@ import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.expense.Expense
 import com.puzzle.industries.domain.services.CalendarService
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import com.puzzle.industries.domain.services.DebtService
 import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import dagger.assisted.AssistedInject
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.*
 import java.util.*
 
 class AddEditExpenseViewModel @AssistedInject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val expenseGroupId: UUID,
     private val debtService: DebtService,
-    private val countryCurrencyDataStore: CountryCurrencyDataStore,
+    private val countryCurrencyService: CountryCurrencyService,
     private val prevExpense: Expense?,
     val calendarService: CalendarService
 ) : ViewModel(),
-    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyDataStore),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyService),
     SavedStateHandlerDelegate by SavedStateHandlerDelegateImpl(savedStateHandle),
     AddEditItemStateHandlerDelegate by AddEditItemStateHandlerDelegateImpl(savedStateHandle),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
@@ -175,13 +173,13 @@ class AddEditExpenseViewModel @AssistedInject constructor(
             return@combine inputsCondition
         }
 
-        requiredConditions.distinctUntilChanged().collect { allInputsMeetCondition ->
+        requiredConditions.distinctUntilChanged().collectLatest { allInputsMeetCondition ->
             requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
         }
     }
 
     private fun initDebtAllowedFlow() = runCoroutine {
-        debtService.getDebtAllowedState().collect { allowDebt ->
+        debtService.getDebtAllowedState().collectLatest { allowDebt ->
             _allowDebt.value = allowDebt
         }
     }
@@ -191,7 +189,7 @@ class AddEditExpenseViewModel @AssistedInject constructor(
             amountStateFlowHandler.valueStateFlow,
             frequencyWhenStateFlowHandler.valueStateFlow
         ) { _, _ -> expense }
-            .distinctUntilChanged().collect {
+            .distinctUntilChanged().collectLatest {
                 if (isUpdatingConditionHandler.getValue()) {
                     _debtCheckResult.value =
                         debtService.willBeInDebtAfterModifyingExpense(expense = it)
@@ -207,7 +205,7 @@ class AddEditExpenseViewModel @AssistedInject constructor(
             amountStateFlowHandler.valueStateFlow,
             frequencyWhenStateFlowHandler.valueStateFlow
         ) { _, _ -> expense }
-            .distinctUntilChanged().collect {
+            .distinctUntilChanged().collectLatest {
                 val result = debtService.getRemainingAmountAfterAllExpenses(
                     expense = it,
                     isAnExistingExpense = isUpdatingConditionHandler.getValue()

@@ -8,6 +8,7 @@ import com.puzzle.industries.budgetplan.viewModels.budget.income.AddEditIncomeVi
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.income.Income
 import com.puzzle.industries.domain.services.CalendarService
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import com.puzzle.industries.domain.services.DebtService
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -16,7 +17,7 @@ import dagger.assisted.AssistedInject
 class AddEditIncomeViewModelFactory @AssistedInject constructor(
     @Assisted owner: SavedStateRegistryOwner,
     @Assisted private val prevIncome: Income?,
-    private val countryCurrencyDataStore: CountryCurrencyDataStore,
+    private val countryCurrencyService: CountryCurrencyService,
     private val debtService: DebtService,
     private val calendarService: CalendarService
 ) : AbstractSavedStateViewModelFactory(owner, null) {
@@ -28,7 +29,7 @@ class AddEditIncomeViewModelFactory @AssistedInject constructor(
     ): T = AddEditIncomeViewModel(
         savedStateHandle = handle,
         prevIncome = prevIncome,
-        countryCurrencyDataStore = countryCurrencyDataStore,
+        countryCurrencyService = countryCurrencyService,
         debtService = debtService,
         calendarService = calendarService
     ) as T

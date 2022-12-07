@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.components
+package com.puzzle.industries.budgetplan.components.buttons
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.components
+package com.puzzle.industries.budgetplan.components.buttons
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row

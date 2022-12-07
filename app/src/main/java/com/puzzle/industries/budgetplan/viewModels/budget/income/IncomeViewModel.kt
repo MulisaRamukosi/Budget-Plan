@@ -12,6 +12,7 @@ import com.puzzle.industries.domain.constants.Months
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.income.Income
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import com.puzzle.industries.domain.services.DebtService
 import com.puzzle.industries.domain.services.MonthTotalAmountCalculatorService
 import com.puzzle.industries.domain.usescases.income.IncomeUseCase
@@ -23,11 +24,11 @@ import javax.inject.Inject
 @HiltViewModel
 class IncomeViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
-    private val currencyPreferenceService: CountryCurrencyDataStore,
+    private val countryCurrencyService: CountryCurrencyService,
     private val monthTotalCalculator: MonthTotalAmountCalculatorService,
     private val debtService: DebtService
 ) : ViewModel(),
-    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyService),
     CrudViewModelHandlerDelegate<Boolean, Income> by CrudViewModelHandlerDelegateImpl(),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
@@ -77,19 +78,19 @@ class IncomeViewModel @Inject constructor(
 
     private fun initIncomes() = runCoroutine {
         val response: Response<Flow<List<Income>>> = incomeUseCase.read.readAll()
-        response.response.distinctUntilChanged().collect { incomeList ->
+        response.response.distinctUntilChanged().collectLatest { incomeList ->
             items.value = incomeList
         }
     }
 
     private fun initTotalIncome() = runCoroutine {
-        incomes.collect { incomes ->
+        incomes.collectLatest { incomes ->
             _totalIncome.value = incomes.sumOf { income -> income.amount }
         }
     }
 
     private fun initTotalIncomeForMonth() = runCoroutine {
-        incomes.collect { incomes ->
+        incomes.collectLatest { incomes ->
             val total = monthTotalCalculator.calculateTotalIncomesForMonth(incomes = incomes)
             _totalIncomeForCurrentMonth.value = total
 
@@ -107,13 +108,13 @@ class IncomeViewModel @Inject constructor(
                 year = selectedYear,
                 incomes = incomes
             )
-        }.distinctUntilChanged().collect { totalIncomeForSelectedMonth ->
+        }.distinctUntilChanged().collectLatest { totalIncomeForSelectedMonth ->
             _totalIncomeForSelectedMonth.value = totalIncomeForSelectedMonth
         }
     }
 
     private fun initDebtAllowedFlow() = runCoroutine {
-        debtService.getDebtAllowedState().collect {
+        debtService.getDebtAllowedState().collectLatest {
             _debtAllowed.value = it
         }
     }

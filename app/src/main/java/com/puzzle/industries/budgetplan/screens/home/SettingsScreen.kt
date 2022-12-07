@@ -13,6 +13,7 @@ import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,12 +24,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.puzzle.industries.budgetplan.BuildConfig
 import com.puzzle.industries.budgetplan.R
+import com.puzzle.industries.budgetplan.components.buttons.TrailingIconButton
 import com.puzzle.industries.budgetplan.components.picker.DayOfMonthPicker
 import com.puzzle.industries.budgetplan.components.preferences.PreferenceItem
 import com.puzzle.industries.budgetplan.components.preferences.PreferenceSelectItem
 import com.puzzle.industries.budgetplan.components.preferences.PreferenceSwitchItem
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
+import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.components.text.SingleLineText
 import com.puzzle.industries.budgetplan.ext.GetOnceResult
 import com.puzzle.industries.budgetplan.navigation.constants.RouteParamKey
@@ -84,6 +88,14 @@ fun SettingsScreen(
 
         item {
             BudgetPlanGenerationDayPreference(settingsViewModel = settingsViewModel)
+        }
+
+        item {
+            Account()
+        }
+
+        item {
+            About()
         }
     }
 }
@@ -247,14 +259,73 @@ private fun BudgetPlanGenerationDayPreference(settingsViewModel: SettingsViewMod
 }
 
 @Composable
+private fun Account() {
+    PreferenceItem(title = stringResource(id = R.string.account)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = MaterialTheme.spacing.medium),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(text = "Mulisa Ramukosi", style = MaterialTheme.typography.titleLarge)
+
+            V_M_Space()
+
+            TrailingIconButton(
+                imageVector = Icons.Rounded.ChevronRight,
+                text = stringResource(id = R.string.view_account),
+                contentDescription = stringResource(id = R.string.desc_arrow_right_icon),
+                onClick = { /*TODO*/ }
+            )
+        }
+
+    }
+}
+
+@Composable
+private fun About() {
+    PreferenceItem(title = stringResource(id = R.string.about)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = MaterialTheme.spacing.medium),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                modifier = Modifier.size(size = 80.dp),
+                painter = painterResource(id = R.mipmap.ic_launcher_round),
+                contentDescription = stringResource(id = R.string.app_name)
+            )
+
+            V_M_Space()
+
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(text = "v${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodySmall)
+
+            V_M_Space()
+
+            TrailingIconButton(
+                imageVector = Icons.Rounded.ChevronRight,
+                text = stringResource(id = R.string.terms_and_policy),
+                contentDescription = stringResource(id = R.string.desc_arrow_right_icon),
+                onClick = { /*TODO*/ }
+            )
+        }
+    }
+}
+
+@Composable
 private fun SetupCurrencySelectionResponseHandler(
     navController: NavController,
     settingsViewModel: SettingsViewModel
 ) {
     navController.GetOnceResult<String>(
         keyResult = ValueKey.COUNTRY_CURRENCY_KEY.name,
-        onResult = { currencyName ->
-            settingsViewModel.onSelectedCurrencyChange(currencyName = currencyName)
+        onResult = { countryName ->
+            settingsViewModel.onSelectedCurrencyChange(countryName = countryName)
         }
     )
 }
@@ -266,7 +337,7 @@ private fun navigateToCurrencySelectionScreen(
     navController.navigate(
         route = Routes.CurrencyPicker.addParam(
             key = RouteParamKey.ID,
-            value = countryCurrency.currency
+            value = countryCurrency.country
         ).path
     )
 }

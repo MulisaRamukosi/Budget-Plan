@@ -1,4 +1,4 @@
-package com.puzzle.industries.budgetplan.screens.registration
+package com.puzzle.industries.budgetplan.screens.registrationFlow
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -11,9 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.CheckboxButton
+import com.puzzle.industries.budgetplan.components.buttons.CheckboxButton
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing

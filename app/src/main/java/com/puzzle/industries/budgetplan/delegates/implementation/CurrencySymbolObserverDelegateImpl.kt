@@ -4,12 +4,11 @@ import com.puzzle.industries.budgetplan.delegates.CoroutineHandlerDelegate
 import com.puzzle.industries.budgetplan.delegates.CurrencySymbolObserverDelegate
 import com.puzzle.industries.budgetplan.util.configs.CurrencyConfig
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.puzzle.industries.domain.services.CountryCurrencyService
+import kotlinx.coroutines.flow.*
 
 class CurrencySymbolObserverDelegateImpl constructor(
-    private val countryCurrencyDataStore: CountryCurrencyDataStore
+    private val countryCurrencyService: CountryCurrencyService
 ) : CurrencySymbolObserverDelegate, CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
     private val symbolFlow = MutableStateFlow(value = CurrencyConfig.DEFAULT_CURRENCY)
@@ -17,8 +16,8 @@ class CurrencySymbolObserverDelegateImpl constructor(
 
     init {
         runCoroutine {
-            countryCurrencyDataStore.getSelectedCurrencySymbol().collect { symbol ->
-                symbolFlow.value = symbol
+            countryCurrencyService.selectedCountry().collectLatest { countryCurrency ->
+                symbolFlow.value = countryCurrency.symbol
             }
         }
     }

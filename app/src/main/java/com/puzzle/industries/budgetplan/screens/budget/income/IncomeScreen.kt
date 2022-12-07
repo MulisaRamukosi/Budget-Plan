@@ -28,6 +28,7 @@ import com.puzzle.industries.budgetplan.viewModels.budget.income.IncomeViewModel
 import com.puzzle.industries.domain.models.DebtCheckResult
 import com.puzzle.industries.domain.models.income.Income
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun IncomeScreen(
@@ -126,7 +127,7 @@ private fun SetupDeleteHandler(incomeViewModel: IncomeViewModel) {
     val currencySymbol by incomeViewModel.currencySymbol.collectAsState()
 
     LaunchedEffect(key1 = true) {
-        incomeViewModel.crudResponseEventListener.collect {
+        incomeViewModel.crudResponseEventListener.collectLatest {
             if (it.response) {
                 showDeleteReasonDialog.value = false
                 showDebtWarningDialog.value = false
@@ -137,7 +138,7 @@ private fun SetupDeleteHandler(incomeViewModel: IncomeViewModel) {
     }
 
     LaunchedEffect(key1 = true) {
-        incomeViewModel.debtWarning.collect {
+        incomeViewModel.debtWarning.collectLatest {
             if (it.willBeInDebt) {
                 debtCheckResult.value = it
                 showDebtWarningDialog.value = true
@@ -146,7 +147,7 @@ private fun SetupDeleteHandler(incomeViewModel: IncomeViewModel) {
     }
 
     LaunchedEffect(key1 = true) {
-        incomeViewModel.deleteIncomeEventListener.collect { income ->
+        incomeViewModel.deleteIncomeEventListener.collectLatest { income ->
             incomeToDelete.value = income
             showDeleteReasonDialog.value = true
         }

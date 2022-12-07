@@ -2,7 +2,7 @@
     ExperimentalMaterial3Api::class
 )
 
-package com.puzzle.industries.budgetplan.screens.registration
+package com.puzzle.industries.budgetplan.screens.registrationFlow
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -33,12 +33,12 @@ import com.puzzle.industries.budgetplan.components.spacer.V_M_Space
 import com.puzzle.industries.domain.models.CountryCurrency
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.budgetplan.theme.spacing
-import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CurrencyViewModel
+import com.puzzle.industries.budgetplan.viewModels.registrationFlow.CountryCurrencyViewModel
 
 @Composable
 fun CurrencySelectionScreen(
     modifier: Modifier = Modifier,
-    viewModel: CurrencyViewModel = hiltViewModel(),
+    viewModel: CountryCurrencyViewModel = hiltViewModel(),
     onCurrencySelectionClick: () -> Unit = {},
     onContinueClick: (CountryCurrency) -> Unit = {}
 ) {

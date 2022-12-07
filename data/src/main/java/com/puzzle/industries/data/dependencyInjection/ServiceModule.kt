@@ -1,29 +1,28 @@
 package com.puzzle.industries.data.dependencyInjection
 
 import android.content.Context
-import com.puzzle.industries.data.mapper.expense.ExpenseMapper
-import com.puzzle.industries.data.mapper.income.IncomeMapper
 import com.puzzle.industries.data.services.*
 import com.puzzle.industries.data.services.alarmManager.AlarmManagerService
 import com.puzzle.industries.data.services.alarmManager.AlarmManagerServiceImpl
-import com.puzzle.industries.data.storage.database.dao.expense.ExpenseDao
-import com.puzzle.industries.data.storage.database.dao.income.IncomeDao
 import com.puzzle.industries.data.storage.datastore.*
 import com.puzzle.industries.domain.datastores.*
-import com.puzzle.industries.domain.repository.expense.ExpenseRepository
 import com.puzzle.industries.domain.repository.expenseGroup.ExpenseGroupRepository
 import com.puzzle.industries.domain.repository.income.IncomeRepository
 import com.puzzle.industries.domain.services.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 internal class ServiceModule {
+    private val loggerService: LoggerService = LoggerServiceImpl()
 
     @Singleton
     @Provides
@@ -45,7 +44,8 @@ internal class ServiceModule {
 
     @Singleton
     @Provides
-    fun provideCountryCurrencyService(): CountryCurrencyService = CountryCurrencyServiceImpl()
+    fun provideCountryCurrencyService(countryCurrencyDataStore: CountryCurrencyDataStore): CountryCurrencyService =
+        CountryCurrencyServiceImpl(countryCurrencyDataStore = countryCurrencyDataStore)
 
     @Singleton
     @Provides
@@ -97,4 +97,24 @@ internal class ServiceModule {
         incomeRepo = incomeRepo,
         expenseGroupRepo = expenseGroupRepo
     )
+
+    @Singleton
+    @Provides
+    fun provideSubscriptionService(): SubscriptionService = SubscriptionServiceImpl()
+
+    @Singleton
+    @Provides
+    fun provideLoggerService(): LoggerService = loggerService
+
+
 }
+
+@Module
+@InstallIn(ActivityComponent::class)
+internal class ActivityServiceModule{
+    @ActivityScoped
+    @Provides
+    fun provideAuthService(@ActivityContext context: Context): AuthService =
+        AuthServiceImpl(context = context, loggerService = LoggerServiceImpl())
+}
+

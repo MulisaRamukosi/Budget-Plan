@@ -12,6 +12,7 @@ import com.puzzle.industries.budgetplan.util.configs.ValidationConfig
 import com.puzzle.industries.domain.models.expenseGroup.ExpenseGroup
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.util.*
@@ -99,7 +100,7 @@ class AddEditExpenseGroupViewModel @AssistedInject constructor(
         }
 
         requiredInputsCheckFlow.distinctUntilChanged()
-            .collect { allInputsMeetCondition ->
+            .collectLatest { allInputsMeetCondition ->
                 requiredInputsStateFlowHandler.onValueChange(allInputsMeetCondition)
             }
     }

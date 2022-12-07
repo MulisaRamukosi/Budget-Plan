@@ -2,7 +2,7 @@
     ExperimentalMaterial3WindowSizeClassApi::class
 )
 
-package com.puzzle.industries.budgetplan.screens
+package com.puzzle.industries.budgetplan.screens.registrationFlow
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.puzzle.industries.budgetplan.R
-import com.puzzle.industries.budgetplan.components.TrailingIconButton
+import com.puzzle.industries.budgetplan.components.buttons.TrailingIconButton
 import com.puzzle.industries.budgetplan.components.spacer.H_M_Space
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.components.spacer.V_M_Space

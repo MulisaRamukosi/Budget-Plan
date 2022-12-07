@@ -12,10 +12,12 @@ import com.puzzle.industries.budgetplan.util.configs.ValidationConfig
 import com.puzzle.industries.data.util.config.ReminderConfig
 import com.puzzle.industries.domain.datastores.CountryCurrencyDataStore
 import com.puzzle.industries.domain.models.expense.Expense
+import com.puzzle.industries.domain.services.CountryCurrencyService
 import com.puzzle.industries.domain.usescases.reminder.ReminderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.util.*
 import javax.inject.Inject
@@ -24,9 +26,9 @@ import javax.inject.Inject
 class AddReminderViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val reminderUseCase: ReminderUseCase,
-    private val currencyPreferenceService: CountryCurrencyDataStore
+    private val countryCurrencyService: CountryCurrencyService
 ) : ViewModel(),
-    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(currencyPreferenceService),
+    CurrencySymbolObserverDelegate by CurrencySymbolObserverDelegateImpl(countryCurrencyService),
     SavedStateHandlerDelegate by SavedStateHandlerDelegateImpl(savedStateHandle),
     CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
@@ -55,14 +57,14 @@ class AddReminderViewModel @Inject constructor(
     }
 
     private fun initInputsValidFlow() = runCoroutine {
-        selectedExpensesIdsHandler.valueStateFlow.collect { selectedExpenses ->
+        selectedExpensesIdsHandler.valueStateFlow.collectLatest { selectedExpenses ->
             requiredInputsStateFlowHandler.onValueChange(selectedExpenses.isNotEmpty())
         }
     }
 
     private fun initRemindersWithNoAlarms() = runCoroutine {
         reminderUseCase.readExpensesWithNoReminders.readAll().response.distinctUntilChanged()
-            .collect { expenseList ->
+            .collectLatest { expenseList ->
                 _expenses.value = expenseList.filter { expense ->
                     ReminderConfig.SUPPORTED_FREQUENCY_TYPE_FOR_ALARM.contains(
                         expense.frequencyType
