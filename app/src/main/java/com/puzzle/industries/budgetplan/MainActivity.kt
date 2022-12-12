@@ -2,13 +2,11 @@
 
 package com.puzzle.industries.budgetplan
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -24,15 +22,16 @@ import com.puzzle.industries.budgetplan.navigation.AppScreensNavHost
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
 import com.puzzle.industries.domain.constants.ThemeType
 import com.puzzle.industries.domain.datastores.ThemeDataStore
-import com.puzzle.industries.domain.services.AuthService
+import com.puzzle.industries.domain.repository.user.AuthRepository
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import javax.inject.Inject
 
-val localAuthService = staticCompositionLocalOf<AuthService> {
-    error("to be provided")
+val localAuthRepoProvider = staticCompositionLocalOf<AuthRepository> {
+    error("not provided yet")
 }
 
 @AndroidEntryPoint
@@ -40,8 +39,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var themePreferences: ThemeDataStore
+
     @Inject
-    lateinit var authService: AuthService
+    lateinit var authRepository: AuthRepository
 
     @EntryPoint
     @InstallIn(ActivityComponent::class)
@@ -49,19 +49,18 @@ class MainActivity : ComponentActivity() {
         fun addEditIncomeViewModelFactory(): AddEditIncomeViewModelAssistedFactory
         fun addEditExpenseGroupViewModelFactory(): AddEditExpenseGroupViewModelAssistedFactory
         fun addEditExpenseViewModelFactory(): AddEditExpenseViewModelAssistedFactory
-        fun authServiceViewModelFactory(): AuthViewModelAssistedFactory
+        fun authViewModelFactory(): AuthViewModelAssistedFactory
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        authService.initAuth()
 
         setContent {
-            CompositionLocalProvider(localAuthService provides authService) {
-                val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(activity = this)
-                val themeType by themePreferences.getSelectedTheme()
-                    .collectAsState(initial = ThemeType.SYSTEM_DEPENDENT)
+            val windowSizeClass: WindowSizeClass = calculateWindowSizeClass(activity = this)
+            val themeType by themePreferences.getSelectedTheme()
+                .collectAsState(initial = ThemeType.SYSTEM_DEPENDENT)
 
+            CompositionLocalProvider(localAuthRepoProvider provides authRepository) {
                 BudgetPlanTheme(themeType = themeType) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
@@ -76,7 +75,6 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
-
         }
     }
 

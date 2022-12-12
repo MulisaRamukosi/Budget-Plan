@@ -191,4 +191,21 @@
     <string name="desc_gmail_icon">gmail icon</string>
     <string name="desc_facebook_icon">facebook icon</string>
     <string name="desc_mail_icon">Mail icon</string>
+    <string name="email">Email</string>
+    <string name="password_visibility_off">Password visibility off</string>
+    <string name="password_visibility_on">Password visibility on</string>
+    <string name="password">Password</string>
+    <string name="password_requirements">Your password must contain:</string>
+    <string name="password_minimum">at least %d characters</string>
+    <string name="password_requirements_uppercase">at least one uppercase letter</string>
+    <string name="password_requirements_lowercase">at least one lowercase letter</string>
+    <string name="password_requirements_digit">at least one digit</string>
+    <string name="password_requirements_symbol">at least one of these symbols %s</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="sign_in_message_email">Sign in using an email address + password</string>
+    <string name="note_no_email_password_account">Note: if you do not have an account, enter your email address + choice of password, your account will be created after pressing continue.</string>
+    <string name="forgot_password_question">Forgot Password?</string>
+    <string name="send_link">Send link</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="forgot_password_guide">Enter the email address to send the password reset link to.</string>
 </resources>

@@ -1,72 +1,59 @@
 package com.puzzle.industries.data.services
 
-import android.app.Activity
 import android.content.Context
-import android.content.IntentSender
-import android.provider.ContactsContract.Data
-import androidx.activity.ComponentActivity
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContract
-import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
-import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.identity.SignInClient
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.puzzle.industries.data.util.Secrets
+import com.puzzle.industries.data.callbacks.AuthCallback
+import com.puzzle.industries.data.delegates.AuthResponseDelegate
+import com.puzzle.industries.data.delegates.CoroutineDelegate
+import com.puzzle.industries.data.delegates.FacebookAuthDelegate
+import com.puzzle.industries.data.delegates.GoogleAuthDelegate
+import com.puzzle.industries.data.delegates.implementation.AuthResponseDelegateImpl
+import com.puzzle.industries.data.delegates.implementation.CoroutineDelegateImpl
+import com.puzzle.industries.data.delegates.implementation.FacebookAuthDelegateImpl
+import com.puzzle.industries.data.delegates.implementation.GoogleAuthDelegateImpl
+import com.puzzle.industries.data.util.AuthFailCause
 import com.puzzle.industries.domain.exceptions.UnauthorizedException
 import com.puzzle.industries.domain.models.user.Account
 import com.puzzle.industries.domain.models.user.AuthResponse
 import com.puzzle.industries.domain.services.AuthService
 import com.puzzle.industries.domain.services.LoggerService
 import dagger.hilt.android.qualifiers.ActivityContext
-import kotlinx.coroutines.flow.MutableSharedFlow
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.tasks.await
 
-class AuthServiceImpl(@ActivityContext private val context: Context, private val loggerService: LoggerService) :
-    AuthService {
+@ActivityScoped
+internal class AuthServiceImpl(
+    @ActivityContext private val context: Context,
+    private val loggerService: LoggerService
+) : AuthService, AuthCallback,
+    AuthResponseDelegate by AuthResponseDelegateImpl(
+        context = context,
+        loggerService = loggerService
+    ),
+    CoroutineDelegate by CoroutineDelegateImpl(),
+    GoogleAuthDelegate by GoogleAuthDelegateImpl(context = context),
+    FacebookAuthDelegate by FacebookAuthDelegateImpl(context = context) {
 
-    private lateinit var auth: FirebaseAuth
-    private val _authResponse: MutableSharedFlow<AuthResponse> = MutableSharedFlow()
+    private var auth: FirebaseAuth = Firebase.auth
 
-    private lateinit var oneTapClient: SignInClient
-    private lateinit var signInRequest: BeginSignInRequest
-    private lateinit var gmailSignInRequestLauncher: ActivityResultLauncher<IntentSenderRequest>
-
-
-    override fun initAuth() {
-        auth = Firebase.auth
-        initGoogleAuth()
+    init {
+        linkAuthCallbackToGoogle(authCallback = this)
+        linkAuthCallbackToFacebook(authCallback = this)
     }
 
-    private fun initGoogleAuth() {
-        oneTapClient = Identity.getSignInClient(context)
-        signInRequest = BeginSignInRequest.builder()
-            .setGoogleIdTokenRequestOptions(
-                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-                    .setSupported(true)
-                    .setServerClientId(Secrets.authClientID())
-                    .setFilterByAuthorizedAccounts(false)
-                    .build()
-            )
-            .build()
-
-        gmailSignInRequestLauncher = (context as ComponentActivity).registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()){
-            result ->
-            val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
-            val idToken = credential.googleIdToken
-        }
-    }
-
-    override fun authResponseHandler(): SharedFlow<AuthResponse> {
-        return _authResponse
-    }
+    override fun authResponseHandler(): SharedFlow<AuthResponse> = authResponseProducer()
 
     override fun alreadyAuthed(): Boolean = auth.currentUser != null
 
+    @kotlin.jvm.Throws(UnauthorizedException::class)
     override fun getUserAccount(): Account {
         if (auth.currentUser == null) throw UnauthorizedException("The user is not authorized")
 
@@ -78,21 +65,97 @@ class AuthServiceImpl(@ActivityContext private val context: Context, private val
     }
 
     override suspend fun authUsingGmail() {
-        try {
-            val result = oneTapClient.beginSignIn(signInRequest).await()
-            val intentSenderRequest = IntentSenderRequest.Builder(result.pendingIntent).build()
-            gmailSignInRequestLauncher.launch(intentSenderRequest)
-        }
-        catch (ex: java.lang.Exception){
-            loggerService.logException(ex)
-        }
+        authThroughGoogle()
     }
 
     override suspend fun authUsingFacebook() {
-        TODO("Not yet implemented")
+        authThroughFacebook()
+    }
+
+    override suspend fun authUsingEmailPassword(email: String, password: String) {
+        try {
+            val response = auth.signInWithEmailAndPassword(email, password).await()
+            val user = response.user
+            if (user != null) {
+                if (user.isEmailVerified) emitAuthSuccess()
+                else sendEmailVerification()
+            } else {
+                loggerService.logMessage("user authed but user account was not found")
+                emitAuthFailed(cause = AuthFailCause.UNKNOWN)
+            }
+
+        } catch (ex: FirebaseAuthInvalidUserException) {
+            when (ex.errorCode) {
+                "ERROR_USER_NOT_FOUND" -> createEmailPasswordAccount(email, password)
+                else -> emitAuthFailed(cause = AuthFailCause.UNKNOWN, exception = ex)
+            }
+        } catch (ex: FirebaseAuthInvalidCredentialsException) {
+            emitAuthFailed(cause = AuthFailCause.INVALID_CREDENTIALS)
+        }
+    }
+
+    override suspend fun authWithoutAccount() {
+        emitAuthSuccess(isAccountLessAuth = true)
+    }
+
+    override suspend fun forgotPassword(email: String) {
+        try {
+            auth.sendPasswordResetEmail(email).await()
+            emitForgotPasswordSuccessResponse()
+        } catch (ex: Exception) {
+            emitForgotPasswordFailedResponse()
+        }
     }
 
     override fun signOut() {
         auth.signOut()
+    }
+
+    override fun onReceiveToken(idToken: String?) {
+        handleFirebaseSignInWithCredentials(idToken = idToken)
+    }
+
+    override fun onAuthCancelled() {
+        emitAuthCancelled()
+    }
+
+    override fun onAuthFailed(ex: Exception) {
+        emitAuthFailed(cause = AuthFailCause.LOGIN_FAILED, exception = ex)
+    }
+
+    private suspend fun sendEmailVerification() {
+        try {
+            val user = auth.currentUser
+            user?.sendEmailVerification()?.await()
+            emitAuthSuccessButRequireEmailVerification()
+        } catch (ex: Exception) {
+            emitAuthFailed(cause = AuthFailCause.LOGIN_FAILED, exception = ex)
+        }
+    }
+
+    private suspend fun createEmailPasswordAccount(email: String, password: String) {
+        try {
+            auth.createUserWithEmailAndPassword(email, password).await()
+            sendEmailVerification()
+        } catch (ex: Exception) {
+            emitAuthFailed(cause = AuthFailCause.LOGIN_FAILED, exception = ex)
+        }
+    }
+
+    private fun handleFirebaseSignInWithCredentials(idToken: String?) {
+        runCoroutine {
+            try {
+                val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
+                auth.signInWithCredential(firebaseCredential).await()
+                emitAuthSuccess()
+            } catch (ex: ApiException) {
+                when (ex.statusCode) {
+                    CommonStatusCodes.NETWORK_ERROR -> emitAuthFailed(cause = AuthFailCause.NETWORK_ERROR)
+                    else -> emitAuthFailed(cause = AuthFailCause.UNKNOWN, exception = ex)
+                }
+            } catch (ex: Exception) {
+                emitAuthFailed(cause = AuthFailCause.LOGIN_FAILED, exception = ex)
+            }
+        }
     }
 }

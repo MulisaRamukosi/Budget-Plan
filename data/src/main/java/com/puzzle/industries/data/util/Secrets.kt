@@ -7,4 +7,6 @@ object Secrets {
     }
 
     external fun authClientID(): String
+    external fun facebookAppId(): String
+    external fun facebookClientToken(): String
 }

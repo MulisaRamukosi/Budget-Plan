@@ -13,8 +13,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ActivityRetainedComponent
 import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -22,7 +24,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 internal class ServiceModule {
-    private val loggerService: LoggerService = LoggerServiceImpl()
 
     @Singleton
     @Provides
@@ -104,17 +105,23 @@ internal class ServiceModule {
 
     @Singleton
     @Provides
-    fun provideLoggerService(): LoggerService = loggerService
+    fun provideLoggerService(): LoggerService = LoggerServiceImpl()
 
+    @Singleton
+    @Provides
+    fun provideAccountService(): AccountService = AccountServiceImpl()
 
 }
 
 @Module
 @InstallIn(ActivityComponent::class)
-internal class ActivityServiceModule{
-    @ActivityScoped
+internal class ActivityServiceModule {
     @Provides
-    fun provideAuthService(@ActivityContext context: Context): AuthService =
-        AuthServiceImpl(context = context, loggerService = LoggerServiceImpl())
+    @ActivityScoped
+    fun provideAuthService(
+        @ActivityContext context: Context,
+        loggerService: LoggerService
+    ): AuthService =
+        AuthServiceImpl(context = context, loggerService = loggerService)
 }
 

@@ -13,4 +13,13 @@
     <string name="format_payment_reminder">Payment Reminder for %s</string>
     <string name="format_payment_reminder_desc">You have a payment of %s%.2f for %s due today.</string>
     <string name="reason_auto_delete">Automatically deleted</string>
+    <string name="login_success">Login success!</string>
+    <string name="login_failed">Failed to login</string>
+    <string name="login_failed_network">Login failed due to network connectivity. Please try again.</string>
+    <string name="login_cancelled">Login attempt was cancelled.</string>
+    <string name="login_failed_error">An error occurred, please try again</string>
+    <string name="login_failed_invalid_credentials">Login failed, invalid credentials failed.</string>
+    <string name="login_success_awaiting_verification">Please verify your email by pressing the link sent to the email address you registered with, then login again.</string>
+    <string name="forgot_password_response_success">A link to reset your password has been to the provided email address.</string>
+    <string name="forgot_password_response_failed">An error occurred, please try again</string>
 </resources>

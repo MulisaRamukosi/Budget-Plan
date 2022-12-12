@@ -1,16 +1,14 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalCoilApi::class)
 
 package com.puzzle.industries.budgetplan.screens
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
@@ -20,15 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.constraintlayout.compose.ConstrainedLayoutReference
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.ConstraintLayoutScope
-import androidx.constraintlayout.compose.Dimension
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.puzzle.industries.budgetplan.R
 import com.puzzle.industries.budgetplan.components.spacer.H_S_Space
 import com.puzzle.industries.budgetplan.theme.BudgetPlanTheme
@@ -42,47 +39,43 @@ fun CountryPickerScreen(
     onDoneClick: () -> Unit
 ) {
 
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (searchBarConstraint, countriesConstraint, doneBtnConstraint) = createRefs()
 
-        searchBarSection(
-            countryCurrencyViewModel = countryCurrencyViewModel,
-            constraint = searchBarConstraint
-        )()
 
-        doneButtonSection(
-            constraint = doneBtnConstraint,
+    Column(modifier = Modifier.fillMaxSize()) {
+        SearchBarSection(
+            modifier = Modifier.fillMaxWidth(),
+            countryCurrencyViewModel = countryCurrencyViewModel
+        )
+
+        CountriesSection(
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(weight = 1f, fill = true),
+            countryCurrencyViewModel = countryCurrencyViewModel
+        )
+
+        DoneButtonSection(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = MaterialTheme.spacing.medium),
             onDoneClick = onDoneClick
-        )()
-
-        countriesSection(
-            countryCurrencyViewModel = countryCurrencyViewModel,
-            topConstraint = searchBarConstraint,
-            middleConstraint = countriesConstraint,
-            bottomConstraint = doneBtnConstraint
-        )()
+        )
     }
-
 }
 
 @Composable
-private fun searchBarSection(
-    countryCurrencyViewModel: CountryCurrencyViewModel,
-    constraint: ConstrainedLayoutReference
-): @Composable ConstraintLayoutScope.() -> Unit = {
-
+private fun SearchBarSection(
+    modifier: Modifier,
+    countryCurrencyViewModel: CountryCurrencyViewModel
+) {
     val filterText by countryCurrencyViewModel.filterText.valueStateFlow.collectAsState()
 
-    Column(modifier = Modifier.constrainAs(ref = constraint) {
-        linkTo(start = parent.start, end = parent.end)
-        top.linkTo(anchor = parent.top)
-    }) {
+    Column(modifier = modifier) {
         Text(
             text = stringResource(id = R.string.select_currency),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(all = MaterialTheme.spacing.medium)
         )
-
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -98,61 +91,42 @@ private fun searchBarSection(
             placeholder = {
                 Text(text = stringResource(id = R.string.search_country))
             },
-            onValueChange = {
-                countryCurrencyViewModel.filterText.onValueChange(it)
-            }
+            onValueChange = countryCurrencyViewModel.filterText.onValueChange
         )
     }
 }
 
 @Composable
-private fun doneButtonSection(
-    constraint: ConstrainedLayoutReference,
+private fun DoneButtonSection(
+    modifier: Modifier,
     onDoneClick: () -> Unit
-): @Composable ConstraintLayoutScope.() -> Unit = {
-
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(all = MaterialTheme.spacing.medium)
-            .constrainAs(ref = constraint) {
-                linkTo(start = parent.start, end = parent.end)
-                bottom.linkTo(anchor = parent.bottom)
-            },
-        content = { Button(onClick = onDoneClick, content = { Text(text = stringResource(id = R.string.done)) }) }
+        modifier = modifier,
+        content = {
+            Button(
+                onClick = onDoneClick,
+                content = { Text(text = stringResource(id = R.string.done)) })
+        }
     )
-
 }
 
 @Composable
-private fun countriesSection(
-    countryCurrencyViewModel: CountryCurrencyViewModel,
-    topConstraint: ConstrainedLayoutReference,
-    middleConstraint: ConstrainedLayoutReference,
-    bottomConstraint: ConstrainedLayoutReference
-): @Composable ConstraintLayoutScope.() -> Unit = {
-
+private fun CountriesSection(
+    modifier: Modifier,
+    countryCurrencyViewModel: CountryCurrencyViewModel
+) {
     val selectedCountryCurrency by countryCurrencyViewModel.sub.collectAsState()
-    val countries by countryCurrencyViewModel.allCountries.collectAsState()
+    val countries by countryCurrencyViewModel.countries.collectAsState()
 
-    LazyColumn(
-        modifier = Modifier
-            .constrainAs(ref = middleConstraint) {
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                top.linkTo(topConstraint.bottom)
-                bottom.linkTo(bottomConstraint.top)
-                height = Dimension.fillToConstraints
-                width = Dimension.fillToConstraints
-            }
-    ) {
+    LazyColumn(modifier = modifier) {
 
-        items(items = countries) { item: CountryCurrency ->
+        items(items = countries, key = { it.country }) { item: CountryCurrency ->
             CountryCurrencyItem(
                 modifier = Modifier.fillMaxWidth(),
                 countryCurrency = item,
                 isSelected = item == selectedCountryCurrency,
-                onClick = { countryCurrencyViewModel.publishValue(value = item) }
+                onClick = countryCurrencyViewModel::publishValue
             )
         }
     }
@@ -163,12 +137,14 @@ private fun CountryCurrencyItem(
     modifier: Modifier,
     countryCurrency: CountryCurrency,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: (CountryCurrency) -> Unit
 ) {
+    val flagImage = rememberImagePainter(countryCurrency.flagId)
+
     Box(
         modifier = modifier
             .background(color = if (isSelected) MaterialTheme.colorScheme.surface else Color.Transparent)
-            .clickable { onClick() }
+            .clickable { onClick(countryCurrency) }
     ) {
         Row(
             modifier = Modifier
@@ -181,7 +157,7 @@ private fun CountryCurrencyItem(
                     .size(width = 40.dp, height = 30.dp)
                     .padding(all = MaterialTheme.spacing.extraSmall)
                     .clip(shape = RoundedCornerShape(size = MaterialTheme.spacing.small)),
-                painter = painterResource(id = countryCurrency.flagId),
+                painter = flagImage,
                 contentDescription = countryCurrency.country
             )
 

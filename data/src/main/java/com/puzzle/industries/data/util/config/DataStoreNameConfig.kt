@@ -8,4 +8,5 @@ object DataStoreNameConfig {
     const val EXPENSE = "Expense"
     const val INCOME = "Income"
     const val THEME = "Theme"
+    const val AUTH = "Auth"
 }

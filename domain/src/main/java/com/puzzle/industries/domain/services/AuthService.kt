@@ -9,8 +9,10 @@ interface AuthService {
     fun authResponseHandler(): SharedFlow<AuthResponse>
     fun alreadyAuthed(): Boolean
     fun getUserAccount(): Account
-    fun initAuth()
     suspend fun authUsingGmail()
     suspend fun authUsingFacebook()
+    suspend fun authUsingEmailPassword(email: String, password: String)
+    suspend fun authWithoutAccount()
+    suspend fun forgotPassword(email: String)
     fun signOut()
 }

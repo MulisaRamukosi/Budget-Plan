@@ -50,6 +50,11 @@ class DataStoreModule {
 
     @Singleton
     @Provides
+    fun provideAuthPrefDataStore(@ApplicationContext context: Context): AuthDataStore =
+        AuthDataStoreImpl(context = context)
+
+    @Singleton
+    @Provides
     fun providePreferencesStore(
         expenseDataStore: ExpenseDataStore,
         incomeDataStore: IncomeDataStore,

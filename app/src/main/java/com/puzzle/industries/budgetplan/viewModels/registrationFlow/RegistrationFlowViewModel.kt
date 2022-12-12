@@ -19,13 +19,11 @@ class RegistrationFlowViewModel @Inject constructor(
     private val incomeUseCase: IncomeUseCase,
     private val countryCurrencyDataStore: CountryCurrencyDataStore,
     private val debtDataStore: DebtDataStore,
-    private val launchTrackingDataStore: LaunchTrackingDataStore,
-    private val bPlanGenDayDataStore: BPlanGenDayDataStore
+    private val launchTrackingDataStore: LaunchTrackingDataStore
 ) : ViewModel(), CoroutineHandlerDelegate by CoroutineHandlerDelegateImpl() {
 
     private lateinit var countryCurrency: CountryCurrency
     private lateinit var income: Income
-    private var day: Int = 1
     private var debtAllowed: Boolean = false
 
 
@@ -33,7 +31,6 @@ class RegistrationFlowViewModel @Inject constructor(
         runCoroutine {
             incomeUseCase.create.insert(reason = "", income)
             countryCurrencyDataStore.saveCountryCurrency(countryCurrency = countryCurrency)
-            bPlanGenDayDataStore.saveDay(day = day)
             debtDataStore.saveAllowDebtOption(option = debtAllowed)
             launchTrackingDataStore.updateToNotFirstTimeLaunch()
         }
@@ -51,7 +48,4 @@ class RegistrationFlowViewModel @Inject constructor(
         this.debtAllowed = debtAllowed
     }
 
-    fun setBudgetPlanGenerationDay(day: Int) {
-        this.day = day
-    }
 }

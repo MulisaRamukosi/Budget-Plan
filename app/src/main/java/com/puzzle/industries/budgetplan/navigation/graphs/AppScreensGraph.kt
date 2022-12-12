@@ -38,7 +38,7 @@ fun appScreensGraph(
 
         countryPickerScreen(navController = navController, viewModel = viewModel())
 
-        RegistrationGuideFlowGraph(navController = navController)
+        RegistrationGuideFlowGraph(navController = navController, windowSizeClass = windowSizeClass)
 
         composable(route = Routes.Main.path) {
             MainScreen(
@@ -79,7 +79,7 @@ private fun NavGraphBuilder.splashScreen(
     composable(route = Routes.Splash.path) {
         SplashScreen {
             val destinationPath: String =
-                if (viewModel.isFirstTimeLaunch) Routes.Welcome.path
+                if (viewModel.isFirstTimeLaunch || !viewModel.alreadyAuthed) Routes.Welcome.path
                 else Routes.Main.path
 
             navController.navigateAndClearStack(route = destinationPath)

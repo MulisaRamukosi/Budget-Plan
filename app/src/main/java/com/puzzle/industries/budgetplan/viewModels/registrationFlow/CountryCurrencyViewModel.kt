@@ -28,9 +28,9 @@ class CountryCurrencyViewModel @Inject constructor(
         registerKeyStateFlowHandler(key = filterTextKey, initialValue = "")
     }
 
-    private val _allCountries: MutableStateFlow<List<CountryCurrency>> =
+    private val _countries: MutableStateFlow<List<CountryCurrency>> =
         MutableStateFlow(value = emptyList())
-    val allCountries: StateFlow<List<CountryCurrency>> = _allCountries
+    val countries: StateFlow<List<CountryCurrency>> = _countries
 
     fun getCountryCurrencyByCountryName(countryName: String): CountryCurrency =
         countryCurrencyService.getCountryCurrencyByCountryName(country = countryName)
@@ -42,11 +42,15 @@ class CountryCurrencyViewModel @Inject constructor(
     private fun initFilterTextFlow() = runCoroutine {
         filterText.valueStateFlow.collectLatest {
             val filterWord = it.lowercase()
-            _allCountries.value =
+            _countries.value = if (filterWord.isBlank()) {
+                countryCurrencyService.getAllCountries()
+            }
+            else {
                 countryCurrencyService.getAllCountries().filter { countryCurrency ->
                     countryCurrency.currency.lowercase().contains(filterWord) ||
                             countryCurrency.country.lowercase().contains(filterWord)
                 }
+            }
         }
     }
 }
