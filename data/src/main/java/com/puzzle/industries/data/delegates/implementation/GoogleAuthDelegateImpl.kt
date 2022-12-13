@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.identity.SignInClient
 import com.puzzle.industries.data.callbacks.AuthCallback
 import com.puzzle.industries.data.delegates.GoogleAuthDelegate
 import com.puzzle.industries.data.util.Secrets
+import com.puzzle.industries.domain.constants.AuthType
 import dagger.hilt.android.qualifiers.ActivityContext
 import kotlinx.coroutines.tasks.await
 
@@ -30,8 +31,7 @@ class GoogleAuthDelegateImpl constructor(@ActivityContext private val context: C
                 Activity.RESULT_OK -> {
                     val credential =
                         Identity.getSignInClient(context).getSignInCredentialFromIntent(result.data)
-                    val idToken = credential.googleIdToken
-                    authCallback.onReceiveToken(idToken = idToken)
+                    returnToken(idToken = credential.googleIdToken)
                 }
                 Activity.RESULT_CANCELED -> {
                     authCallback.onAuthCancelled()
@@ -45,8 +45,7 @@ class GoogleAuthDelegateImpl constructor(@ActivityContext private val context: C
             when (result.resultCode) {
                 Activity.RESULT_OK -> {
                     val credential = oneTapClient.getSignInCredentialFromIntent(result.data)
-                    val idToken = credential.googleIdToken
-                    authCallback.onReceiveToken(idToken = idToken)
+                    returnToken(idToken = credential.googleIdToken)
                 }
                 Activity.RESULT_CANCELED -> {
                     authCallback.onAuthCancelled()
@@ -86,6 +85,14 @@ class GoogleAuthDelegateImpl constructor(@ActivityContext private val context: C
             gmailSignInRequestLauncher.launch(IntentSenderRequest.Builder(result).build())
         } catch (ex: Exception) {
             authCallback.onAuthFailed(ex = ex)
+        }
+    }
+
+    private fun returnToken(idToken: String?){
+        if (idToken != null){
+            authCallback.onReceiveToken(token = idToken, authType = AuthType.GMAIL)
+        } else {
+            authCallback.onAuthFailed(ex = Exception("Auth succeeded but failed to retrieve token"))
         }
     }
 }

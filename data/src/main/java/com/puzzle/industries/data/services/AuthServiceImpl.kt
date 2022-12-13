@@ -3,10 +3,7 @@ package com.puzzle.industries.data.services
 import android.content.Context
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.puzzle.industries.data.callbacks.AuthCallback
@@ -19,6 +16,7 @@ import com.puzzle.industries.data.delegates.implementation.CoroutineDelegateImpl
 import com.puzzle.industries.data.delegates.implementation.FacebookAuthDelegateImpl
 import com.puzzle.industries.data.delegates.implementation.GoogleAuthDelegateImpl
 import com.puzzle.industries.data.util.AuthFailCause
+import com.puzzle.industries.domain.constants.AuthType
 import com.puzzle.industries.domain.exceptions.UnauthorizedException
 import com.puzzle.industries.domain.models.user.Account
 import com.puzzle.industries.domain.models.user.AuthResponse
@@ -34,13 +32,10 @@ internal class AuthServiceImpl(
     @ActivityContext private val context: Context,
     private val loggerService: LoggerService
 ) : AuthService, AuthCallback,
-    AuthResponseDelegate by AuthResponseDelegateImpl(
-        context = context,
-        loggerService = loggerService
-    ),
+    AuthResponseDelegate by AuthResponseDelegateImpl(context = context, loggerService = loggerService),
     CoroutineDelegate by CoroutineDelegateImpl(),
     GoogleAuthDelegate by GoogleAuthDelegateImpl(context = context),
-    FacebookAuthDelegate by FacebookAuthDelegateImpl(context = context) {
+    FacebookAuthDelegate by FacebookAuthDelegateImpl(context = context, loggerService = loggerService) {
 
     private var auth: FirebaseAuth = Firebase.auth
 
@@ -111,8 +106,8 @@ internal class AuthServiceImpl(
         auth.signOut()
     }
 
-    override fun onReceiveToken(idToken: String?) {
-        handleFirebaseSignInWithCredentials(idToken = idToken)
+    override fun onReceiveToken(token: String, authType: AuthType) {
+        handleFirebaseSignInWithCredentials(token = token, authType = authType)
     }
 
     override fun onAuthCancelled() {
@@ -142,11 +137,13 @@ internal class AuthServiceImpl(
         }
     }
 
-    private fun handleFirebaseSignInWithCredentials(idToken: String?) {
+    private fun handleFirebaseSignInWithCredentials(token: String, authType: AuthType) {
         runCoroutine {
             try {
-                val firebaseCredential = GoogleAuthProvider.getCredential(idToken, null)
-                auth.signInWithCredential(firebaseCredential).await()
+                val credential = if (authType == AuthType.GMAIL) GoogleAuthProvider.getCredential(token, null)
+                else FacebookAuthProvider.getCredential(token)
+
+                auth.signInWithCredential(credential).await()
                 emitAuthSuccess()
             } catch (ex: ApiException) {
                 when (ex.statusCode) {
